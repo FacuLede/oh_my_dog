@@ -1,0 +1,27 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Paseadores</h1>                 
+</div>
+        {% for paseador in paseadores %}        
+
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">Nombre: {{paseador.nombre}}</h5>
+                    <p class="card-text">Zona: {{paseador.zona}}</p>
+                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+<div style="background-color:#eee;height: 20%;">
+                
+</div>
+
+{% endblock %}

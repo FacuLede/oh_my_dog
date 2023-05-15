@@ -1,0 +1,79 @@
+
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+<section class="vh-100" style="background-color: #eee;background-position: center;background-size: cover;">
+    <div class="container h-100" style="opacity: 0.9;">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px; margin-top: 5%;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                  <p class="display-4">¿Cómo te podemos ayudar?</p>
+                  
+                  <div class="card text-bg-light" style="width: 25rem;margin-bottom: 2%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Atención veterinaria</h5>
+                      <p class="card-text">Necesito atención veterinaria para mi perro.</p>
+                      <a href="{% url 'sacar_turno' %}" class="card-link btn btn-success">Sacar un turno</a>
+                    </div>
+                  </div>
+
+                  <div class="card text-bg-light" style="width: 25rem;margin-bottom: 2%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Perdí a mi perro</h5>
+                      <p class="card-text">Si perdiste a tu perro quizás alguien lo haya visto.</p>
+                      <a href="#" class="card-link btn btn-success">Perros encontrados</a>
+                      <a href="{% url 'anunciar_perro_perdido' %}" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
+                    </div>
+                  </div>
+  
+                  <div class="card text-bg-light" style="width: 25rem;margin-bottom: 2%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Encontré un perro</h5>
+                      <p class="card-text">Si encontraste un perro quizás alguien lo esté buscando.</p>
+                      <a href="{% url 'perros_perdidos' %}" class="card-link btn btn-success">Perros perdidos</a>
+                      <a href="#" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
+                    </div>
+                  </div>
+                  
+                  <div class="card text-bg-light" style="width: 25rem;margin-bottom: 2%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Quiero adoptar un perro</h5>
+                      <p class="card-text">Puedes darle la oportunidad a un perro que la necesita.</p>
+                      <a href="{% url 'perros_en_adopcion' %}" class="card-link btn btn-success">Perros en adopción</a>
+                    </div>
+                  </div>
+  
+                  <div class="card text-bg-light" style="width: 25rem;margin-bottom: 2%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Tengo un perro para dar en adopción</h5>
+                      <p class="card-text">¿Quieres poner un perro en adopción?</p>
+                      <a href="{% url 'anunciar_perro_adopcion' %}" class="card-link btn btn-success">Poner un perro en adopción</a>  
+                    </div>
+                  </div>
+
+                  <div class="card text-bg-light" style="width: 25rem;margin-bottom: 2%;">
+                    <div class="card-body">
+                      <h5 class="card-title">Busco un paseador o un cuidador</h5>
+                      <p class="card-text">¿Necesitas un paseador o un cuidador de perros? Ponte en contacto con uno.</p>
+                      <a href="{% url 'paseadores' %}" class="card-link btn btn-success">Paseadores</a>
+                      <a href="{% url 'cuidadores' %}" class="card-link btn btn-success">Cuidadores</a>
+                    </div>
+                  </div>
+  
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2" style="margin-bottom: 40%;">
+  
+                     <img src="https://media.discordapp.net/attachments/1084960115909722185/1097261359265226853/Logo1.png"
+                    class="img-fluid" alt="Sample image">
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
