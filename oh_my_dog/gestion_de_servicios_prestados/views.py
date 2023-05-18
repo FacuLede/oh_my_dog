@@ -16,21 +16,25 @@ def cuidadores (request) :
 def contacto(request, id) :
     paseador = get_object_or_404(Paseador, id=id)
     form = Send_email_form()
-    if request.method == "POST" :
-        form = Send_email_form(data=request.POST)
-        if form.is_valid() :
-            mail = EmailMessage("¡Oh my dog!",
-                                request.POST.get('mensaje')+f" De: {request.POST.get('email')}",
-                                request.POST.get('email'),
-                                [paseador.email]
-                                )
-            # try:
-            mail.send()
-            return redirect("home")
-            # except:
-            #     pass
-            #     return redirect("home")
-    return render(request, "gestion_de_servicios_prestados/contacto.html",{'form':form})
+    if request.user.email != paseador.email :
+        if request.method == "POST" :
+            form = Send_email_form(data=request.POST)
+            if form.is_valid() :
+                mail = EmailMessage("¡Oh my dog!",
+                                    request.POST.get('mensaje')+f" De: {request.POST.get('email')}",
+                                    request.POST.get('email'),
+                                    [paseador.email]
+                                    )
+                # try:
+                mail.send()
+                return redirect("home")
+                # except:
+                #     pass
+                #     return redirect("home")
+        return render(request, "gestion_de_servicios_prestados/contacto.html",{'form':form})
+    else :
+        return render(request, "gestion_de_servicios_prestados/error.html")
+    
 
 def contacto_cuidador(request, id) :
     cuidador = get_object_or_404(Cuidador, id=id)

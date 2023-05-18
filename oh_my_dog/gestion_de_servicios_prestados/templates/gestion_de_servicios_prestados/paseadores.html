@@ -11,8 +11,15 @@
                 <div class="col-md-8">
                     <div class="card-body">
                     <h5 class="card-title">Nombre: {{paseador.nombre}}</h5>
-                    <p class="card-text">Zona: {{paseador.zona}}</p>
+                    <p class="card-text">Descripcion: {{paseador.descripcion}}</p>
                     <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>
+                    {% if mensaje %}  
+                    <div style="margin-top: 3%;">
+                        <p class="alert alert-danger" role="alert" > 
+                        {{ mensaje }}
+                        </p>    
+                    </div>        
+                    {% endif %}  
                     </div>
                 </div>
                 </div>

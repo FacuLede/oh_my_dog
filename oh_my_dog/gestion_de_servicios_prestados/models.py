@@ -4,7 +4,7 @@ from django.db import models
 
 class Paseador(models.Model):
     nombre = models.CharField(max_length=30)
-    zona = models.CharField(max_length=30)
+    descripcion = models.CharField(max_length=300)
     email = models.EmailField(max_length=50,unique=True)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
@@ -16,7 +16,7 @@ class Paseador(models.Model):
     
 class Cuidador(models.Model):
     nombre = models.CharField(max_length=30)
-    zona = models.CharField(max_length=30)
+    descripcion = models.CharField(max_length=300)
     email = models.EmailField(max_length=50,unique=True)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
