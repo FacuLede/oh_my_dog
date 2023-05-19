@@ -1,7 +1,8 @@
 from user.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django import forms 
 
-class UserUpdateForm(UserCreationForm) : 
+class UserUpdateForm(forms.ModelForm) : 
     class Meta:
         model = User
-        fields = ('username','email','dni')
+        fields = ('username','email')
+        exclude = ['password1','password2','dni']

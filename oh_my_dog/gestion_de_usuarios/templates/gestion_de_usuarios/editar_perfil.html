@@ -12,11 +12,11 @@
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
   
                   <!-- <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Inicia sesion</p>   -->
-                  <p class="display-4" style="margin-bottom: 10%;">Mi perfil</p>
+                  <p class="display-4" style="margin-bottom: 10%;">Editar perfil</p>
                   <form class="form-label"action="" method="post">
                     {% csrf_token %}
                     {{ form | crispy }} 
-                    <button type="submit" class=" btn btn-outline-success" style="margin-top: 10%;">Guardar</button>
+                    <button type="submit" class=" btn btn-success" style="margin-top: 10%;">Guardar</button>
                     <p style="color: rgb(52, 223, 52)"> 
                         {{ mensaje }}
                     </p>

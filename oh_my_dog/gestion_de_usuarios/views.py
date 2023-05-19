@@ -71,15 +71,37 @@ def perfil(request):
     usuario=request.user
     return render(request,"gestion_de_usuarios/perfil_usuario.html",{"usuario":usuario})
 
-def editar_perfil(request) :
+def editar_perfil_2(request) :
     if request.user.is_authenticated:
         current_user = User.objects.get(id=request.user.id)
-        form = UserRegisterForm(request.POST or None, instance = current_user)
+        form = UserUpdateForm(request.POST or None, instance = current_user)
         data = {
             'form': form,
         } 
         if form.is_valid():
+            print(request.POST)
             form.save()
+            login(request,current_user)
+            return redirect(to = "perfil")
+        else:
+            return render(request,"gestion_de_usuarios/editar_perfil.html",data)
+        
+
+def editar_perfil(request) :
+
+    """
+    Implementación alternativa de la función editar_perfil
+    """
+    if request.user.is_authenticated:
+        current_user = request.user
+        form = UserUpdateForm(request.POST or None, instance = current_user)
+        data = {
+            'form': form,
+        } 
+        if form.is_valid():
+            current_user.username = request.POST['username']
+            current_user.email = request.POST['email']
+            current_user.save()
             login(request,current_user)
             return redirect(to = "perfil")
         else:
