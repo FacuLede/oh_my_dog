@@ -2,7 +2,21 @@
 {% block content %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Paseadores</h1>                 
-</div>
+</div>  
+        {% if mensajes %}  
+        <div style="background-color: #eee;">        
+        <div style="width: 60%;background-color: #eee;margin-left: 20%;border-color: #eee;">
+            <p class="alert alert-danger" style="margin-bottom: 0%;" role="alert" > 
+            {{ mensajes }}
+            </p>    
+        </div>   
+        
+        <div style="background-color:#eee;height: 3%;">
+                
+        </div>
+        
+        </div>
+        {% endif %}  
         {% for paseador in paseadores %}        
 
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
@@ -12,14 +26,7 @@
                     <div class="card-body">
                     <h5 class="card-title">Nombre: {{paseador.nombre}}</h5>
                     <p class="card-text">Descripcion: {{paseador.descripcion}}</p>
-                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>
-                    {% if mensaje %}  
-                    <div style="margin-top: 3%;">
-                        <p class="alert alert-danger" role="alert" > 
-                        {{ mensaje }}
-                        </p>    
-                    </div>        
-                    {% endif %}  
+                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>                    
                     </div>
                 </div>
                 </div>

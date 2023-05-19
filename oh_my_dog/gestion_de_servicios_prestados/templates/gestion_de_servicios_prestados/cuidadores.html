@@ -3,6 +3,21 @@
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Cuidadores</h1>                 
 </div>
+
+        {% if mensajes %}  
+        <div style="background-color: #eee;">        
+        <div style="width: 60%;background-color: #eee;margin-left: 20%;border-color: #eee;">
+            <p class="alert alert-danger" style="margin-bottom: 0%;" role="alert" > 
+            {{ mensajes }}
+            </p>    
+        </div>   
+
+        <div style="background-color:#eee;height: 3%;">
+                
+        </div>
+
+        </div>
+        {% endif %} 
         {% for cuidador in cuidadores %}        
 
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
