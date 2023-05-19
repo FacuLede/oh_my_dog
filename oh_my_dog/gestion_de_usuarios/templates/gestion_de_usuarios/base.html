@@ -60,6 +60,9 @@
 
           {% if user.is_superuser %}
           <li class="nav-item">
+            <a class="nav-link"  href="{% url 'turnos_pendientes' %}">Solicitudes de turnos</a>
+          </li>   
+          <li class="nav-item">
             <a class="nav-link"  href="/admin">Opciones de administrador</a>
           </li>   
           {% endif %}

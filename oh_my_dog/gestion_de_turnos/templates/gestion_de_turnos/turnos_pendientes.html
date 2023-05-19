@@ -1,0 +1,30 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Turnos pendientes</h1>                 
+</div>
+       
+        {% for turno in turnos %}        
+
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <p class="card-title">Franja horaria: {{turno.franja_horaria}}</p>
+                    <p class="card-text">Motivo: {{turno.motivo}}</p>
+                    <p class="card-text">Fecha: {{turno.fecha}}</p>
+                    <a class=" btn btn-success" href="#">Aprobar turno</a>
+                    <a class=" btn btn-danger" href="#">Rechazar turno</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+<div style="background-color:#eee;height: 20%;">
+                
+</div>
+
+{% endblock %}
