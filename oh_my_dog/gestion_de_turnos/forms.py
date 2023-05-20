@@ -18,6 +18,6 @@ class  Turno_form(forms.ModelForm):
         widgets = {
             'fecha': forms.DateInput(attrs={'type': 'date'})
         }
-        exclude = ['estado']
+        exclude = ['estado','dni_creator']
 
         

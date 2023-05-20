@@ -18,6 +18,7 @@ class Turno(models.Model) :
     motivo = models.TextField(max_length=100)
     fecha = models.DateField()
     estado = models.CharField(max_length=50, default="Pendiente", blank=True)
+    dni_creator = models.CharField(max_length=8)
 
     class Meta:
         unique_together = (('franja_horaria','fecha'))

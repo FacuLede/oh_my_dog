@@ -1,53 +1,52 @@
 {% extends "gestion_de_usuarios/base.html" %}
 {% block content %}
 
-{% block js %}
-
 <script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
 <script >
-    function delete_user() {
+    function delete_turno(id) {
         Swal.fire({
             "title":"Estás seguro?",
             "text":"Esta acción es irreversible.",
             "icon":"question",
             "showCancelButton":true,
-            "cancelButtonText":"Cancelar",
-            "confirmButtonText":"Eliminar",
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, cancelar tuerno",
             "reverseButtons":true,
             "confirmButtonColor":"#dc3545",
         })
         .then(function(result){
             if(result.isConfirmed){
-                window.location.href = "eliminar_usuario"
+                window.location.href = "eliminar_turno/"+id+"/"
             }
         }) 
     }
 
 </script>
 
-{% endblock %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
-    <h1 class="display-1">Mi perfil</h1>                 
+    <h1 class="display-1">Mis turnos</h1>                 
 </div>
-    
+       
+        {% for turno in turnos %}        
 
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
             <div class="card mb-3 element-home-color" style="width: 60%;">
                 <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title">Nombre de usuario: {{usuario.username}}</h5>
-                    <p class="card-text">Email: {{usuario.email}}</p>
-                    <p class="card-text">Dni: {{usuario.dni}}</p>
-                    <a class="btn btn-success" href="{% url 'editar_perfil' %}" style="color:white;">Editar</a>
-                    <!-- <a class="navbar-brand px-lg-4 btn btn-danger" href="{% url 'eliminar_usuario' %}" style="color:white;">Eliminar</a>    -->
-                    <a href ="#" class="btn btn-danger" onclick="delete_user()" style="color:white;">Eliminar</a>           
-                    </div>                    
+                    <p class="card-title">Franja horaria: {{turno.franja_horaria}}</p>
+                    <p class="card-text">Motivo: {{turno.motivo}}</p>
+                    <p class="card-text">Fecha: {{turno.fecha}}</p>
+                    <p class="card-text">Estado: {{turno.estado}}</p>
+                    <!-- <a class=" btn btn-danger" href="{% url 'eliminar_turno' turno.id %}">Cancelar turno</a> -->
+                    <a href ="#" class="btn btn-danger" onclick="delete_turno({{turno.id}})" style="color:white;">Cancelar turno</a>
+                    </div>
                 </div>
                 </div>
             </div>
         </div>
 
+        {% endfor %}
 <div style="background-color:#eee;height: 20%;">
                 
 </div>

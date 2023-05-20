@@ -15,10 +15,7 @@
                     <form method="post" action="" class="mx-1 mx-md-4">
 
                         {% if messages %}
-                        {% for m in messages %}
-                        <span style="color: red;">{{m}}<span>                        
-                     
-                        {% endfor %}
+                        
                         {% endif %}
 
                         {% csrf_token %}
