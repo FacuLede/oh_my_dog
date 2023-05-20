@@ -57,6 +57,7 @@ class Perro_en_adopcion(models.Model):
     localidad=models.CharField(max_length=100)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
+    created_by = models.CharField(max_length=8)
 
     class Meta:
         verbose_name='perro_en_adopcion'

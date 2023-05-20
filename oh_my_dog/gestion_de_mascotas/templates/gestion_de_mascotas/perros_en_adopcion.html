@@ -3,6 +3,21 @@
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Perros en adopcion</h1>                 
 </div>
+
+        {% if mensajes %}  
+        <div style="background-color: #eee;">        
+        <div style="width: 60%;background-color: #eee;margin-left: 20%;border-color: #eee;">
+            <p class="alert alert-danger" style="margin-bottom: 0%;" role="alert" > 
+            {{ mensajes }}
+            </p>    
+        </div>   
+
+        <div style="background-color:#eee;height: 3%;">
+                
+        </div>
+
+        </div>
+        {% endif %}  
         {% for perro in perros_en_adopcion %}
 
         
@@ -15,7 +30,7 @@
                     <h5 class="card-title">Edad: {{perro.edad}}</h5>
                     <p class="card-text">Descripción / información: {{perro.descripcion}}</p>
                     <p class="card-text">Localidad: {{perro.localidad}}</p>
-                    <a  class=" btn btn-success" >Contactar</a>
+                    <a href ="{% url 'contacto_adopcion' perro.id %}" class=" btn btn-success" >Contactar</a>
                     <!-- href="{% url 'contacto' perro.id%}" -->
                     </div>
                 </div>

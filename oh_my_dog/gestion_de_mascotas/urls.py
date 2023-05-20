@@ -7,4 +7,8 @@ urlpatterns = [
     path('anunciar_perro_adopcion',views.anunciar_perro_adopcion, name= "anunciar_perro_adopcion"),
     path('perros_en_adopcion',views.perros_en_adopcion, name= "perros_en_adopcion"),
     path('mis_perros',views.mis_perros, name= "mis_perros"),
+    path('mis_perros_en_adopcion',views.mis_perros_en_adopcion, name= "mis_perros_en_adopcion"),
+    path('eliminar_anuncio_adopcion/<id>/',views.eliminar_anuncio_adopcion, name= "eliminar_anuncio_adopcion"),
+    path('contacto_adopcion/<id>/',views.contacto_adopcion, name= "contacto_adopcion"),
+    path('editar_anuncio/<id>/',views.editar_anuncio, name= "editar_anuncio"),
 ]
