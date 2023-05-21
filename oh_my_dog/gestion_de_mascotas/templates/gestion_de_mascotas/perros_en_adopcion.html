@@ -27,9 +27,12 @@
                 <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title">Edad: {{perro.edad}}</h5>
-                    <p class="card-text">Descripción / información: {{perro.descripcion}}</p>
-                    <p class="card-text">Localidad: {{perro.localidad}}</p>
+                    <h5 class="card-title">Título: {{perro.titulo}}</h5>
+                    <p class="card-text">Etapa de vida: {{perro.edad}}</p>
+                    <p class="card-text">Tamaño: {{perro.tamanio}}</p>
+                    <p class="card-text">Detalles de salud: {{perro.detalles_de_salud}}</p>
+                    <p class="card-text">Zona: {{perro.zona}}</p>
+                    <p class="card-text">Historia: {{perro.historia}}</p>
                     <a href ="{% url 'contacto_adopcion' perro.id %}" class=" btn btn-success" >Contactar</a>
                     <!-- href="{% url 'contacto' perro.id%}" -->
                     </div>

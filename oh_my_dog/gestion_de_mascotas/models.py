@@ -52,9 +52,12 @@ class Perro(models.Model):
         return self.nombre
     
 class Perro_en_adopcion(models.Model):
-    edad=models.IntegerField()
-    descripcion=models.CharField(max_length=140)
-    localidad=models.CharField(max_length=100)
+    titulo = models.CharField(max_length=30)    
+    edad=models.CharField(max_length=30)
+    tamanio = models.CharField(max_length=30)
+    detalles_de_salud=models.CharField(max_length=200)
+    zona=models.CharField(max_length=100)
+    historia = models.CharField(max_length=500)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=8)

@@ -20,12 +20,29 @@ class  Perro_perdido_form(forms.ModelForm):
         # self.created_by = forms.CharField(max_length=8, initial=request.user.dni)
 
 class Perro_en_adopcion_form(forms.ModelForm) :
+    opciones_edad = [
+        ('Cachorro', 'Cachorro'),
+        ('Adulto', 'Adulto'),
+        ('Anciano', 'Anciano'),
+    ]
+    edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad)
+    opciones_size = [
+        ('Chico', 'Chico'),
+        ('Mediano', 'Mediano'),
+        ('Grande', 'Grande'),
+    ]
+    tamanio = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_size, label="Tamaño")
+    titulo = forms.CharField(label="Título")
+    historia = forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
     class Meta:
         model = Perro_en_adopcion
         fields = [
+            "titulo",
             "edad",
-            "descripcion",
-            "localidad",
+            "tamanio",
+            "detalles_de_salud",
+            "zona",
+            "historia",
         ]
 
 class Send_email_form(forms.Form):

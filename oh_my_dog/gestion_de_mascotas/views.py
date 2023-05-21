@@ -33,10 +33,15 @@ def perros_en_adopcion (request) :
     return render(request,"gestion_de_mascotas/perros_en_adopcion.html",{"perros_en_adopcion":perros_en_adopcion})
 
 def anunciar_perro_adopcion(request):
+    perros = list()
+    if request.user.is_authenticated :
+        perros = Perro.objects.filter(dni_owner = request.user.dni)
+        
     perro_en_adopcion = Perro_en_adopcion() 
     form = Perro_en_adopcion_form()
     data = {
-        "form":form
+        "form":form,
+        "perros":perros,
     }
     if request.method ==  'POST':
         form = Perro_en_adopcion_form(request.POST, request.FILES)
@@ -47,6 +52,8 @@ def anunciar_perro_adopcion(request):
             data["mensaje"] = "Se publicó el anuncio correctamente."              
     
     return render(request,"gestion_de_mascotas/anunciar_perro_adopcion.html",data)
+    # else :
+    #     return redirect(to='home')
 
 
 def mis_perros (request) :
