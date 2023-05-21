@@ -112,9 +112,12 @@ def editar_anuncio(request, id) :
             'form': form,
         } 
         if form.is_valid():
+            publicacion.titulo = request.POST['titulo']
             publicacion.edad = request.POST['edad']
-            publicacion.descripcion = request.POST['descripcion']
-            publicacion.localidad = request.POST['localidad']
+            publicacion.tamanio = request.POST['tamanio']
+            publicacion.detalles_de_salud = request.POST['detalles_de_salud']
+            publicacion.zona = request.POST['zona']            
+            publicacion.historia = request.POST['historia']
             publicacion.save()
             return redirect(to = "mis_perros_en_adopcion")
         else:
