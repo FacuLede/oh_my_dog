@@ -14,7 +14,7 @@ def sacar_turno(request):
         form = Turno_form(request.POST)
         if form.is_valid() :    
             turno = form.save(commit=False)
-            turno.dni_creator = request.user.dni
+            turno.created_by = request.user
             turno.save()        
             # form.save()           
             data["mensaje"] = "Se solicitó el turno correctamente."              
@@ -26,7 +26,7 @@ def turnos_pendientes(request):
     return render(request,"gestion_de_turnos/turnos_pendientes.html",{"turnos":turnos_pendientes})
 
 def mis_turnos(request):
-    mis_turnos=Turno.objects.filter(dni_creator = request.user.dni)
+    mis_turnos=Turno.objects.filter(created_by = request.user)
     return render(request,"gestion_de_turnos/mis_turnos.html",{"turnos":mis_turnos})
 
 def eliminar_turno(request, id):

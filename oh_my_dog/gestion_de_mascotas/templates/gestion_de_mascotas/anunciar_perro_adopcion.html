@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% if user.is_authenticated %}
-  {% if perros.count != 0 %}
+  {% if perros.count != 0 or user.is_superuser %}
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">

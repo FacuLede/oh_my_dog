@@ -7,12 +7,12 @@ class Perro_perdido(models.Model):
     """Estos registros los crea un usuario que perdió 
     a su perro"""
     nombre=models.CharField(max_length=30)
-    imagen=models.ImageField(upload_to='perros_perdidos') #sin los parámetros null=True, blank=True no da True la función is_valid() 
+    imagen=models.ImageField(upload_to='perros_perdidos')  
     descripcion=models.CharField(max_length=100)
     telefono=models.CharField(max_length=30)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
-    created_by = models.CharField(max_length=8)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name='perro_perdido'
@@ -29,7 +29,7 @@ class Perro_encontrado(models.Model):
     telefono=models.CharField(max_length=30)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
-    created_by = models.CharField(max_length=8)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name='perro_encontrado'
@@ -60,7 +60,7 @@ class Perro_en_adopcion(models.Model):
     historia = models.CharField(max_length=500)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
-    created_by = models.CharField(max_length=8)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name='perro_en_adopcion'

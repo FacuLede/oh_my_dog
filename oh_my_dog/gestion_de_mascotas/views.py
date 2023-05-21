@@ -21,9 +21,8 @@ def anunciar_perro_perdido(request):
         perro_perdido = Perro_perdido()
         if form.is_valid() :     
             perro_perdido = form.save(commit=False)  # Guardar el formulario sin realizar la inserción en la base de datos
-            perro_perdido.created_by = request.user.dni   
-            perro_perdido.save()  
-            print(perro_perdido.created_by)         
+            perro_perdido.created_by = request.user   
+            perro_perdido.save()      
             data["mensaje"] = "Se publicó el anuncio correctamente."              
     
     return render(request,"gestion_de_mascotas/anunciar_perro_perdido.html",data)
@@ -47,13 +46,11 @@ def anunciar_perro_adopcion(request):
         form = Perro_en_adopcion_form(request.POST, request.FILES)
         if form.is_valid() :   
             perro_en_adopcion = form.save(commit=False)
-            perro_en_adopcion.created_by = request.user.dni         
+            perro_en_adopcion.created_by = request.user         
             perro_en_adopcion.save()
             data["mensaje"] = "Se publicó el anuncio correctamente."              
     
     return render(request,"gestion_de_mascotas/anunciar_perro_adopcion.html",data)
-    # else :
-    #     return redirect(to='home')
 
 
 def mis_perros (request) :
@@ -61,7 +58,7 @@ def mis_perros (request) :
     return render(request,"gestion_de_mascotas/mis_perros.html",{"mis_perros":mis_perros})
 
 def mis_perros_en_adopcion (request) :
-    mis_perros_en_adopcion=Perro_en_adopcion.objects.filter(created_by = request.user.dni)
+    mis_perros_en_adopcion=Perro_en_adopcion.objects.filter(created_by = request.user)
     return render(request,"gestion_de_mascotas/mis_perros_en_adopcion.html",{"mis_perros_en_adopcion":mis_perros_en_adopcion})
 
 
@@ -74,7 +71,7 @@ def eliminar_anuncio_adopcion(request, id):
 def contacto_adopcion(request, id) :
     mensajes = "No pudes enviarte un mensaje a tí mismo."
     publicacion = get_object_or_404(Perro_en_adopcion, id=id)
-    autor = get_object_or_404(User, dni=publicacion.created_by)
+    autor = get_object_or_404(User, dni=publicacion.created_by.dni)
     form = Send_email_form()
     if request.user.email != autor.email :
         if request.method == "POST" :
