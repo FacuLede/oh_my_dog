@@ -1,6 +1,6 @@
 from django import forms 
 from .models import Turno
-from datetime import date
+from datetime import date, timedelta
 
 class  Turno_form(forms.ModelForm):
 
@@ -17,7 +17,7 @@ class  Turno_form(forms.ModelForm):
             "fecha",
         ]
         widgets = {
-            'fecha': forms.DateInput(attrs={'type': 'date','min': date.today().strftime('%Y-%m-%d')})
+            'fecha': forms.DateInput(attrs={'type': 'date','min': (date.today() + timedelta(days=1)).strftime('%Y-%m-%d')})
         }
         exclude = ['estado','dni_creator']
 
