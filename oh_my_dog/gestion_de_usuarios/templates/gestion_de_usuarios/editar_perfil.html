@@ -1,7 +1,7 @@
 {% extends "gestion_de_usuarios/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}    
-
+{% if user.is_authenticated %}
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -29,5 +29,7 @@
       </div>
     </div>
   </section>
-
+{% else %}
+  <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+{% endif %}
 {% endblock %}

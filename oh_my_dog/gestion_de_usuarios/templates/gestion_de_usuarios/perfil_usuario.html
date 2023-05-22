@@ -26,6 +26,7 @@
 </script>
 
 {% endblock %}
+{% if user.is_authenticated %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Mi perfil</h1>                 
 </div>
@@ -51,5 +52,7 @@
 <div style="background-color:#eee;height: 20%;">
                 
 </div>
-
+{% else %}
+<img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+{% endif %}
 {% endblock %}
