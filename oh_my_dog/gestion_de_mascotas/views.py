@@ -73,7 +73,7 @@ def contacto_adopcion(request, id) :
     publicacion = get_object_or_404(Perro_en_adopcion, id=id)
     autor = get_object_or_404(User, dni=publicacion.created_by.dni)
     form = Send_email_form()
-    if request.user.email != autor.email :
+    if request.user.is_authenticated and request.user.email != autor.email :
         if request.method == "POST" :
             form = Send_email_form(data=request.POST)
             if form.is_valid() :
@@ -82,18 +82,25 @@ def contacto_adopcion(request, id) :
                                     request.POST.get('email'),
                                     [autor.email]
                                     )
-                # try:
                 mail.send()
                 return redirect("home")
-                # except:
-                #     pass
-                #     return redirect("home")
         return render(request, "gestion_de_mascotas/contacto_adopcion.html",{'form':form})
     else :
-        # paseadores=Paseador.objects.all()
-        # return render(request,"gestion_de_servicios_prestados/paseadores.html",{"paseadores":paseadores, "mensajes":mensajes})
-        perros_en_adopcion=Perro_en_adopcion.objects.all()
-        return render(request,"gestion_de_mascotas/perros_en_adopcion.html",{"perros_en_adopcion":perros_en_adopcion, "mensajes":mensajes})
+        if not request.user.is_authenticated :
+            if request.method == "POST" :
+                form = Send_email_form(data=request.POST)
+                if form.is_valid() :
+                    mail = EmailMessage("¡Oh my dog!",
+                                        request.POST.get('mensaje')+f" De: {request.POST.get('email')}",
+                                        request.POST.get('email'),
+                                        [request.POST.get('email')]
+                                        )
+                    mail.send()
+                    return redirect("home")
+            return render(request, "gestion_de_mascotas/contacto_adopcion.html",{'form':form})
+        else:
+            perros_en_adopcion=Perro_en_adopcion.objects.all()
+            return render(request,"gestion_de_mascotas/perros_en_adopcion.html",{"perros_en_adopcion":perros_en_adopcion, "mensajes":mensajes})
 
 def editar_anuncio(request, id) :
 
