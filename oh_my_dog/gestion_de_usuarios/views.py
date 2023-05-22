@@ -8,11 +8,23 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from .forms import UserUpdateForm
+from gestion_de_turnos.models import Turno
 
 # Create your views here.
 
+def notificaciones (request) :
+    notifications = 0
+    if request.user.is_authenticated and request.user.is_superuser :
+        notifications = Turno.objects.filter(estado="Pendiente").count()
+        print("notificaciones: ",notifications)        
+    return notifications
+
 def home (request) :
-    return render(request, 'gestion_de_usuarios/home.html')
+    notifications = notificaciones(request)
+    if notificaciones != 0:
+        return render(request, 'gestion_de_usuarios/home.html',{"notificaciones":notifications})        
+    else :
+        return render(request, 'gestion_de_usuarios/home.html')
 
 def iniciar_sesion (request) :
     if request.method == 'POST' :

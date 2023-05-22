@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Franja_horaria
+from .models import Turno
 # Register your models here.
 
-# class Franja_admin(admin.ModelAdmin):
-#     pass
+class Turno_admin(admin.ModelAdmin):
+    pass
 
 
-# admin.site.register(Franja_horaria, Franja_admin)
+admin.site.register(Turno, Turno_admin)

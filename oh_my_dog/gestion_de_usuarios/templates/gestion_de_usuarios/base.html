@@ -37,6 +37,7 @@
             <li class="nav-item">
               <a class="nav-link"  href="{% url 'cerrar_sesion' %}">Cerrar sesion</a>
             </li>
+            {% if not user.is_superuser %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Bienvenido {{user.username}}
@@ -49,7 +50,7 @@
                 <li><a class="dropdown-item" href="#">Ayuda</a></li>
               </ul>
             </li>
-    
+            {% endif %}
           {% else %}
             <li class="nav-item">
               <a class="nav-link"  href="{% url 'iniciar_sesion' %}">Iniciar sesion</a>
@@ -61,8 +62,16 @@
 
           {% if user.is_superuser %}
           <li class="nav-item">
-            <a class="nav-link"  href="{% url 'turnos_pendientes' %}">Solicitudes de turnos</a>
-          </li>   
+          <a type = "button" href="{% url 'turnos_pendientes' %}" class="btn position-relative nav-link" >
+            Solicitud de turnos
+            {% if notificaciones %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 
+              {{notificaciones}}              
+              <span class="visually-hidden"></span>
+            </span>
+            {% endif %}
+          </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link"  href="/admin">Opciones de administrador</a>
           </li>   
