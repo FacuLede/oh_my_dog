@@ -63,7 +63,7 @@
           {% if user.is_superuser %}
           <li class="nav-item">
           <a type = "button" href="{% url 'turnos_pendientes' %}" class="btn position-relative nav-link" >
-            Solicitud de turnos
+            Solicitudes de turnos
             {% if notificaciones %}
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> 
               {{notificaciones}}              
