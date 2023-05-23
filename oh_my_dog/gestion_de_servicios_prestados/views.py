@@ -37,7 +37,7 @@ def contacto(request, id) :
                     mail = EmailMessage("¡Oh my dog!",
                                         request.POST.get('mensaje')+f" De: {request.POST.get('email')}",
                                         request.POST.get('email'),
-                                        [request.POST.get('email')]
+                                        [paseador.email]
                                         )
                     mail.send()
                     return redirect("home")
@@ -71,7 +71,7 @@ def contacto_cuidador(request, id) :
                     mail = EmailMessage(f"¡Oh my dog!",
                                         request.POST.get('mensaje')+f" De: {request.POST.get('email')}",
                                         request.POST.get('email'),
-                                        [request.POST.get('email')]
+                                        [cuidador.email]
                                         )
                     mail.send()
                     return redirect("home")

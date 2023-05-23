@@ -67,5 +67,5 @@ class Perro_en_adopcion(models.Model):
         verbose_name_plural='perros_en_adopcion'
 
     def __str__ (self):
-        return self.descripcion
+        return self.titulo
     

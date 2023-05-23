@@ -93,7 +93,7 @@ def contacto_adopcion(request, id) :
                     mail = EmailMessage("¡Oh my dog!",
                                         request.POST.get('mensaje')+f" De: {request.POST.get('email')}",
                                         request.POST.get('email'),
-                                        [request.POST.get('email')]
+                                        [autor.email]
                                         )
                     mail.send()
                     return redirect("home")
