@@ -15,8 +15,7 @@ from gestion_de_turnos.models import Turno
 def notificaciones (request) :
     notifications = 0
     if request.user.is_authenticated and request.user.is_superuser :
-        notifications = Turno.objects.filter(estado="Pendiente").count()
-        print("notificaciones: ",notifications)        
+        notifications = Turno.objects.filter(estado="Pendiente").count()      
     return notifications
 
 def home (request) :
@@ -91,7 +90,6 @@ def editar_perfil_2(request) :
             'form': form,
         } 
         if form.is_valid():
-            print(request.POST)
             form.save()
             login(request,current_user)
             return redirect(to = "perfil")

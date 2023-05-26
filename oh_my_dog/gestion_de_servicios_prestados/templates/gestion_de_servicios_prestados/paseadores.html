@@ -1,8 +1,53 @@
 {% extends "gestion_de_usuarios/base.html" %}
 {% block content %}
+{% block js %}
+
+<script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
+<script >
+    function delete_paseador(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Esta acción es irreversible.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, eliminar",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "eliminar_paseador/"+id+"/"
+            }
+        }) 
+    }
+
+</script>
+
+{% endblock %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Paseadores</h1>                 
-</div>  
+</div> 
+{% if user.is_superuser %}
+    <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">
+        <a class="btn btn-success" href="{% url 'cargar_paseador' %}" style="color:white;">Añadir paseador</a>
+    </div>
+    <div style="background-color:#eee;height: 5%;text-align: center;">              
+    </div> 
+{% endif %}
+{% if paseadores.count == 0 %}    
+    <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+        <div class="card mb-3 element-home-color" style="width: 60%;">
+            <div class="row g-0">
+                <div class="card">
+                    <div class="card-body">
+                        Aún no hay paseadores.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>            
+{% else %} 
         {% if mensajes %}  
         <div style="background-color: #eee;">        
         <div style="width: 60%;background-color: #eee;margin-left: 20%;border-color: #eee;">
@@ -16,8 +61,7 @@
         </div>
         
         </div>
-        {% endif %}  
-        
+        {% endif %}          
         {% for paseador in paseadores %}        
 
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
@@ -27,8 +71,13 @@
                     <div class="card-body">
                     <h5 class="card-title">Nombre: {{paseador.nombre}}</h5>
                     <p class="card-text">Descripcion: {{paseador.descripcion}}</p>
-                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>                    
+                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>    
+                    {% if user.is_superuser %}
+                        <a class="btn btn-success" href="{% url 'editar_paseador' paseador.id %}" style="color:white;">Editar</a>
+                        <a href ="#" class="btn btn-danger" onclick="delete_paseador({{paseador.id}})" style="color:white;">Eliminar</a> 
+                    {% endif %}                
                     </div>
+                    
                 </div>
                 </div>
             </div>
@@ -38,5 +87,5 @@
 <div style="background-color:#eee;height: 20%;">
                 
 </div>
-
+{% endif %}
 {% endblock %}

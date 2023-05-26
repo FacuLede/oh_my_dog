@@ -1,0 +1,77 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+
+<script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
+<script >
+    function delete_anuncio_encontrado(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Esta acción es irreversible.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, elimina el anuncio",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "eliminar_anuncio_encontrado/"+id+"/"
+            }
+        }) 
+    }
+
+</script>
+
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Perros encontrados</h1>                 
+</div>
+        {% if perros_perdidos.count == 0 %}
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                    <div class="card">
+                        <div class="card-body">
+                            Aún no hay publicaciones.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>            
+        {% else %}
+        {% for perro in perros_encontrados %}
+
+        
+
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{perro.imagen.url}}" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">Zona: {{perro.zona}}</h5>
+                    <p class="card-text">Descripción: {{perro.descripcion}}</p>
+                    <p class="card-text">Tamaño: {{perro.size}}</p>
+                    <p class="card-text">Se encontró el: {{perro.fecha_encontrado}}</p>
+                    {% if user.is_authenticated and perro.created_by == user %}
+                    <a href ="{% url 'editar_anuncio_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
+                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_encontrado({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      
+                    {% else %}
+                    <a href ="{% url 'contacto_encontrado' perro.id %}" class=" btn btn-success" >Contactar</a>
+                    {% endif %}
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+<div style="background-color:#eee;height: 20%;">
+                
+</div>
+
+{% endif %}
+{% endblock %}

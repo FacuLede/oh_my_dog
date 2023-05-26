@@ -1,8 +1,29 @@
 {% extends "gestion_de_usuarios/base.html" %}
 {% block content %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
-    <h1 class="display-1">Perros en adopcion</h1>                 
+    <h1 class="display-1">Perros en adopción</h1>                 
 </div>
+<script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
+<script >
+    function delete_anuncio_adopcion(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Esta acción es irreversible.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, elimina el anuncio",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "eliminar_anuncio_adopcion/"+id+"/"
+            }
+        }) 
+    }
+
+</script>
 
         {% if mensajes %}  
         <div style="background-color: #eee;">        
@@ -18,6 +39,21 @@
 
         </div>
         {% endif %}  
+
+        {% if perros_en_adopcion.count == 0 %}
+            <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+                <div class="card mb-3 element-home-color" style="width: 60%;">
+                    <div class="row g-0">
+                        <div class="card">
+                            <div class="card-body">
+                                Aún no hay publicaciones.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        {% else %}
+
         {% for perro in perros_en_adopcion %}
 
         
@@ -33,7 +69,12 @@
                     <p class="card-text">Detalles de salud: {{perro.detalles_de_salud}}</p>
                     <p class="card-text">Zona: {{perro.zona}}</p>
                     <p class="card-text">Historia: {{perro.historia}}</p>
+                    {% if user.is_authenticated and perro.created_by == user %}
+                    <a href ="{% url 'editar_anuncio' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
+                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_adopcion({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      
+                    {% else %}
                     <a href ="{% url 'contacto_adopcion' perro.id %}" class=" btn btn-success" >Contactar</a>
+                    {% endif %}
                     <!-- href="{% url 'contacto' perro.id%}" -->
                     </div>
                 </div>
@@ -46,5 +87,5 @@
 <div style="background-color:#eee;height: 20%;">
                 
 </div>
-
+{% endif %}
 {% endblock %}

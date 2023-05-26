@@ -1,0 +1,82 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+{% block js %}
+
+<script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
+<script >
+    function delete_perro(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Esta acción es irreversible.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, eliminar",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "eliminar_perro/"+id+"/"
+            }
+        }) 
+    }
+
+</script>
+
+{% endblock %}
+{% if user.is_superuser %}
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Perros</h1>                 
+</div>
+<div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">
+    <a class="btn btn-success" href="{% url 'cargar_perro' %}" style="color:white;">Añadir perro</a>
+</div>
+<div style="background-color:#eee;height: 5%;text-align: center;">              
+</div> 
+{% if perros.count == 0 %}
+<div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+    <div class="card mb-3 element-home-color" style="width: 60%;">
+        <div class="row g-0">
+            <div class="card">
+                <div class="card-body">
+                    Aún no hay ningún perro agregado.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% else %}
+        {% for perro in perros %}
+
+        
+
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
+                    <p class="card-title">Edad: {{perro.edad}}</p>
+                    <p class="card-title">Peso: {{perro.peso}}</p>
+                    <p class="card-title">Tamaño: {{perro.size}}</p>
+                    <p class="card-title">DNI del dueño: {{perro.dni_owner}}</p>
+                    <a class="btn btn-success" href="{% url 'editar_perro' perro.id %}" style="color:white;">Editar</a>
+                    <a href ="#" class="btn btn-danger" onclick="delete_perro({{perro.id}})" style="color:white;">Eliminar</a> 
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+<div style="background-color:#eee;height: 20%;">
+                
+</div>
+{% endif %}
+{% else %}
+    <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+{% endif %}
+{% endblock %}

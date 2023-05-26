@@ -23,7 +23,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Perdí a mi perro</h5>
                       <p class="card-text">Si perdiste a tu perro quizás alguien lo haya visto.</p>
-                      <a href="#" class="card-link btn btn-success">Perros encontrados</a>
+                      <a href="{% url 'perros_encontrados' %}" class="card-link btn btn-success">Perros encontrados</a>
                       <a href="{% url 'anunciar_perro_perdido' %}" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
                     </div>
                   </div>
@@ -33,7 +33,7 @@
                       <h5 class="card-title">Encontré un perro</h5>
                       <p class="card-text">Si encontraste un perro quizás alguien lo esté buscando.</p>
                       <a href="{% url 'perros_perdidos' %}" class="card-link btn btn-success">Perros perdidos</a>
-                      <a href="#" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
+                      <a href="{% url 'anunciar_perro_encontrado' %}" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
                     </div>
                   </div>
                   

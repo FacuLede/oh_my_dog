@@ -2,7 +2,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
-    <h1 class="display-1">Mis perros en adopcion</h1>                 
+    <h1 class="display-1">Mis perros en adopción</h1>                 
 </div>
 
 <script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
@@ -26,7 +26,20 @@
     }
 
 </script>
-        {% for perro in mis_perros_en_adopcion %}
+{% if mis_perros_en_adopcion.count == 0 %}
+    <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+        <div class="card mb-3 element-home-color" style="width: 60%;">
+            <div class="row g-0">
+                <div class="card">
+                    <div class="card-body">
+                        Aún no has hecho ninguna publicación.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>            
+{% else %}
+{% for perro in mis_perros_en_adopcion %}
 
         
 
@@ -42,8 +55,9 @@
                         <p class="card-text">Zona: {{perro.zona}}</p>
                         <p class="card-text">Historia: {{perro.historia}}</p>
                     <!-- <a  class=" btn btn-danger" >Eliminar anuncio</a> -->
-                    <a href ="{% url 'editar_anuncio' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
-                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_adopcion({{perro.id}})" style="color:white;">Eliminar anuncio</a>                    
+                        <a href ="{% url 'editar_anuncio' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
+                        <a href ="{% url 'adopcion_realizada' perro.id %}" class="btn btn-success" style="color:white;">Marcar como adoptado</a>
+                        <a href ="#" class="btn btn-danger" onclick="delete_anuncio_adopcion({{perro.id}})" style="color:white;">Eliminar anuncio</a>                    
                     <!-- href="{% url 'contacto' perro.id%}" -->
                     </div>
                 </div>
@@ -56,6 +70,7 @@
 <div style="background-color:#eee;height: 20%;">
                 
 </div>
+{% endif %}
 {% else %}
 <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
 {% endif %}

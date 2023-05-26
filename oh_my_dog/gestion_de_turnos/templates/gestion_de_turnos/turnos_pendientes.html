@@ -1,32 +1,68 @@
 {% extends "gestion_de_usuarios/base.html" %}
 {% block content %}
+
+<script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
+<script >
+    function rechazar_turno(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Esta acción es irreversible.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, cancelar tuerno",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "rechazar_turno/"+id+"/"
+            }
+        }) 
+    }
+
+</script>
+
 {% if user.is_superuser %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Turnos pendientes</h1>                 
 </div>
-       
-        {% for turno in turnos %}        
-
+        {% if turnos.count == 0 %}
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
             <div class="card mb-3 element-home-color" style="width: 60%;">
                 <div class="row g-0">
-                <div class="col-md-8">
-                    <div class="card-body">
-                    <p class="card-title">Franja horaria: {{turno.franja_horaria}}</p>
-                    <p class="card-text">Motivo: {{turno.motivo}}</p>
-                    <p class="card-text">Fecha: {{turno.fecha}}</p>
-                    <a class=" btn btn-success" href="#">Aprobar turno</a>
-                    <a class=" btn btn-danger" href="#">Rechazar turno</a>
+                    <div class="card">
+                        <div class="card-body">
+                            Aún no hay turnos pendientes.
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>            
+        {% else %}
+            {% for turno in turnos %}        
+
+            <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+                <div class="card mb-3 element-home-color" style="width: 60%;">
+                    <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                        <p class="card-title">Franja horaria: {{turno.franja_horaria}}</p>
+                        <p class="card-text">Motivo: {{turno.motivo}}</p>
+                        <p class="card-text">Fecha: {{turno.fecha}}</p>
+                        <a class=" btn btn-success" href="{% url 'aprobar_turno' turno.id %}">Aprobar turno</a>
+                        <a href ="#" class="btn btn-danger" onclick="rechazar_turno({{turno.id}})" style="color:white;">Rechazar turno</a>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {% endfor %}
+            {% endfor %}
 <div style="background-color:#eee;height: 20%;">
                 
 </div>
+{% endif %}
 {% else %}
 <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
 {% endif %}

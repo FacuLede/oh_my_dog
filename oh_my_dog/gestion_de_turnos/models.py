@@ -21,7 +21,7 @@ class Turno(models.Model) :
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (('franja_horaria','fecha'))
+        # unique_together = (('franja_horaria','fecha'))
         verbose_name='turno'
         verbose_name_plural='turnos'
     def __str__ (self):

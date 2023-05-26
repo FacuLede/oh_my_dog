@@ -73,6 +73,12 @@
           </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link"  href="{% url 'turnos_aprobados' %}">Turnos aprobados</a>
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'perros' %}">Perros</a>
+          </li>  
+          <li class="nav-item">
             <a class="nav-link"  href="/admin">Opciones de administrador</a>
           </li>   
           {% endif %}
@@ -82,7 +88,6 @@
       </div>
     </div>
 </nav>
-
 
 
     {% block content %}
