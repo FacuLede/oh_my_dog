@@ -45,7 +45,7 @@ class Perro_encontrado(models.Model):
     
 class Perro(models.Model):
     nombre = models.CharField(verbose_name="Nombre",max_length=30)
-    edad = models.IntegerField(verbose_name="Edad")
+    edad = models.CharField(verbose_name="Edad", max_length=100)
     peso = models.FloatField(verbose_name="Peso")
     size = models.CharField(verbose_name="Tamaño", max_length=50)
     dni_owner = models.CharField(max_length=8, verbose_name="Dni del dueño")
