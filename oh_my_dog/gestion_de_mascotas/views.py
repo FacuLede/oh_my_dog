@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 def perros_perdidos (request) :
@@ -57,7 +58,8 @@ def anunciar_perro_encontrado(request):
     return render(request,"gestion_de_mascotas/anunciar_perro_encontrado.html",data)
 
 def perros_en_adopcion (request) :
-    perros_en_adopcion=Perro_en_adopcion.objects.all()
+    # perros_en_adopcion=Perro_en_adopcion.objects.all()
+    perros_en_adopcion = Perro_en_adopcion.objects.filter(adoptado = False)
     return render(request,"gestion_de_mascotas/perros_en_adopcion.html",{"perros_en_adopcion":perros_en_adopcion})
 
 def anunciar_perro_adopcion(request):
@@ -81,7 +83,6 @@ def anunciar_perro_adopcion(request):
     
     return render(request,"gestion_de_mascotas/anunciar_perro_adopcion.html",data)
 
-
 def mis_perros (request) :
     mis_perros=Perro.objects.filter(dni_owner = request.user.dni)
     return render(request,"gestion_de_mascotas/mis_perros.html",{"mis_perros":mis_perros})
@@ -94,7 +95,8 @@ def eliminar_anuncio_adopcion(request, id):
     if request.user.is_authenticated:
         anuncio = Perro_en_adopcion.objects.get(id=id)
         anuncio.delete()
-        return redirect(to = "mis_perros_en_adopcion")
+        # return redirect(to = "mis_perros_en_adopcion")
+        return redirect(to = request.META.get('HTTP_REFERER'))
     
 def contacto_adopcion(request, id) :
     mensajes = "No puedes enviarte un mensaje a tí mismo."
@@ -367,4 +369,6 @@ def adopcion_realizada(request, id):
         perro = Perro_en_adopcion.objects.get(id=id)
         perro.adoptado = True
         perro.save()
-        return redirect(to = "mis_perros_en_adopcion")
+        # return HttpResponseRedirect(request.get_full_path())
+        # print()
+        return redirect(to = request.META.get('HTTP_REFERER'))  #request.META.get('HTTP_REFERER') devuelve la anterior vista ejecutada
