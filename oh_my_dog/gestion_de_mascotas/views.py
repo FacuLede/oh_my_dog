@@ -136,7 +136,7 @@ def contacto_adopcion(request, id) :
             perros_en_adopcion=Perro_en_adopcion.objects.all()
             return render(request,"gestion_de_mascotas/perros_en_adopcion.html",{"perros_en_adopcion":perros_en_adopcion, "mensajes":mensajes})
 
-def editar_anuncio(request, id) :    
+def editar_anuncio(request, id, type) :    
     if request.user.is_authenticated:
         publicacion = get_object_or_404(Perro_en_adopcion, id=id) #obtiene la publicación que se quiere editar
         # current_user = request.user
@@ -152,9 +152,13 @@ def editar_anuncio(request, id) :
             publicacion.zona = request.POST['zona']            
             publicacion.historia = request.POST['historia']
             publicacion.save()
-            return redirect(to = "mis_perros_en_adopcion")
+            if type == 'all' :
+                return redirect(to = "perros_en_adopcion")
+            else :
+                return redirect(to = "mis_perros_en_adopcion")
         else:
             return render(request,"gestion_de_mascotas/editar_anuncio.html",data)
+
 
 def cargar_perro(request):
     form = Perro_form()

@@ -70,7 +70,7 @@
                     <p class="card-text">Zona: {{perro.zona}}</p>
                     <p class="card-text">Historia: {{perro.historia}}</p>
                     {% if user.is_authenticated and perro.created_by == user %}
-                    <a href ="{% url 'editar_anuncio' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
+                    <a href ="{% url 'editar_anuncio' perro.id 'all' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                     <a href ="{% url 'adopcion_realizada' perro.id %}" class="btn btn-success" style="color:white;">Marcar como adoptado</a>
                     <a href ="#" class="btn btn-danger" onclick="delete_anuncio_adopcion({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      
                     {% else %}
