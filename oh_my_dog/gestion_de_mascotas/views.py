@@ -229,8 +229,6 @@ def editar_perro(request, id) :
         } 
         if form.is_valid():
             perro.nombre = request.POST['nombre']
-            perro.edad = request.POST['edad']
-            perro.peso = request.POST['peso']
             perro.size = request.POST['size']
             perro.dni_owner = request.POST['dni_owner']
             perro.save()
