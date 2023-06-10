@@ -26,6 +26,7 @@ class  Perro_perdido_form(forms.ModelForm):
         ('Medio día', 'Medio día'),
         ('Tarde', 'Tarde'),
         ('Noche', 'Noche'),
+        ('Madrugada', 'Madrugada'),
     ]
     franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Se me perdió en:")
     class Meta:
@@ -52,6 +53,7 @@ class  Perro_encontrado_form(forms.ModelForm):
         ('Medio día', 'Medio día'),
         ('Tarde', 'Tarde'),
         ('Noche', 'Noche'),
+        ('Madrugada', 'Madrugada'),
     ]    
     opciones_sexo = [
         ('Macho ', 'Macho'),
@@ -78,6 +80,7 @@ class  Perro_encontrado_form(forms.ModelForm):
             "zona",
             "edad",
             "sexo",
+            "raza",
             "franja_horaria",
             "imagen",
             "descripcion",
@@ -167,6 +170,7 @@ class  Perro_perdido_update_form(forms.ModelForm):
         ('Medio día', 'Medio día'),
         ('Tarde', 'Tarde'),
         ('Noche', 'Noche'),
+        ('Madrugada', 'Madrugada'),
     ]    
     opciones_sexo = [
         ('Macho ', 'Macho'),
@@ -200,6 +204,7 @@ class  Perro_encontrado_update_form(forms.ModelForm):
         ('Medio día', 'Medio día'),
         ('Tarde', 'Tarde'),
         ('Noche', 'Noche'),
+        ('Madrugada', 'Madrugada'),
     ]    
     opciones_sexo = [
         ('Macho ', 'Macho'),

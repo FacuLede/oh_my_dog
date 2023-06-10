@@ -57,7 +57,7 @@
                     <p class="card-text"></p>
                     <p class="card-text">Se encontró el: {{perro.fecha_encontrado}} ({{perro.franja_horaria}})</p>
                     {% if user.is_authenticated and perro.created_by == user %}
-                    <a href ="{% url 'editar_anuncio_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
+                    <a href ="{% url 'editar_anuncio_encontrado' perro.id 'all' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                     <a href ="#" class="btn btn-danger" onclick="delete_anuncio_encontrado({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      
                     {% else %}
                     <a href ="{% url 'contacto_encontrado' perro.id %}" class=" btn btn-success" >Contactar</a>
