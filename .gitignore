@@ -1,0 +1,8 @@
+# Ignorar archivos SQLite3
+*.sqlite3
+
+# Ignorar archivos de imagen
+*.png
+*.jpg
+*.jpeg
+*.gif

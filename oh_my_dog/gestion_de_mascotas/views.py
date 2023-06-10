@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado
-from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form
+from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form, Perro_form_update
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -10,22 +10,26 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 def perros_perdidos (request) :
-    perros_perdidos=Perro_perdido.objects.all()
+    perros_perdidos=Perro_perdido.objects.filter(encontrado = False)
     return render(request,"gestion_de_mascotas/perros_perdidos.html",{"perros_perdidos":perros_perdidos})
 
 def perros_encontrados (request) :
     perros_encontrados=Perro_encontrado.objects.all()
     return render(request,"gestion_de_mascotas/perros_encontrados.html",{"perros_encontrados":perros_encontrados})
 
-def anunciar_perro_perdido(request):
+def anunciar_perro_perdido(request):  
     perros = list()
-    if request.user.is_authenticated :
+    if (request.user.is_authenticated) :  
         perros = Perro.objects.filter(dni_owner = request.user.dni)
+
     form = Perro_perdido_form()
+    ok = True #Esta variable se le envía en el data al docuemnto html para dependiendo de su valor mostrar o uno un botón
     data = {
         "form":form,
         "perros":perros,
+        "ok":ok,
     }
+
     if request.method ==  'POST':
         form = Perro_perdido_form(request.POST, request.FILES)
         perro_perdido = Perro_perdido()
@@ -36,6 +40,48 @@ def anunciar_perro_perdido(request):
             data["mensaje"] = "Se publicó el anuncio correctamente."              
     
     return render(request,"gestion_de_mascotas/anunciar_perro_perdido.html",data)
+
+def id_valida(request, id):
+    perros = Perro.objects.filter(dni_owner = request.user.dni)
+    for perro in perros :
+        if int(perro.id) == int(id) :
+            return True
+    return False
+
+def cargar_datos_perro(request, id):
+    perros = Perro.objects.filter(dni_owner = request.user.dni)
+
+    if id_valida(request, id ):  
+        ok = False
+        perro = get_object_or_404(Perro, id=int(id))        
+        datos_iniciales = {
+            'nombre': perro.nombre,
+            'size':perro.size,
+            'sexo':perro.sexo,
+            'raza':perro.raza,
+        }
+        form = Perro_perdido_form(initial=datos_iniciales)    
+        data = {
+            "form":form,
+            "perros":perros,
+            "ok":ok,
+        }
+    else:
+        form = Perro_perdido_form()    
+        data = {
+            "form":form,
+            "perros":perros,
+        }
+    if request.method ==  'POST':
+        form = Perro_perdido_form(request.POST, request.FILES)
+        perro_perdido = Perro_perdido()
+        if form.is_valid() :     
+            perro_perdido = form.save(commit=False)  # Guardar el formulario sin realizar la inserción en la base de datos
+            perro_perdido.created_by = request.user   
+            perro_perdido.save()      
+            data["mensaje"] = "Se publicó el anuncio correctamente."      
+    
+    return render(request,"gestion_de_mascotas/anunciar_perro_perdido.html",data)    
 
 def anunciar_perro_encontrado(request):
     perros = list()
@@ -159,7 +205,6 @@ def editar_anuncio(request, id, type) :
         else:
             return render(request,"gestion_de_mascotas/editar_anuncio.html",data)
 
-
 def cargar_perro(request):
     form = Perro_form()
     data = {
@@ -177,8 +222,8 @@ def cargar_perro(request):
 
 def editar_perro(request, id) :    
     if request.user.is_authenticated and request.user.is_superuser :
-        perro = get_object_or_404(Perro, id=id) 
-        form = Perro_form(request.POST or None, instance = perro)
+        perro = get_object_or_404(Perro, id=id)
+        form = Perro_form_update(request.POST or None, instance = perro)
         data = {
             'form': form,
         } 
@@ -327,7 +372,7 @@ def contacto_perdido(request, id) :
             perros_perdidos=Perro_perdido.objects.all()
             return render(request,"gestion_de_mascotas/perros_perdidos.html",{"perros_perdidos":perros_perdidos, "mensajes":mensajes})
         
-def editar_anuncio_perdido(request, id):
+def editar_anuncio_perdido(request, id, type):
     publicacion = get_object_or_404(Perro_perdido, pk=id)
     
     if request.method == 'POST':
@@ -340,14 +385,21 @@ def editar_anuncio_perdido(request, id):
             publicacion.descripcion = request.POST['descripcion']
             publicacion.nombre = request.POST['nombre']
             publicacion.edad = request.POST['edad']
+            publicacion.sexo = request.POST['sexo']
+            publicacion.raza = request.POST['raza']
+            publicacion.franja_horaria = request.POST['franja_horaria']
             publicacion.save()
-            return redirect('perros_perdidos')
+            # return redirect('perros_perdidos')
+            if type == 'all' :
+                return redirect(to = "perros_perdidos")
+            else :
+                return redirect(to = "mis_perros_perdidos")
     else:
         form = Perro_perdido_update_form(instance=publicacion)
 
     return render(request, 'gestion_de_mascotas/editar_anuncio_perdido.html', {'form': form})
 
-def editar_anuncio_encontrado(request, id):
+def editar_anuncio_encontrado(request, id, type):
     publicacion = get_object_or_404(Perro_encontrado, pk=id)
     
     if request.method == 'POST':
@@ -362,7 +414,10 @@ def editar_anuncio_encontrado(request, id):
             publicacion.zona = request.POST['zona']            
             publicacion.descripcion = request.POST['descripcion']
             publicacion.save()
-            return redirect('perros_encontrados')
+            if type == 'all' :
+                return redirect(to = "perros_encontrados")
+            else :
+                return redirect(to = "mis_perros_encontrados")
     else:
         form = Perro_encontrado_update_form(instance=publicacion)
 
@@ -373,6 +428,26 @@ def adopcion_realizada(request, id):
         perro = Perro_en_adopcion.objects.get(id=id)
         perro.adoptado = True
         perro.save()
-        # return HttpResponseRedirect(request.get_full_path())
-        # print()
         return redirect(to = request.META.get('HTTP_REFERER'))  #request.META.get('HTTP_REFERER') devuelve la anterior vista ejecutada
+
+def perro_encontrado(request, id):
+    if request.user.is_authenticated:
+        perro = Perro_perdido.objects.get(id=id)
+        perro.encontrado = True
+        perro.save()
+        return redirect(to = request.META.get('HTTP_REFERER'))  #request.META.get('HTTP_REFERER') devuelve la anterior vista ejecutada
+    
+def owner_encontrado(request, id):
+    if request.user.is_authenticated:
+        perro = Perro_encontrado.objects.get(id=id)
+        perro.recuperado = True
+        perro.save()
+        return redirect(to = request.META.get('HTTP_REFERER'))  #request.META.get('HTTP_REFERER') devuelve la anterior vista ejecutada
+
+def mis_perros_perdidos(request):
+    mis_perros_perdidos = Perro_perdido.objects.filter(created_by = request.user)
+    return render(request,"gestion_de_mascotas/mis_perros_perdidos.html",{'mis_perros_perdidos':mis_perros_perdidos})
+
+def mis_perros_encontrados(request):
+    mis_perros_encontrados = Perro_encontrado.objects.filter(created_by = request.user)
+    return render(request,"gestion_de_mascotas/mis_perros_encontrados.html",{'mis_perros_encontrados':mis_perros_encontrados})

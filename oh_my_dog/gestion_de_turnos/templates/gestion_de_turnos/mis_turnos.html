@@ -51,10 +51,12 @@
                     <p class="card-text">Motivo: {{turno.motivo}}</p>
                     <p class="card-text">Fecha: {{turno.fecha}}</p>
                     {% if turno.estado == 'Aprobado' %}  
-                    <p class="card-text" style="color: rgb(17, 191, 84);">Estado: {{turno.estado}}</p>
+                    <h5>Estado del turno : <span class="badge bg-success">{{turno.estado}}</span></h5>
+                    <!-- <p class="card-text" style="color: rgb(17, 191, 84);">Estado: {{turno.estado}}</p> -->
                     {% endif %}
-                    {% if turno.estado != 'Aprobado' %}                    
-                    <p class="card-text" style="color: orange;">Estado: {{turno.estado}}</p>
+                    {% if turno.estado != 'Aprobado' %}   
+                    <h5>Estado del turno : <span class="badge bg-warning">{{turno.estado}}</span></h5>                 
+                    <!-- <p class="card-text" style="color: orange;">Estado: {{turno.estado}}</p> -->
                     {% endif %}                    
                     <a href ="#" class="btn btn-danger" onclick="delete_turno({{turno.id}})" style="color:white;">Cancelar turno</a>                    
                     </div>

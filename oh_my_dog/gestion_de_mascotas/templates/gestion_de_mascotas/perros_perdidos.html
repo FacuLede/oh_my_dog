@@ -52,14 +52,15 @@
                 <div class="col-md-8">
                     <div class="card-body">
                     <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
-                    <p class="card-text">Edad: {{perro.edad}} años - Tamaño: {{perro.size}} - Zona: {{perro.zona}}</p>
+                    <p class="card-text">Etapa de vida: {{perro.edad}} - Tamaño: {{perro.size}} - Zona: {{perro.zona}} - Sexo: {{perro.sexo}} - Raza: {{perro.raza}}</p>
                     <!-- <p class="card-text">Tamaño: {{perro.size}}</p> -->
                     <p class="card-text">Descripción: {{perro.descripcion}}</p>
                     <!-- <p class="card-text">Zona: {{perro.zona}}</p> -->
                     <p class="card-text">Se perdió el: {{perro.fecha_perdido}}</p>
                     {% if user.is_authenticated and perro.created_by == user %}
-                    <a href ="{% url 'editar_anuncio_perdido' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
-                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_perdido({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      
+                    <a href ="{% url 'editar_anuncio_perdido' perro.id 'all' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
+                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_perdido({{perro.id}})" style="color:white;">Eliminar anuncio</a>   
+                    <a href ="{% url 'perro_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Marcar como encontrado</a>                     
                     {% else %}
                     <a href ="{% url 'contacto_perdido' perro.id %}" class=" btn btn-success" >Contactar</a>
                     {% endif %}

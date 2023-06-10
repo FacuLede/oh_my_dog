@@ -51,10 +51,11 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title">Zona: {{perro.zona}}</h5>
+                    <h5 class="card-title">Titulo: {{perro.titulo}}</h5>
+                    <p class="card-text">Zona: {{perro.zona}} - Sexo: {{perro.sexo}} - Raza: {{perro.raza}} - Etapa de vida: {{perro.edad}} - Tamaño: {{perro.size}}</p>
                     <p class="card-text">Descripción: {{perro.descripcion}}</p>
-                    <p class="card-text">Tamaño: {{perro.size}}</p>
-                    <p class="card-text">Se encontró el: {{perro.fecha_encontrado}}</p>
+                    <p class="card-text"></p>
+                    <p class="card-text">Se encontró el: {{perro.fecha_encontrado}} ({{perro.franja_horaria}})</p>
                     {% if user.is_authenticated and perro.created_by == user %}
                     <a href ="{% url 'editar_anuncio_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                     <a href ="#" class="btn btn-danger" onclick="delete_anuncio_encontrado({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      

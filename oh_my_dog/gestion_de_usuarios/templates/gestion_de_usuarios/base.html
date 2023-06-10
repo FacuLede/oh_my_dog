@@ -47,6 +47,8 @@
                 <li><a class="dropdown-item" href="{% url 'mis_turnos' %}">Mis turnos</a></li>
                 <li><a class="dropdown-item" href="{% url 'mis_perros' %}">Mis perros</a></li>
                 <li><a class="dropdown-item" href="{% url 'mis_perros_en_adopcion' %}">Mis perros en adopción</a></li>
+                <li><a class="dropdown-item" href="{% url 'mis_perros_perdidos' %}">Mis perros perdidos</a></li>
+                <li><a class="dropdown-item" href="{% url 'mis_perros_encontrados' %}">Mis perros encontrados</a></li>
                 <li><a class="dropdown-item" href="#">Ayuda</a></li>
               </ul>
             </li>
@@ -78,9 +80,9 @@
           <li class="nav-item">
             <a class="nav-link"  href="{% url 'perros' %}">Perros</a>
           </li>  
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link"  href="/admin">Opciones de administrador</a>
-          </li>   
+          </li>    -->
           {% endif %}
                  
         </ul>        

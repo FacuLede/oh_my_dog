@@ -17,6 +17,37 @@
                   <h1 class="display-2" style="margin-bottom: 10%;color: green;">Anunciar perro perdido</h1>    
                         <form class="form-label"action="" method="post" enctype= "multipart/form-data">
                             {% csrf_token %}
+                            
+                            {% if ok %}
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-md-auto">
+                                  <label for="perros" class="mb-3"><h3><span class="badge bg-success">Mis perros:</span></h3></label>
+                                </div>
+                                <div class="col-md-auto">
+                                  <select id="perros" class="form-select" onchange="seleccionarPerro(this.value)">
+                                    <option value="">Ninguno</option>
+                                    {% for perro in perros %}
+                                      <option value="{{ perro.id }}">{{ perro.nombre }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <script>
+                            function seleccionarPerro(perroId) {
+                              console.log("Perro seleccionado - ID: " + perroId);
+                              window.location.href = "cargar_datos_perro/"+perroId+"/"
+                            }
+                            
+
+                            </script>
+                            {% else %}      
+                            <a href="{% url 'anunciar_perro_perdido' %}" class="card-link btn btn-success">Cambiar perro</a>                            
+                            {% endif %} 
+                            
+                           
                             {{ form | crispy }} 
                             <button type="submit" class=" btn btn-success" style="margin-top: 10%;">Publicar anuncio</button>
                             {% if mensaje %}  
@@ -24,9 +55,9 @@
                                 <p class="alert alert-success" role="alert" > 
                                   {{ mensaje }}
                                 </p>    
-                              </div>        
-                            {% endif %}  
-                        </form>
+                              </div>                             
+                            {% endif %}                              
+                        </form>                        
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">  
                   <img src="https://buscandoatobi.com/static/assets/buscandoatobi_isotipo.jpg"

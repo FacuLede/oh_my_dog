@@ -58,10 +58,12 @@
                 <div class="col-md-8">
                     <div class="card-body">
                     <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
-                    <p class="card-title">Edad: {{perro.edad}}</p>
                     <p class="card-title">Peso: {{perro.peso}}</p>
                     <p class="card-title">Tamaño: {{perro.size}}</p>
                     <p class="card-title">DNI del dueño: {{perro.dni_owner}}</p>
+                    <p class="card-title">Sexo: {{perro.sexo}}</p>
+                    <p class="card-title">Nacimiento: {{perro.nacimiento}}</p>
+                    <p class="card-title">Raza: {{perro.raza}}</p>
                     <a class="btn btn-success" href="{% url 'editar_perro' perro.id %}" style="color:white;">Editar</a>
                     <a href ="#" class="btn btn-danger" onclick="delete_perro({{perro.id}})" style="color:white;">Eliminar</a> 
                     </div>

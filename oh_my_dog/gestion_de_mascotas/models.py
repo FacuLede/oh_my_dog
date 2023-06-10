@@ -7,12 +7,16 @@ class Perro_perdido(models.Model):
     """Estos registros los crea un usuario que perdió 
     a su perro"""
     nombre=models.CharField(max_length=30)
-    edad =  models.IntegerField()
+    edad =  models.CharField(max_length=50) 
     size = models.CharField(max_length=50)
     descripcion=models.CharField(max_length=100)
     imagen=models.ImageField(upload_to='perros_perdidos')      
     fecha_perdido = models.DateField()    
     zona = models.CharField(max_length=100)    
+    franja_horaria = models.CharField(max_length=50)
+    sexo = models.CharField(max_length=30)
+    raza = models.CharField(max_length=30, null=True)
+    encontrado = models.BooleanField(default=False)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -27,6 +31,13 @@ class Perro_perdido(models.Model):
 class Perro_encontrado(models.Model):
     """Estos registros los crea un usuario que encontró
     un perro perdido quien debe tener perros a su nombre"""
+    titulo = models.CharField(max_length=30)
+    sexo = models.CharField(max_length=30)
+    edad = models.CharField(max_length=30)
+    raza = models.CharField(max_length=30)
+    franja_horaria = models.CharField(max_length=30)
+    recuperado = models.BooleanField(default=False)
+    #nuevos
     size = models.CharField(max_length=50)
     zona = models.CharField(max_length=100)
     imagen=models.ImageField(upload_to='perros_encontrados')
@@ -45,10 +56,12 @@ class Perro_encontrado(models.Model):
     
 class Perro(models.Model):
     nombre = models.CharField(verbose_name="Nombre",max_length=30)
-    edad = models.CharField(verbose_name="Edad", max_length=100)
     peso = models.FloatField(verbose_name="Peso")
     size = models.CharField(verbose_name="Tamaño", max_length=50)
     dni_owner = models.CharField(max_length=8, verbose_name="Dni del dueño")
+    raza = models.CharField(max_length=50,null=True, default=None)
+    sexo = models.CharField(max_length=30,null=True, default=None)
+    nacimiento = models.DateField()
     # owner = models.OneToOneField(User)
 
     class Meta:
@@ -64,6 +77,7 @@ class Perro_en_adopcion(models.Model):
     edad=models.CharField(max_length=30)
     tamanio = models.CharField(max_length=30)
     detalles_de_salud=models.CharField(max_length=200)
+    sexo=models.CharField(max_length=30)
     zona=models.CharField(max_length=100)
     historia = models.CharField(max_length=500)
     adoptado = models.BooleanField(default=False)
