@@ -12,7 +12,7 @@ class Send_email_logged_form(forms.Form):
 
 class Paseador_form(forms.ModelForm):
     nombre = forms.CharField(max_length=30)
-    descripcion = forms.CharField(max_length=300)
+    descripcion = forms.CharField(max_length=300,widget=forms.Textarea(attrs={"rows":"5"}))
     email = forms.EmailField(max_length=50)
     class Meta:
         model = Paseador
@@ -24,7 +24,7 @@ class Paseador_form(forms.ModelForm):
 
 class Cuidador_form(forms.ModelForm):
     nombre = forms.CharField(max_length=30)
-    descripcion = forms.CharField(max_length=300)
+    descripcion = forms.CharField(max_length=300,widget=forms.Textarea(attrs={"rows":"5"}))
     email = forms.EmailField(max_length=50)
     class Meta:
         model = Cuidador
