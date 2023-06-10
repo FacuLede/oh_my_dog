@@ -14,7 +14,7 @@ def perros_perdidos (request) :
     return render(request,"gestion_de_mascotas/perros_perdidos.html",{"perros_perdidos":perros_perdidos})
 
 def perros_encontrados (request) :
-    perros_encontrados=Perro_encontrado.objects.all()
+    perros_encontrados=Perro_encontrado.objects.filter(recuperado = False)
     return render(request,"gestion_de_mascotas/perros_encontrados.html",{"perros_encontrados":perros_encontrados})
 
 def anunciar_perro_perdido(request):  
@@ -250,13 +250,13 @@ def eliminar_anuncio_encontrado(request, id) :
     if request.user.is_authenticated :
         perro = Perro_encontrado.objects.get(id=id)
         perro.delete()
-        return redirect(to = "perros_encontrados") 
+        return redirect(to = request.META.get('HTTP_REFERER'))
     
 def eliminar_anuncio_perdido(request, id) :
     if request.user.is_authenticated :
         perro = Perro_perdido.objects.get(id=id)
         perro.delete()
-        return redirect(to = "perros_perdidos") 
+        return redirect(to = request.META.get('HTTP_REFERER'))            
 
 def editar_anuncio_encontrado_2(request, id) :    
     if request.user.is_authenticated:
@@ -444,6 +444,7 @@ def owner_encontrado(request, id):
 
 def mis_perros_perdidos(request):
     mis_perros_perdidos = Perro_perdido.objects.filter(created_by = request.user)
+    mis_perros_perdidos = mis_perros_perdidos.reverse()
     return render(request,"gestion_de_mascotas/mis_perros_perdidos.html",{'mis_perros_perdidos':mis_perros_perdidos})
 
 def mis_perros_encontrados(request):

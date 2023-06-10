@@ -51,7 +51,7 @@
                         <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
                         <p class="card-text">Etapa de vida: {{perro.edad}} - Tamaño: {{perro.size}} - Zona: {{perro.zona}} - Sexo: {{perro.sexo}} - Raza: {{perro.raza}}</p>
                         <p class="card-text">Descripción: {{perro.descripcion}}</p>
-                        <p class="card-text">Se perdió el: {{perro.fecha_perdido}}</p>
+                        <p class="card-text">Se perdió el: {{perro.fecha_perdido}} ({{perro.franja_horaria}})</p>
                         {% if not perro.encontrado %}
                         <a href ="{% url 'editar_anuncio_perdido' perro.id 'mine' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                         <a href ="#" class="btn btn-danger" onclick="delete_anuncio_perdido({{perro.id}})" style="color:white;">Eliminar anuncio</a>
