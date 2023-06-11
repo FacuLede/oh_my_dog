@@ -29,14 +29,15 @@ class  Perro_perdido_form(forms.ModelForm):
         ('Madrugada', 'Madrugada'),
     ]
     franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Se me perdió en:")
+    descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     class Meta:
         model = Perro_perdido
         fields = [
-            "nombre",
-            "edad",
+            "nombre",            
             "size",
             "sexo",
             "raza",
+            "edad",
             "franja_horaria",
             "zona",            
             "descripcion",     
@@ -69,22 +70,23 @@ class  Perro_encontrado_form(forms.ModelForm):
         ('Mediano', 'Mediano'),
         ('Grande', 'Grande'),
     ]
-    franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Se me perdió en:")
+    franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Lo encontré en:")
     sexo = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_sexo, label="Sexo")
-    edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad, label="Etapa de")    
+    edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad, label="Etapa de vida")    
     size = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_size, label="Tamaño")
+    descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     class Meta:
         model = Perro_encontrado
         fields = [
-            "titulo",
-            "zona",
+            "titulo",            
             "edad",
+            "size",
             "sexo",
-            "raza",
-            "franja_horaria",
+            "raza",            
             "imagen",
             "descripcion",
-            "size",
+            "franja_horaria",            
+            "zona",            
             "fecha_encontrado",
         ]
         widgets = {
@@ -184,6 +186,7 @@ class  Perro_perdido_update_form(forms.ModelForm):
     franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Se me perdió en:")
     sexo = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_sexo, label="Sexo")
     edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad, label="Etapa de")
+    descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     class Meta:
         model = Perro_perdido
         fields = [
@@ -220,23 +223,24 @@ class  Perro_encontrado_update_form(forms.ModelForm):
         ('Mediano', 'Mediano'),
         ('Grande', 'Grande'),
     ]
-    franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Se me perdió en:")
+    franja_horaria = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_franja_horaria, label="Lo encontré en:")
     sexo = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_sexo, label="Sexo")
     edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad, label="Etapa de")  
     size = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_size, label="Tamaño")
+    descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     nueva_imagen = forms.ImageField(required=False)
     class Meta:
         model = Perro_encontrado
         fields = [
             "titulo",
-            "franja_horaria",
-            "sexo",
             "edad",
-            "raza",
-            "zona",
-            "descripcion",
             "size",
+            "sexo",            
+            "raza",
             'nueva_imagen',
+            "descripcion",
+            "franja_horaria",
+            "zona",           
         ]
         # widgets = {
         #     'fecha_encontrado': forms.DateInput(attrs={'type': 'date', 'max': date.today().strftime('%Y-%m-%d')})

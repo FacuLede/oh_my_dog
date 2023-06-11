@@ -26,7 +26,7 @@
 <div style="background-color:#eee;height: 20%;text-align: center;">
     <h1 class="display-1">Perros encontrados</h1>                 
 </div>
-        {% if perros_perdidos.count == 0 %}
+        {% if perros_encontrados.count == 0 %}
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
             <div class="card mb-3 element-home-color" style="width: 60%;">
                 <div class="row g-0">
@@ -56,11 +56,16 @@
                     <p class="card-text">Descripción: {{perro.descripcion}}</p>
                     <p class="card-text"></p>
                     <p class="card-text">Se encontró el: {{perro.fecha_encontrado}} ({{perro.franja_horaria}})</p>
-                    {% if user.is_authenticated and perro.created_by == user %}
+                    {% if user.is_authenticated and perro.created_by == user and not perro.recuperado %}
                     <a href ="{% url 'editar_anuncio_encontrado' perro.id 'all' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
-                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_encontrado({{perro.id}})" style="color:white;">Eliminar anuncio</a>                      
+                    <a href ="#" class="btn btn-danger" onclick="delete_anuncio_encontrado({{perro.id}})" style="color:white;">Eliminar anuncio</a>                     
+                    <a href ="{% url 'owner_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Marcar como recuperado</a>    
+                    {% else %}
+                    {% if perro.recuperado %}                    
+                        <h5><span class="badge bg-secondary">Reunido con su dueño</span></h5>
                     {% else %}
                     <a href ="{% url 'contacto_encontrado' perro.id %}" class=" btn btn-success" >Contactar</a>
+                    {% endif %}
                     {% endif %}
                     </div>
                 </div>

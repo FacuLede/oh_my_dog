@@ -46,6 +46,9 @@
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
             <div class="card mb-3 element-home-color" style="width: 60%;">
                 <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{perro.imagen.url}}" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+                    </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">Titulo: {{perro.titulo}}</h5>
@@ -56,6 +59,8 @@
                         <a href ="{% url 'editar_anuncio_encontrado' perro.id 'mine' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                         <a href ="#" class="btn btn-danger" onclick="delete_anuncio_encontrado({{perro.id}})" style="color:white;">Eliminar anuncio</a>
                         <a href ="{% url 'owner_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Marcar como recuperado</a>   
+                        {% else %}
+                        <h5><span class="badge bg-success">Se reunió con su dueño</span></h5>
                         {% endif %}      
                     </div>
                 </div>

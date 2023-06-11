@@ -57,12 +57,16 @@
                     <p class="card-text">Descripción: {{perro.descripcion}}</p>
                     <!-- <p class="card-text">Zona: {{perro.zona}}</p> -->
                     <p class="card-text">Se perdió el: {{perro.fecha_perdido}} ({{perro.franja_horaria}})</p>
-                    {% if user.is_authenticated and perro.created_by == user %}
+                    {% if user.is_authenticated and perro.created_by == user and not perro.encontrado %}
                     <a href ="{% url 'editar_anuncio_perdido' perro.id 'all' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                     <a href ="#" class="btn btn-danger" onclick="delete_anuncio_perdido({{perro.id}})" style="color:white;">Eliminar anuncio</a>   
                     <a href ="{% url 'perro_encontrado' perro.id %}" class="btn btn-success" style="color:white;">Marcar como encontrado</a>                     
                     {% else %}
+                    {% if perro.encontrado %}                    
+                        <h5><span class="badge bg-secondary">Encontrado</span></h5>
+                    {% else %}
                     <a href ="{% url 'contacto_perdido' perro.id %}" class=" btn btn-success" >Contactar</a>
+                    {% endif %}
                     {% endif %}
                     </div>
                 </div>

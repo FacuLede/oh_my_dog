@@ -10,11 +10,11 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 def perros_perdidos (request) :
-    perros_perdidos=Perro_perdido.objects.filter(encontrado = False)
+    perros_perdidos=Perro_perdido.objects.all()
     return render(request,"gestion_de_mascotas/perros_perdidos.html",{"perros_perdidos":perros_perdidos})
 
 def perros_encontrados (request) :
-    perros_encontrados=Perro_encontrado.objects.filter(recuperado = False)
+    perros_encontrados=Perro_encontrado.objects.all()
     return render(request,"gestion_de_mascotas/perros_encontrados.html",{"perros_encontrados":perros_encontrados})
 
 def anunciar_perro_perdido(request):  
@@ -104,8 +104,8 @@ def anunciar_perro_encontrado(request):
     return render(request,"gestion_de_mascotas/anunciar_perro_encontrado.html",data)
 
 def perros_en_adopcion (request) :
-    # perros_en_adopcion=Perro_en_adopcion.objects.all()
-    perros_en_adopcion = Perro_en_adopcion.objects.filter(adoptado = False)
+    perros_en_adopcion=Perro_en_adopcion.objects.all()
+    # perros_en_adopcion = Perro_en_adopcion.objects.filter(adoptado = False)
     return render(request,"gestion_de_mascotas/perros_en_adopcion.html",{"perros_en_adopcion":perros_en_adopcion})
 
 def anunciar_perro_adopcion(request):
@@ -134,7 +134,7 @@ def mis_perros (request) :
     return render(request,"gestion_de_mascotas/mis_perros.html",{"mis_perros":mis_perros})
 
 def mis_perros_en_adopcion (request) :
-    mis_perros_en_adopcion=Perro_en_adopcion.objects.filter(Q(created_by = request.user)&Q(adoptado = False))
+    mis_perros_en_adopcion=Perro_en_adopcion.objects.filter(created_by = request.user)
     return render(request,"gestion_de_mascotas/mis_perros_en_adopcion.html",{"mis_perros_en_adopcion":mis_perros_en_adopcion})
 
 def eliminar_anuncio_adopcion(request, id):

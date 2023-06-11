@@ -54,9 +54,13 @@
                         <p class="card-text">Zona: {{perro.zona}}</p>
                         <p class="card-text">Historia: {{perro.historia}}</p>
                     <!-- <a  class=" btn btn-danger" >Eliminar anuncio</a> -->
+                        {% if not perro.adoptado %}
                         <a href ="{% url 'editar_anuncio' perro.id 'mine' %}" class="btn btn-success" style="color:white;">Editar anuncio</a>
                         <a href ="{% url 'adopcion_realizada' perro.id %}" class="btn btn-success" style="color:white;">Marcar como adoptado</a>
-                        <a href ="#" class="btn btn-danger" onclick="delete_anuncio_adopcion({{perro.id}})" style="color:white;">Eliminar anuncio</a>                    
+                        <a href ="#" class="btn btn-danger" onclick="delete_anuncio_adopcion({{perro.id}})" style="color:white;">Eliminar anuncio</a>     
+                        {% else %}
+                        <h5><span class="badge bg-success">Fue adoptado</span></h5>
+                        {% endif %}               
                     <!-- href="{% url 'contacto' perro.id%}" -->
                     </div>
                 </div>
