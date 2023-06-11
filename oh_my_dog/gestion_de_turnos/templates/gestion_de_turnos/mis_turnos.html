@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
 <script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
 <script >
-    function delete_turno(id) {
+    function delete_turno_2(id) {
         Swal.fire({
             "title":"Estás seguro?",
             "text":"Esta acción es irreversible.",
@@ -20,6 +20,38 @@
             }
         }) 
     }
+    function delete_turno(id) {
+            Swal.fire({
+                title: '¿Estás seguro que quieres cancelar el turno?',
+                input: 'text',
+                inputPlaceholder: 'Ingrese el motivo',
+                showCancelButton: true,
+                cancelButtonText: 'No, cancelar',
+                confirmButtonText: 'Si, cancelar turno',
+                preConfirm: (motivo) => {
+                if (!motivo) {
+                    Swal.showValidationMessage('Debes ingresar un motivo');
+                } else {
+                    return motivo; // Devolvemos el motivo para usarlo después
+                }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {                
+                const motivo = result.value;
+                // Aquí puedes realizar alguna acción con el motivo ingresado, como enviarlo a través de una petición AJAX.
+                console.log('Motivo de cancelación:', motivo);
+                Swal.fire({
+                    title: 'Turno cancelado',
+                    icon: 'success',
+                    didClose: () => {
+                    window.location.href = "eliminar_turno/"+id+"/" + motivo + "/";
+                    }
+                });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire('Cancelado', 'El turno no fue cancelado', 'error');
+                }
+            });
+        }
 
 </script>
 

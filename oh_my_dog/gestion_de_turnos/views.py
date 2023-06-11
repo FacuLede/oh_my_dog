@@ -1,7 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Turno_form
 from .models import Turno
 from django.db.models import Q
+from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your views here.
 
@@ -32,15 +36,31 @@ def mis_turnos(request):
     mis_turnos=Turno.objects.filter(Q(created_by = request.user)&(Q(estado = "Aprobado")|Q(estado = "Pendiente")))
     return render(request,"gestion_de_turnos/mis_turnos.html",{"turnos":mis_turnos})
 
-def eliminar_turno(request, id):
+def eliminar_turno(request, id, motivo):
     if request.user.is_authenticated:
         turno = Turno.objects.get(id=id)
+        autor = get_object_or_404(User, dni=turno.created_by.dni) #Recupera el autor del turno 
+        mail = EmailMessage("¡Oh my dog!",
+                                    f"El cliente {request.user.username} ha cancelado su turno para el día {turno.fecha} en la franja horaria {turno.franja_horaria}.\n"+
+                                    "Motivo: "+motivo+f"\nDe: {request.user.email}",
+                                    request.user.email,
+                                    ["ohmydog.veterinaria.123@gmail.com"] #Utiliza el email del autor del turno
+                                    )
+        mail.send()
         turno.delete()
         return redirect(to = "mis_turnos")
     
 def aprobar_turno(request, id):
     if request.user.is_superuser:
         turno = Turno.objects.get(id=id)
+        autor = get_object_or_404(User, dni=turno.created_by.dni) #Recupera el autor del turno 
+        mail = EmailMessage("¡Oh my dog!",
+                                    f"Se ha aprobado tu turno del día {turno.fecha} en la franja horaria {turno.franja_horaria}.\n"
+                                    "\nDe: ohmydog.veterinaria.123@gmail.com",
+                                    "ohmydog.veterinaria.123@gmail.com",
+                                    [autor.email] #Utiliza el email del autor del turno
+                                    )
+        mail.send()
         turno.estado = "Aprobado"
         turno.save()
         return redirect(to = "turnos_pendientes")
@@ -48,12 +68,38 @@ def aprobar_turno(request, id):
 def rechazar_turno(request, id):
     if request.user.is_superuser:
         turno = Turno.objects.get(id=id)
+        autor = get_object_or_404(User, dni=turno.created_by.dni) #Recupera el autor del turno 
+        mail = EmailMessage("¡Oh my dog!",
+                                    f"Lo sentimos, lamentablemente no habían turnos disponibles para el día {turno.fecha} en la franja horaria {turno.franja_horaria}.\n"
+                                    +"Su turno fue rechazado."+"\nDe: ohmydog.veterinaria.123@gmail.com",
+                                    "ohmydog.veterinaria.123@gmail.com",
+                                    [autor.email] #Utiliza el email del autor del turno
+                                    )
+        mail.send()
         turno.estado = "Rechazado"
         turno.save()
         return redirect(to = "turnos_pendientes")
     
 def cancelar_turno(request, id):
     if request.user.is_superuser:
+        turno = Turno.objects.get(id=id)
+        turno.estado = "Cancelado"
+        turno.save()
+        return redirect(to = "turnos_aprobados")
+    
+def cancelar_turno_aprobado(request, id, motivo):
+    #El motivo se debe enviar por email
+    print(motivo)
+    if request.user.is_superuser:
+        publicacion = get_object_or_404(Turno, id=id)    #Recupera el turno con la id recibida
+        autor = get_object_or_404(User, dni=publicacion.created_by.dni) #Recupera el autor del turno 
+        mail = EmailMessage("¡Oh my dog!",
+                                    f"Se ha cancelado tu turno del día {publicacion.fecha} en la franja horaria {publicacion.franja_horaria}.\n"+
+                                    "Motivo: "+motivo+f"\nDe: ohmydog.veterinaria.123@gmail.com",
+                                    "ohmydog.veterinaria.123@gmail.com",
+                                    [autor.email] #Utiliza el email del autor del turno
+                                    )
+        mail.send()
         turno = Turno.objects.get(id=id)
         turno.estado = "Cancelado"
         turno.save()
