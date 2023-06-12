@@ -39,18 +39,19 @@
             </li>
             {% if not user.is_superuser %}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Bienvenido {{user.username}}
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'perfil' %}">Mi perfil</a></li>
-                <li><a class="dropdown-item" href="{% url 'mis_turnos' %}">Mis turnos</a></li>
-                <li><a class="dropdown-item" href="{% url 'mis_perros' %}">Mis perros</a></li>
-                <li><a class="dropdown-item" href="{% url 'mis_perros_en_adopcion' %}">Mis perros en adopción</a></li>
-                <li><a class="dropdown-item" href="{% url 'mis_perros_perdidos' %}">Mis perros perdidos</a></li>
-                <li><a class="dropdown-item" href="{% url 'mis_perros_encontrados' %}">Mis perros encontrados</a></li>
-                <li><a class="dropdown-item" href="#">Ayuda</a></li>
-              </ul>
+              <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Bienvenido {{user.username}}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" style="right: 0; left: auto;">
+                  <a class="dropdown-item" href="{% url 'perfil' %}">Mi perfil</a>
+                  <a class="dropdown-item" href="{% url 'mis_turnos' %}">Mis turnos</a>
+                  <a class="dropdown-item" href="{% url 'mis_perros' %}">Mis perros</a>
+                  <a class="dropdown-item" href="{% url 'mis_perros_en_adopcion' %}">Mis perros en adopción</a>
+                  <a class="dropdown-item" href="{% url 'mis_perros_perdidos' %}">Mis perros perdidos</a>
+                  <a class="dropdown-item" href="{% url 'mis_perros_encontrados' %}">Mis perros encontrados</a>
+                </div>
+              </div>
             </li>
             {% endif %}
           {% else %}

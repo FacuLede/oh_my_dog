@@ -15,7 +15,12 @@
                     <div class="card-body">
                       <h5 class="card-title">Atención veterinaria</h5>
                       <p class="card-text">Necesito atención veterinaria para mi perro.</p>
+                      {% if user.is_authenticated %}
                       <a href="{% url 'sacar_turno' %}" class="card-link btn btn-success">Sacar un turno</a>
+                      {% else %}
+                      <a href="{% url 'iniciar_sesion' %}" style="color: #E59866;">Inicia sesión para sacar un turno</a>
+          
+                      {% endif %}
                     </div>
                   </div>
 
@@ -23,8 +28,10 @@
                     <div class="card-body">
                       <h5 class="card-title">Perdí a mi perro</h5>
                       <p class="card-text">Si perdiste a tu perro quizás alguien lo haya visto.</p>
-                      <a href="{% url 'perros_encontrados' %}" class="card-link btn btn-success">Perros encontrados</a>
-                      <a href="{% url 'anunciar_perro_perdido' %}" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
+                      <a href="{% url 'perros_encontrados' %}" class="card-link btn btn-success " style="width: 47%;">Perros encontrados</a>
+                      {% if user.is_authenticated %}
+                      <a href="{% url 'anunciar_perro_perdido' %}" class="card-link btn" style="background-color: #E59866;width: 47%;">Crear anuncio</a>
+                      {% endif %}
                     </div>
                   </div>
   
@@ -32,8 +39,10 @@
                     <div class="card-body">
                       <h5 class="card-title">Encontré un perro</h5>
                       <p class="card-text">Si encontraste un perro quizás alguien lo esté buscando.</p>
-                      <a href="{% url 'perros_perdidos' %}" class="card-link btn btn-success">Perros perdidos</a>
-                      <a href="{% url 'anunciar_perro_encontrado' %}" class="card-link btn" style="background-color: #E59866;">Crear anuncio</a>
+                      <a href="{% url 'perros_perdidos' %}" class="card-link btn btn-success" style="width: 47%;">Perros perdidos</a>
+                      {% if user.is_authenticated %}
+                      <a href="{% url 'anunciar_perro_encontrado' %}" class="card-link btn" style="background-color: #E59866;width: 47%;">Crear anuncio</a>
+                      {% endif %}
                     </div>
                   </div>
                   
@@ -49,7 +58,9 @@
                     <div class="card-body">
                       <h5 class="card-title">Tengo un perro para dar en adopción</h5>
                       <p class="card-text">¿Quieres poner un perro en adopción?</p>
+                      {% if user.is_authenticated %}
                       <a href="{% url 'anunciar_perro_adopcion' %}" class="card-link btn btn-success">Poner un perro en adopción</a>  
+                      {% endif %}
                     </div>
                   </div>
 
