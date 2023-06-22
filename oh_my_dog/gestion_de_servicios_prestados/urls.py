@@ -12,4 +12,8 @@ urlpatterns = [
     path('editar_cuidador/<id>/',views.editar_cuidador, name= "editar_cuidador"),     
     path('eliminar_paseador/<id>/',views.eliminar_paseador, name= "eliminar_paseador"), 
     path('eliminar_cuidador/<id>/',views.eliminar_cuidador, name= "eliminar_cuidador"), 
+    path('ocultar_cuidador/<id>/',views.ocultar_cuidador, name= "ocultar_cuidador"), 
+    path('ocultar_paseador/<id>/',views.ocultar_paseador, name= "ocultar_paseador"), 
+    path('mostrar_cuidador/<id>/',views.mostrar_cuidador, name= "mostrar_cuidador"), 
+    path('mostrar_paseador/<id>/',views.mostrar_paseador, name= "mostrar_paseador"), 
 ]

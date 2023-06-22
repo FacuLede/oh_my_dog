@@ -6,3 +6,4 @@ class UserUpdateForm(forms.ModelForm) :
         model = User
         fields = ('username','email')
         exclude = ['password1','password2','dni']
+

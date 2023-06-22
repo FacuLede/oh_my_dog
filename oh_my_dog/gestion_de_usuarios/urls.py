@@ -12,6 +12,7 @@ urlpatterns = [
     path('perfil',views.perfil, name= "perfil"),
     path('editar_perfil',views.editar_perfil, name= "editar_perfil"),
     path('eliminar_usuario',views.eliminar_usuario, name= "eliminar_usuario"),
+    path('change_password',views.change_password, name= "change_password"),
 ]
 
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

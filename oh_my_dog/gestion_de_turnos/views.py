@@ -81,6 +81,8 @@ def rechazar_turno(request, id):
         return redirect(to = "turnos_pendientes")
     
 def cancelar_turno(request, id):
+    """Ya no se usa
+    """
     if request.user.is_superuser:
         turno = Turno.objects.get(id=id)
         turno.estado = "Cancelado"

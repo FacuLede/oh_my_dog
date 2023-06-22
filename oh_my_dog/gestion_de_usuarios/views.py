@@ -9,6 +9,11 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 from .forms import UserUpdateForm
 from gestion_de_turnos.models import Turno
+#Cambiar contraseña: 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 # Create your views here.
 
@@ -122,5 +127,17 @@ def eliminar_usuario(request):
         current_user = User.objects.get(id=request.user.id)
         current_user.delete()
         return redirect(to = "home")
+    
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('perfil')  
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'gestion_de_usuarios/change_password.html', {'form': form})
 
 

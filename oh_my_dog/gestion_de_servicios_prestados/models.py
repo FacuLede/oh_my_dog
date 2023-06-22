@@ -6,6 +6,7 @@ class Paseador(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=300)
     email = models.EmailField(max_length=50,unique=True)
+    visible = models.BooleanField(default=True)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
     class Meta:
@@ -18,6 +19,7 @@ class Cuidador(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.CharField(max_length=300)
     email = models.EmailField(max_length=50,unique=True)
+    visible = models.BooleanField(default=True)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
     class Meta:

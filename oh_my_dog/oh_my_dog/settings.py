@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'gestion_de_mascotas',
     'gestion_de_servicios_prestados',
     'gestion_de_turnos',
+    'gestion_de_clientes',
     'crispy_forms',
     'user',    
 ]

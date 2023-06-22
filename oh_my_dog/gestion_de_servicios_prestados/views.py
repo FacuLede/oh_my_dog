@@ -9,11 +9,18 @@ from django import forms
 # Create your views here.
 
 def paseadores (request) :
-    paseadores=Paseador.objects.all()
+    if request.user.is_superuser:
+        paseadores=Paseador.objects.all()        
+    else:
+        paseadores=Paseador.objects.filter(visible = True)            
     return render(request,"gestion_de_servicios_prestados/paseadores.html",{"paseadores":paseadores})
 
 def cuidadores (request) :
-    cuidadores=Cuidador.objects.all()
+    if request.user.is_superuser:
+        cuidadores=Cuidador.objects.all()        
+    else:
+        cuidadores=Cuidador.objects.filter(visible = True)        
+    
     return render(request,"gestion_de_servicios_prestados/cuidadores.html",{"cuidadores":cuidadores})
 
 def contacto(request, id) :
@@ -164,4 +171,31 @@ def eliminar_cuidador(request, id):
         cuidador = Cuidador.objects.get(id=id)
         cuidador.delete()
         return redirect(to = "cuidadores") 
+    
+def ocultar_paseador(request, id):
+    if request.user.is_superuser :
+        paseador = Paseador.objects.get(id=id)
+        paseador.visible = False
+        paseador.save()
+        return redirect(to = "paseadores") 
 
+def ocultar_cuidador(request, id):
+    if request.user.is_superuser :
+        cuidador = Cuidador.objects.get(id=id)
+        cuidador.visible = False
+        cuidador.save()
+        return redirect(to = "cuidadores") 
+
+def mostrar_paseador(request, id):
+    if request.user.is_superuser :
+        paseador = Paseador.objects.get(id=id)
+        paseador.visible = True
+        paseador.save()
+        return redirect(to = "paseadores") 
+
+def mostrar_cuidador(request, id):
+    if request.user.is_superuser :
+        cuidador = Cuidador.objects.get(id=id)
+        cuidador.visible = True
+        cuidador.save()
+        return redirect(to = "cuidadores") 

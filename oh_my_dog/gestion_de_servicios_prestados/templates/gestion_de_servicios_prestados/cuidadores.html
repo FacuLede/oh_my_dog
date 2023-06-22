@@ -70,9 +70,22 @@
                 <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title">Nombre: {{cuidador.nombre}}</h5>
+                    <h5 class="card-title">Nombre: {{cuidador.nombre}}
+                        {% if not cuidador.visible %}
+                        <span class="badge bg-danger">Oculto</span>
+                        {% endif %}
+                    </h5>
                     <p class="card-text">Desripcion: {{cuidador.descripcion}}</p>
+                    {% if cuidador.email != user.email %}
                     <a class=" btn btn-success" href="{% url 'contacto_cuidador' cuidador.id %}">Contactar</a>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    {% if cuidador.visible %}
+                    <a class=" btn btn-success" href="{% url 'ocultar_cuidador' cuidador.id %}">Ocultar cuidador</a>
+                    {% else %}
+                    <a class=" btn btn-success" href="{% url 'mostrar_cuidador' cuidador.id %}">Mostrar cuidador</a>
+                    {% endif %}
+                    {% endif %}
                         {% if user.is_superuser %}
                         <a class="btn btn-success" href="{% url 'editar_cuidador' cuidador.id %}" style="color:white;">Editar</a>
                         <a href ="#" class="btn btn-danger" onclick="delete_cuidador({{cuidador.id}})" style="color:white;">Eliminar</a>  

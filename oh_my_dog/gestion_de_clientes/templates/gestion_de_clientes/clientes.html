@@ -1,0 +1,65 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+
+{% if user.is_superuser %}
+
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Clientes</h1>                 
+</div>
+
+
+<div style="background-color:#eee;height: 5%;text-align: center;">              
+</div> 
+
+<div class="container-fluid" style="background-color: #eee; padding: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="" method="GET" class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Buscar" aria-label="Buscar" aria-describedby="search-button">
+                <button class="btn btn-primary" type="submit" id="search-button">Buscar</button>
+            </form>
+        </div>
+    </div>
+    {% if clientes.count != 0 %}
+    {% if search_query %}        
+        <!-- Aquí va el código para mostrar los clientes -->
+        {% for cliente in clientes %}
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
+                        <p class="card-text">Email: {{ cliente.email }}</p>
+                        <!-- Agrega más campos del cliente si es necesario -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <!-- Mostrar todos los elementos -->
+        {% for cliente in clientes %}
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
+                        <p class="card-text">Email: {{ cliente.email }}</p>
+                        <!-- Agrega más campos del cliente si es necesario -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div style="background-color:#eee;height: 20%;">
+                
+</div>
+{% endif %}
+{% else %}
+    <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+{% endif %}
+{% endblock %}
+
+

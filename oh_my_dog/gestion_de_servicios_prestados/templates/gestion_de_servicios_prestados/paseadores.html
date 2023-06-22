@@ -69,9 +69,22 @@
                 <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title">Nombre: {{paseador.nombre}}</h5>
+                    <h5 class="card-title">Nombre: {{paseador.nombre}}
+                        {% if not paseador.visible %}
+                        <span class="badge bg-danger">Oculto</span>
+                        {% endif %}
+                    </h5>
                     <p class="card-text">Descripcion: {{paseador.descripcion}}</p>
-                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>    
+                    {% if paseador.email != user.email %}
+                    <a  class=" btn btn-success" href="{% url 'contacto' paseador.id%}">Contactar</a>  
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    {% if paseador.visible %}
+                    <a class=" btn btn-success" href="{% url 'ocultar_paseador' paseador.id %}">Ocultar paseador</a>
+                    {% else %}
+                    <a class=" btn btn-success" href="{% url 'mostrar_paseador' paseador.id %}">Mostrar paseador</a>
+                    {% endif %}
+                    {% endif %}  
                     {% if user.is_superuser %}
                         <a class="btn btn-success" href="{% url 'editar_paseador' paseador.id %}" style="color:white;">Editar</a>
                         <a href ="#" class="btn btn-danger" onclick="delete_paseador({{paseador.id}})" style="color:white;">Eliminar</a> 

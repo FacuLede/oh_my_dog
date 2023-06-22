@@ -41,6 +41,7 @@
                     <p class="card-text">Email: {{usuario.email}}</p>
                     <p class="card-text">Dni: {{usuario.dni}}</p>
                     <a class="btn btn-success" href="{% url 'editar_perfil' %}" style="color:white;">Editar</a>
+                    <a class="btn btn-success" href="{% url 'change_password' %}" style="color:white;">Cambiar mi contraseña</a> 
                     <!-- <a class="navbar-brand px-lg-4 btn btn-danger" href="{% url 'eliminar_usuario' %}" style="color:white;">Eliminar</a>    -->
                     <a href ="#" class="btn btn-danger" onclick="delete_user()" style="color:white;">Eliminar</a>           
                     </div>                    
