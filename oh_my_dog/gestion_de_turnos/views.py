@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import Turno_form
+from .forms import Turno_form, Reprogramar_turno_form
 from .models import Turno
 from django.db.models import Q
 from django.core.mail import EmailMessage
@@ -110,3 +110,23 @@ def cancelar_turno_aprobado(request, id, motivo):
 def turnos_aprobados(request):
     turnos_pendientes=Turno.objects.filter(estado = "Aprobado")
     return render(request,"gestion_de_turnos/turnos_aprobados.html",{"turnos":turnos_pendientes})
+
+def reprogramar_turno_aprobado(request, id): 
+    turno = get_object_or_404(Turno, id=id) #obtiene el turno que se quiere reprogramar
+    form = Reprogramar_turno_form(request.POST or None, instance = turno)
+    data = {
+        'form': form,
+    } 
+    if form.is_valid():
+        turno.save()
+        autor = get_object_or_404(User, dni=turno.created_by.dni) #Recupera el autor del turno 
+        mail = EmailMessage("¡Oh my dog!",
+                                    f"Se ha reprogramado tu turno para el día {turno.fecha} en la franja horaria {turno.franja_horaria}.\n"+
+                                    "Motivo: "+request.POST['motivo']+f"\nDe: ohmydog.veterinaria.123@gmail.com",
+                                    "ohmydog.veterinaria.123@gmail.com",
+                                    [autor.email] #Utiliza el email del autor del turno
+                                    )
+        mail.send()
+        return redirect(to = "turnos_aprobados")                
+    else:
+        return render(request,"gestion_de_turnos/reprogramar_turno.html",data)

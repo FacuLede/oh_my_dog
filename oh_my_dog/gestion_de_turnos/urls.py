@@ -11,4 +11,5 @@ urlpatterns = [
     path('cancelar_turno/<id>/',views.cancelar_turno, name= "cancelar_turno"),
     path('turnos_aprobados',views.turnos_aprobados, name= "turnos_aprobados"),
     path('cancelar_turno_aprobado/<id>/<motivo>/',views.cancelar_turno_aprobado, name= "cancelar_turno_aprobado"),
+    path('reprogramar_turno_aprobado/<id>/',views.reprogramar_turno_aprobado, name= "reprogramar_turno_aprobado"),
 ]
