@@ -20,7 +20,7 @@ def perros_encontrados (request) :
 def anunciar_perro_perdido(request):  
     perros = list()
     if (request.user.is_authenticated) :  
-        perros = Perro.objects.filter(dni_owner = request.user.dni)
+        perros = Perro.objects.filter(owner = request.user)
 
     form = Perro_perdido_form()
     ok = True #Esta variable se le envía en el data al docuemnto html para dependiendo de su valor mostrar o uno un botón
@@ -86,7 +86,7 @@ def cargar_datos_perro(request, id):
 def anunciar_perro_encontrado(request):
     perros = list()
     if request.user.is_authenticated :
-        perros = Perro.objects.filter(dni_owner = request.user.dni)
+        perros = Perro.objects.filter(owner = request.user)
     form = Perro_encontrado_form()
     data = {
         "form":form,
@@ -111,7 +111,7 @@ def perros_en_adopcion (request) :
 def anunciar_perro_adopcion(request):
     perros = list()
     if request.user.is_authenticated :
-        perros = Perro.objects.filter(dni_owner = request.user.dni)
+        perros = Perro.objects.filter(owner = request.user)
         
     perro_en_adopcion = Perro_en_adopcion() 
     form = Perro_en_adopcion_form()
@@ -130,7 +130,7 @@ def anunciar_perro_adopcion(request):
     return render(request,"gestion_de_mascotas/anunciar_perro_adopcion.html",data)
 
 def mis_perros (request) :
-    mis_perros=Perro.objects.filter(dni_owner = request.user.dni)
+    mis_perros=Perro.objects.filter(owner = request.user)
     return render(request,"gestion_de_mascotas/mis_perros.html",{"mis_perros":mis_perros})
 
 def mis_perros_en_adopcion (request) :
@@ -205,15 +205,18 @@ def editar_anuncio(request, id, type) :
         else:
             return render(request,"gestion_de_mascotas/editar_anuncio.html",data)
 
-def cargar_perro(request):
+def cargar_perro(request, id):
+    owner = get_object_or_404(User, id=id)
     form = Perro_form()
     data = {
         "form":form
     }
     if request.method ==  'POST':
         form = Perro_form(request.POST)
-        if form.is_valid() :     
-            form.save()    
+        if form.is_valid() :   
+            perro = form.save(commit=False)
+            perro.owner = owner        
+            perro.save()
             data["mensaje"] = "Se agregó al perro correctamente."  
         else :
             data['mensaje_error'] = 'Ya existe ese perro.' 
@@ -230,7 +233,6 @@ def editar_perro(request, id) :
         if form.is_valid():
             perro.nombre = request.POST['nombre']
             perro.size = request.POST['size']
-            perro.dni_owner = request.POST['dni_owner']
             perro.save()
             return redirect(to = "perros") 
         else:
@@ -450,3 +452,9 @@ def mis_perros_perdidos(request):
 def mis_perros_encontrados(request):
     mis_perros_encontrados = Perro_encontrado.objects.filter(created_by = request.user)
     return render(request,"gestion_de_mascotas/mis_perros_encontrados.html",{'mis_perros_encontrados':mis_perros_encontrados})
+
+def ver_perros_cliente(request, id):
+    perro_owner = User.objects.get(id=id)
+    perros_cliete = Perro.objects.filter(owner = perro_owner)
+    return render(request,"gestion_de_mascotas/perros_cliente.html",{'perros':perros_cliete, "cliente":perro_owner})
+

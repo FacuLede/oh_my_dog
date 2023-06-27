@@ -62,7 +62,7 @@ class UserRegisterForm(UserCreationForm) : #No se guarda el dni en la base de da
     dni = forms.CharField(max_length=8)
     class Meta:
         model = User
-        fields = ('username','email','dni','password1','password2')
+        fields = ('username','email','dni','first_name','last_name','password1','password2')
 
 class Registrarse(View) :
     

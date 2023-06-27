@@ -47,7 +47,8 @@
                     <div class="row g-0">
                     <div class="col-md-8">
                         <div class="card-body">
-                        <p class="card-title">Franja horaria: {{turno.franja_horaria}}</p>
+                        <p class="card-title">Cliente: {{turno.created_by.first_name}} {{turno.created_by.last_name}}</p>
+                        <p class="card-text">Franja horaria: {{turno.franja_horaria}}</p>
                         <p class="card-text">Motivo: {{turno.motivo}}</p>
                         <p class="card-text">Fecha: {{turno.fecha}}</p>
                         <a class=" btn btn-success" href="{% url 'aprobar_turno' turno.id %}">Aprobar turno</a>

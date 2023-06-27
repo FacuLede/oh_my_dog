@@ -31,6 +31,10 @@
                         <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
                         <p class="card-text">Email: {{ cliente.email }}</p>
                         <!-- Agrega más campos del cliente si es necesario -->
+                        <div class="d-flex justify-content-end">
+                            <a href = "{% url 'cargar_perro' cliente.id %}" class="btn btn-success mx-1">Agregar perro</a>
+                            <a href = "{% url 'ver_perros_cliente' cliente.id %}" class="btn btn-primary mx-1">Ver perros</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,6 +50,10 @@
                         <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
                         <p class="card-text">Email: {{ cliente.email }}</p>
                         <!-- Agrega más campos del cliente si es necesario -->
+                        <div class="d-flex justify-content-end">
+                            <a href = "{% url 'cargar_perro' cliente.id %}" class="btn btn-success mx-1">Agregar perro</a>
+                            <a href = "{% url 'ver_perros_cliente' cliente.id %}" class="btn btn-primary mx-1">Ver perros</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -25,20 +25,18 @@
 </script>
 
 {% endblock %}
-{% if user.is_superuser %}
+{% if user.is_authenticated %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
-    <h1 class="display-1">Perros</h1>                 
+    <h1 class="display-1">Perros de {{cliente.first_name}} {{cliente.last_name}}</h1>                 
 </div>
 
-<div style="background-color:#eee;height: 5%;text-align: center;">              
-</div> 
 {% if perros.count == 0 %}
 <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
     <div class="card mb-3 element-home-color" style="width: 60%;">
         <div class="row g-0">
             <div class="card">
                 <div class="card-body">
-                    Aún no hay ningún perro agregado.
+                    Aún no hay ningún perro.
                 </div>
             </div>
         </div>
@@ -57,7 +55,6 @@
                     <div class="card-body">
                     <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
                     <p class="card-title">Tamaño: {{perro.size}}</p>
-                    <p class="card-title">DNI del dueño: {{perro.owner.dni}}</p>
                     <p class="card-title">Sexo: {{perro.sexo}}</p>
                     <p class="card-title">Nacimiento: {{perro.nacimiento}}</p>
                     <p class="card-title">Raza: {{perro.raza}}</p>

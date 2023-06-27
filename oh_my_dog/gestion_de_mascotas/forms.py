@@ -150,7 +150,6 @@ class Perro_form(forms.ModelForm) :
         fields = [
             "nombre",
             "size",
-            "dni_owner",
             "raza",
             "sexo",
             "nacimiento",
@@ -264,7 +263,6 @@ class Perro_form_update(forms.ModelForm) :
         fields = [
             "nombre",
             "size",
-            "dni_owner",
             "raza",
             "sexo",
         ]

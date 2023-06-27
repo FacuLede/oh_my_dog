@@ -57,14 +57,14 @@ class Perro_encontrado(models.Model):
 class Perro(models.Model):
     nombre = models.CharField(verbose_name="Nombre",max_length=30)
     size = models.CharField(verbose_name="Tamaño", max_length=50)
-    dni_owner = models.CharField(max_length=8, verbose_name="Dni del dueño")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     raza = models.CharField(max_length=50,null=True, default=None)
     sexo = models.CharField(max_length=30,null=True, default=None)
     nacimiento = models.DateField()
     # owner = models.OneToOneField(User)
 
     class Meta:
-        unique_together = (('nombre', 'dni_owner'))
+        unique_together = (('nombre', 'owner'))
         verbose_name='perro'
         verbose_name_plural='perros'
 

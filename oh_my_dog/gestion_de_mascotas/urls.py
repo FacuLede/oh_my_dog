@@ -13,7 +13,7 @@ urlpatterns = [
     path('contacto_adopcion/<id>/',views.contacto_adopcion, name= "contacto_adopcion"),
     path('editar_anuncio/<id>/<type>/',views.editar_anuncio, name= "editar_anuncio"), #testeando
     path('perros',views.perros, name= "perros"),
-    path('cargar_perro',views.cargar_perro, name= "cargar_perro"),
+    path('cargar_perro/<id>/',views.cargar_perro, name= "cargar_perro"), #Recibe la id del dueño apartir de la V2
     path('editar_perro/<id>/',views.editar_perro, name= "editar_perro"),
     path('eliminar_perro/<id>/',views.eliminar_perro, name= "eliminar_perro"),
     path('anunciar_perro_encontrado',views.anunciar_perro_encontrado, name= "anunciar_perro_encontrado"),
@@ -29,4 +29,5 @@ urlpatterns = [
     path('perro_encontrado/<id>/',views.perro_encontrado, name= "perro_encontrado"),
     path('mis_perros_encontrados',views.mis_perros_encontrados, name= "mis_perros_encontrados"),
     path('owner_encontrado/<id>/',views.owner_encontrado, name= "owner_encontrado"),
+    path('ver_perros_cliente/<id>/',views.ver_perros_cliente, name= "ver_perros_cliente"),
 ]

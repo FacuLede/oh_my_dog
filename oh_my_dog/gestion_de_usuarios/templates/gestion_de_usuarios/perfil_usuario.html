@@ -38,6 +38,8 @@
                 <div class="col-md-8">
                     <div class="card-body">
                     <h5 class="card-title">Nombre de usuario: {{usuario.username}}</h5>
+                    <p class="card-text">Nombre: {{usuario.first_name}}</p>
+                    <p class="card-text">Apellidos: {{usuario.last_name}}</p>
                     <p class="card-text">Email: {{usuario.email}}</p>
                     <p class="card-text">Dni: {{usuario.dni}}</p>
                     <a class="btn btn-success" href="{% url 'editar_perfil' %}" style="color:white;">Editar</a>
