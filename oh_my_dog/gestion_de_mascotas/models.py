@@ -54,11 +54,23 @@ class Perro_encontrado(models.Model):
     def __str__ (self):
         return self.zona
     
+
+class Raza(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    class Meta():
+        verbose_name = "Raza"
+        verbose_name_plural = "Razas"
+
+    def __str__(self) :
+        return self.nombre
+    
 class Perro(models.Model):
     nombre = models.CharField(verbose_name="Nombre",max_length=30)
     size = models.CharField(verbose_name="Tamaño", max_length=50)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    raza = models.CharField(max_length=50,null=True, default=None)
+    raza = models.ForeignKey(Raza, on_delete=models.CASCADE, default=None, null=True)
+    # raza = models.CharField(max_length=50,null=True, default=None)
     sexo = models.CharField(max_length=30,null=True, default=None)
     nacimiento = models.DateField()
     # owner = models.OneToOneField(User)

@@ -42,25 +42,30 @@ def anunciar_perro_perdido(request):
     return render(request,"gestion_de_mascotas/anunciar_perro_perdido.html",data)
 
 def id_valida(request, id):
-    perros = Perro.objects.filter(dni_owner = request.user.dni)
+    """Esta función garantiza que la id corresponde un perro perteneciente 
+    al usuario actual, para que no se pueda setear los datos de un perro que 
+    no le corresponde através de la url
+    """
+    perros = Perro.objects.filter(owner = request.user)
     for perro in perros :
         if int(perro.id) == int(id) :
             return True
     return False
 
 def cargar_datos_perro(request, id):
-    perros = Perro.objects.filter(dni_owner = request.user.dni)
+    perros = Perro.objects.filter(owner = request.user)
 
     if id_valida(request, id ):  
         ok = False
-        perro = get_object_or_404(Perro, id=int(id))        
+        perro = get_object_or_404(Perro, id=int(id))       
         datos_iniciales = {
             'nombre': perro.nombre,
             'size':perro.size,
             'sexo':perro.sexo,
             'raza':perro.raza,
         }
-        form = Perro_perdido_form(initial=datos_iniciales)    
+        form = Perro_perdido_form(initial=datos_iniciales)   
+        print(form['sexo']) 
         data = {
             "form":form,
             "perros":perros,
@@ -205,15 +210,22 @@ def editar_anuncio(request, id, type) :
         else:
             return render(request,"gestion_de_mascotas/editar_anuncio.html",data)
 
+def validar_perro(request, perros):
+    for p in perros :
+        if p.nombre == request.POST['nombre']:
+            return False
+    return True
+
 def cargar_perro(request, id):
     owner = get_object_or_404(User, id=id)
+    perros = Perro.objects.filter(owner = owner)
     form = Perro_form()
     data = {
         "form":form
     }
     if request.method ==  'POST':
         form = Perro_form(request.POST)
-        if form.is_valid() :   
+        if form.is_valid() and validar_perro(request, perros):               
             perro = form.save(commit=False)
             perro.owner = owner        
             perro.save()
@@ -238,11 +250,11 @@ def editar_perro(request, id) :
         else:
             return render(request,"gestion_de_mascotas/editar_perro.html",data) 
         
-def eliminar_perro(request, id):
+def eliminar_perro(request,id2, id):
     if request.user.is_authenticated and request.user.is_superuser :
         perro = Perro.objects.get(id=id)
-        perro.delete()
-        return redirect(to = "perros") 
+        perro.delete()        
+        return redirect(to = request.META.get('HTTP_REFERER'))
     
 def perros (request) :
     perros=Perro.objects.all()
@@ -377,6 +389,8 @@ def editar_anuncio_perdido(request, id, type):
     
     if request.method == 'POST':
         form = Perro_perdido_update_form(request.POST, request.FILES, instance=publicacion)
+        
+        print("Llega acá")
         if form.is_valid():
             if request.POST['nueva_imagen'] != "":
                 publicacion.imagen = "perros_perdidos/"+request.POST['nueva_imagen']
