@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Raza
+from .models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Raza, Entrada
 from datetime import date
 
 class  Perro_perdido_form(forms.ModelForm):
@@ -270,4 +270,15 @@ class Perro_form_update(forms.ModelForm) :
             "sexo",
         ]
        
-
+class Entrada_form(forms.ModelForm):
+    motivo =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
+    descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    seguimiento =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    class Meta:
+        model = Entrada
+        fields = [
+            "peso",
+            "motivo",
+            "descripcion",
+            "seguimiento",            
+        ]

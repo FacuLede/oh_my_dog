@@ -103,3 +103,18 @@ class Perro_en_adopcion(models.Model):
     def __str__ (self):
         return self.titulo
     
+class Entrada(models.Model):
+    fecha = models.DateField(auto_now_add=True)
+    peso = models.FloatField()
+    motivo = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=500)
+    seguimiento = models.CharField(max_length=500)
+    perro = models.ForeignKey(Perro, on_delete=models.CASCADE)
+
+    class Meta:        
+        verbose_name='entrada'
+        verbose_name_plural='entradas'
+
+    def __str__ (self):
+        return self.motivo
+    

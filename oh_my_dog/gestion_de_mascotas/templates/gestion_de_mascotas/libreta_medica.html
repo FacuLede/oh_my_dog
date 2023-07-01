@@ -4,7 +4,7 @@
 
 <script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
 <script >
-    function delete_perro(id) {
+    function delete_entrada(id) {
         Swal.fire({
             "title":"Estás seguro?",
             "text":"Esta acción es irreversible.",
@@ -17,7 +17,7 @@
         })
         .then(function(result){
             if(result.isConfirmed){
-                window.location.href = "eliminar_perro/"+id+"/"
+                window.location.href = "eliminar_entrada/"+id+"/"
             }
         }) 
     }
@@ -25,18 +25,27 @@
 </script>
 
 {% endblock %}
-{% if user.is_authenticated %}
+{% if user.is_superuser %}
 <div style="background-color:#eee;height: 20%;text-align: center;">
-    <h1 class="display-1">Perros de {{cliente.first_name}} {{cliente.last_name}}</h1>                 
+    <h1 class="display-1">Libreta médica</h1>                 
 </div>
 
+<div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">
+    <a class="btn btn-success" href="{% url 'crear_entrada' id_perro %}" style="color:white;">Crear entrada</a>
+</div>
+
+<div style="background-color:#eee;height: 5%;text-align: center;">              
+</div> 
+
+<div style="background-color:#eee;height: 5%;text-align: center;">              
+</div> 
 {% if perros.count == 0 %}
 <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
     <div class="card mb-3 element-home-color" style="width: 60%;">
         <div class="row g-0">
             <div class="card">
                 <div class="card-body">
-                    Aún no hay ningún perro.
+                    Aún no hay entradas.
                 </div>
             </div>
         </div>
@@ -44,29 +53,25 @@
 </div>
     
 {% else %}
-        {% for perro in perros %}
-
-        
+        {% for entrada in entradas %}        
 
         <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
             <div class="card mb-3 element-home-color" style="width: 60%;">
                 <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                    <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
-                    <p class="card-title">Tamaño: {{perro.size}}</p>
-                    <p class="card-title">Sexo: {{perro.sexo}}</p>
-                    <p class="card-title">Nacimiento: {{perro.nacimiento}}</p>
-                    <p class="card-title">Raza: {{perro.raza}}</p>
-                    <a class="btn btn-success" href="{% url 'editar_perro' perro.id %}" style="color:white;">Editar</a>
-                    <a href ="#" class="btn btn-danger" onclick="delete_perro({{perro.id}})" style="color:white;">Eliminar</a> 
-                    <a href ="{% url 'ver_libreta_medica' perro.id %}" class="btn btn-primary" style="color:white;">Ver libreta médica</a> 
+                    <h5 class="card-title">Peso: {{entrada.peso}}</h5>
+                    <p class="card-text">Motivo: {{entrada.motivo}}</p>
+                    <p class="card-text">Descripcipción: {{entrada.descripcion}}</p>
+                    <p class="card-text">Seguimiento: {{entrada.seguimiento}}</p>
+                    <p class="card-text">Fecha: {{entrada.fecha}}</p>
+                    <a class="btn btn-success" href="{% url 'editar_entrada' entrada.id %}" style="color:white;">Editar</a>
+                    <a href ="#" class="btn btn-danger" onclick="delete_entrada({{entrada.id}})" style="color:white;">Eliminar</a> 
                     </div>
                 </div>
                 </div>
             </div>
         </div>
-
 
         {% endfor %}
 <div style="background-color:#eee;height: 20%;">

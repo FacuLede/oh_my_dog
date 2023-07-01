@@ -1,12 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado
-from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form, Perro_form_update
+from django.shortcuts import render, redirect, get_object_or_404, reverse
+from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Entrada
+from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form, Perro_form_update, Entrada_form
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from django.db.models import Q
-from django.http import HttpResponseRedirect
 # Create your views here.
 
 def perros_perdidos (request) :
@@ -65,7 +63,6 @@ def cargar_datos_perro(request, id):
             'raza':perro.raza,
         }
         form = Perro_perdido_form(initial=datos_iniciales)   
-        print(form['sexo']) 
         data = {
             "form":form,
             "perros":perros,
@@ -389,8 +386,6 @@ def editar_anuncio_perdido(request, id, type):
     
     if request.method == 'POST':
         form = Perro_perdido_update_form(request.POST, request.FILES, instance=publicacion)
-        
-        print("Llega acá")
         if form.is_valid():
             if request.POST['nueva_imagen'] != "":
                 publicacion.imagen = "perros_perdidos/"+request.POST['nueva_imagen']
@@ -472,3 +467,50 @@ def ver_perros_cliente(request, id):
     perros_cliete = Perro.objects.filter(owner = perro_owner)
     return render(request,"gestion_de_mascotas/perros_cliente.html",{'perros':perros_cliete, "cliente":perro_owner})
 
+def ver_libreta_medica(request, id):
+    """
+    Se recibe la id de un perro
+    """
+    perro = Perro.objects.get(id=id)
+    entradas = Entrada.objects.filter(perro = perro) #Filtra las entradas del perro
+    return render(request,"gestion_de_mascotas/libreta_medica.html",{'entradas':entradas, 'id_perro':id})
+
+def crear_entrada(request, id):
+    perro = Perro.objects.get(id=id)
+    form = Entrada_form()
+    data = {
+        "form":form,
+        "id":id,
+    }
+    if request.method ==  'POST':
+        form = Entrada_form(request.POST, request.FILES)
+        if form.is_valid() :   
+            entrada = form.save(commit=False)
+            entrada.perro = perro       
+            entrada.save()
+            data["mensaje"] = "Se creó la entrada correctamente correctamente."  
+            params = {'id': id}
+            return redirect(reverse(f'ver_libreta_medica', kwargs=params)) 
+    
+    return render(request,"gestion_de_mascotas/crear_entrada.html",data)
+
+def eliminar_entrada(request,id2, id) :
+    if request.user.is_superuser :
+        entrada = Entrada.objects.get(id=id)
+        entrada.delete()
+        return redirect(to = request.META.get('HTTP_REFERER'))     
+
+def editar_entrada(request, id) :    
+    if request.user.is_superuser:
+        entrada = Entrada.objects.get(id=id)
+        form = Entrada_form(request.POST or None, instance = entrada)
+        data = {
+            'form': form,
+        } 
+        if form.is_valid():            
+            entrada.save()
+            data["mensaje"] = "Se creó la entrada correctamente correctamente."  
+            params = {'id': entrada.perro.id}
+            return redirect(reverse(f'ver_libreta_medica', kwargs=params)) 
+        else:
+            return render(request,"gestion_de_mascotas/editar_entrada.html",data)
