@@ -65,7 +65,7 @@ def aprobar_turno(request, id):
         turno.save()
         return redirect(to = "turnos_pendientes")
     
-def rechazar_turno(request, id):
+def rechazar_turno_v1(request, id):
     if request.user.is_superuser:
         turno = Turno.objects.get(id=id)
         autor = get_object_or_404(User, dni=turno.created_by.dni) #Recupera el autor del turno 
@@ -76,6 +76,24 @@ def rechazar_turno(request, id):
                                     [autor.email] #Utiliza el email del autor del turno
                                     )
         mail.send()
+        turno.estado = "Rechazado"
+        turno.save()
+        return redirect(to = "turnos_pendientes")
+    
+def rechazar_turno(request, id, motivo):
+    #El motivo se debe enviar por email
+    print(motivo)
+    if request.user.is_superuser:
+        publicacion = get_object_or_404(Turno, id=id)    #Recupera el turno con la id recibida
+        autor = get_object_or_404(User, dni=publicacion.created_by.dni) #Recupera el autor del turno 
+        mail = EmailMessage("¡Oh my dog!",
+                                    f"Se ha rechazado tu turno para el día {publicacion.fecha} en la franja horaria {publicacion.franja_horaria}.\n"+
+                                    "Motivo: "+motivo+f"\nDe: ohmydog.veterinaria.123@gmail.com",
+                                    "ohmydog.veterinaria.123@gmail.com",
+                                    [autor.email] #Utiliza el email del autor del turno
+                                    )
+        mail.send()
+        turno = Turno.objects.get(id=id)
         turno.estado = "Rechazado"
         turno.save()
         return redirect(to = "turnos_pendientes")

@@ -21,6 +21,40 @@
             }
         }) 
     }
+    function ocultar_cuidador(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Los clientes no podrán ver este cuidador.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, ocultar cuidador",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "ocultar_cuidador/"+id+"/"
+            }
+        }) 
+    }
+    function mostrar_cuidador(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Los clientes verán este cuidador nuevamente.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, mostrar cuidador",
+            "reverseButtons":true,
+            "confirmButtonColor":"#00bb2d",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "mostrar_cuidador/"+id+"/"
+            }
+        }) 
+    }
 
 </script>
 
@@ -81,9 +115,9 @@
                     {% endif %}
                     {% if user.is_superuser %}
                     {% if cuidador.visible %}
-                    <a class=" btn btn-success" href="{% url 'ocultar_cuidador' cuidador.id %}">Ocultar cuidador</a>
+                    <a class=" btn btn-success" onclick="ocultar_cuidador({{cuidador.id}})">Ocultar cuidador</a>
                     {% else %}
-                    <a class=" btn btn-success" href="{% url 'mostrar_cuidador' cuidador.id %}">Mostrar cuidador</a>
+                    <a class=" btn btn-success" onclick="mostrar_cuidador({{cuidador.id}})">Mostrar cuidador</a>
                     {% endif %}
                     {% endif %}
                         {% if user.is_superuser %}

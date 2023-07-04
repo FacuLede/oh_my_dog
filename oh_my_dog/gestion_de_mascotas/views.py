@@ -35,7 +35,8 @@ def anunciar_perro_perdido(request):
             perro_perdido = form.save(commit=False)  # Guardar el formulario sin realizar la inserción en la base de datos
             perro_perdido.created_by = request.user   
             perro_perdido.save()      
-            data["mensaje"] = "Se publicó el anuncio correctamente."              
+            data["mensaje"] = "Se publicó el anuncio correctamente."  
+            return redirect(to="perros_perdidos")            
     
     return render(request,"gestion_de_mascotas/anunciar_perro_perdido.html",data)
 
@@ -101,7 +102,8 @@ def anunciar_perro_encontrado(request):
             perro_encontrado = form.save(commit=False)
             perro_encontrado.created_by = request.user   
             perro_encontrado.save()      
-            data["mensaje"] = "Se publicó el anuncio correctamente."              
+            data["mensaje"] = "Se publicó el anuncio correctamente."   
+            return redirect(to="perros_encontrados")             
     
     return render(request,"gestion_de_mascotas/anunciar_perro_encontrado.html",data)
 
@@ -127,7 +129,8 @@ def anunciar_perro_adopcion(request):
             perro_en_adopcion = form.save(commit=False)
             perro_en_adopcion.created_by = request.user         
             perro_en_adopcion.save()
-            data["mensaje"] = "Se publicó el anuncio correctamente."              
+            data["mensaje"] = "Se publicó el anuncio correctamente."     
+            return redirect(to="perros_en_adopcion")           
     
     return render(request,"gestion_de_mascotas/anunciar_perro_adopcion.html",data)
 
@@ -380,6 +383,7 @@ def contacto_perdido(request, id) :
         else:
             perros_perdidos=Perro_perdido.objects.all()
             return render(request,"gestion_de_mascotas/perros_perdidos.html",{"perros_perdidos":perros_perdidos, "mensajes":mensajes})
+
         
 def editar_anuncio_perdido(request, id, type):
     publicacion = get_object_or_404(Perro_perdido, pk=id)

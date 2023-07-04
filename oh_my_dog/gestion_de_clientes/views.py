@@ -13,10 +13,9 @@ def clientes(request):
     search_query = request.GET.get("search")
     clientes = User.objects.filter(is_superuser=False)
     
-    if request.method == "GET" and "search" in request.GET:
-        print("Entra")
+    if request.method == "GET" and "search" in request.GET:        
         if search_query:
-            clientes = clientes.filter(username__icontains=search_query)
+            clientes = clientes.filter(dni__icontains=search_query)
     
     context = {
         "clientes": clientes,

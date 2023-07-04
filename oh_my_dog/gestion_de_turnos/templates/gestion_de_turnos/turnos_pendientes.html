@@ -4,23 +4,53 @@
 <script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
 <script >
     function rechazar_turno(id) {
+            Swal.fire({
+                title: '¿Estás seguro que quieres rechazar el turno?',
+                input: 'text',
+                inputPlaceholder: 'Ingrese el motivo',
+                showCancelButton: true,
+                cancelButtonText: 'No, cancelar',
+                confirmButtonText: 'Si, rechazar turno',
+                preConfirm: (motivo) => {
+                if (!motivo) {
+                    Swal.showValidationMessage('Debes ingresar un motivo');
+                } else {
+                    return motivo; // Devolvemos el motivo para usarlo después
+                }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {                
+                const motivo = result.value;
+                // Aquí puedes realizar alguna acción con el motivo ingresado, como enviarlo a través de una petición AJAX.
+                console.log('Motivo de rechazo:', motivo);
+                Swal.fire({
+                    title: 'Turno rechazado',
+                    icon: 'success',
+                    didClose: () => {
+                    window.location.href = "rechazar_turno/" + id + "/" + motivo + "/";
+                    }
+                });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire('Rechazado', 'El turno no fue rechazado', 'error');
+                }
+            });
+        }   
+        function aprobar_turno(id) {
         Swal.fire({
-            "title":"Estás seguro?",
-            "text":"Esta acción es irreversible.",
+            "title":"¿Quieres aprobar este turno?",
             "icon":"question",
             "showCancelButton":true,
             "cancelButtonText":"No",
-            "confirmButtonText":"Si, rechazar turno",
+            "confirmButtonText":"Si, aprobar turno",
             "reverseButtons":true,
-            "confirmButtonColor":"#dc3545",
+            "confirmButtonColor":"#00bb2d",
         })
         .then(function(result){
             if(result.isConfirmed){
-                window.location.href = "rechazar_turno/"+id+"/"
+                window.location.href = "aprobar_turno/"+id+"/"
             }
         }) 
     }
-
 </script>
 
 {% if user.is_superuser %}
@@ -51,7 +81,7 @@
                         <p class="card-text">Franja horaria: {{turno.franja_horaria}}</p>
                         <p class="card-text">Motivo: {{turno.motivo}}</p>
                         <p class="card-text">Fecha: {{turno.fecha}}</p>
-                        <a class=" btn btn-success" href="{% url 'aprobar_turno' turno.id %}">Aprobar turno</a>
+                        <a class=" btn btn-success" onclick="aprobar_turno({{turno.id}})">Aprobar turno</a>
                         <a href ="#" class="btn btn-danger" onclick="rechazar_turno({{turno.id}})" style="color:white;">Rechazar turno</a>
                         </div>
                     </div>

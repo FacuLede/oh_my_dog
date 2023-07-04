@@ -107,6 +107,7 @@ def cargar_paseador(request):
         if form.is_valid() :     
             form.save()    
             data["mensaje"] = "Se agregó al paseador correctamente."  
+            return redirect(to="paseadores")
         else :
             data['mensaje_error'] = 'Ya existe un paseador con ese email.' 
     
@@ -122,6 +123,7 @@ def cargar_cuidador(request):
         if form.is_valid() :     
             form.save()    
             data["mensaje"] = "Se agregó al cuidador correctamente."       
+            return redirect(to="cuidadores")
         else :
             data['mensaje_error'] = 'Ya existe un cuidador con ese email.'        
     

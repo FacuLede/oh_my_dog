@@ -21,7 +21,40 @@
             }
         }) 
     }
-
+    function ocultar_paseador(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Los clientes no podrán ver este paseador.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, ocultar paseador",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "ocultar_paseador/"+id+"/"
+            }
+        }) 
+    }
+    function mostrar_paseador(id) {
+        Swal.fire({
+            "title":"Estás seguro?",
+            "text":"Los clientes verán este paseador nuevamente.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, mostrar paseador",
+            "reverseButtons":true,
+            "confirmButtonColor":"#00bb2d",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "mostrar_paseador/"+id+"/"
+            }
+        }) 
+    }
 </script>
 
 {% endblock %}
@@ -80,9 +113,9 @@
                     {% endif %}
                     {% if user.is_superuser %}
                     {% if paseador.visible %}
-                    <a class=" btn btn-success" href="{% url 'ocultar_paseador' paseador.id %}">Ocultar paseador</a>
+                    <a class=" btn btn-success" onclick="ocultar_paseador({{paseador.id}})">Ocultar paseador</a>
                     {% else %}
-                    <a class=" btn btn-success" href="{% url 'mostrar_paseador' paseador.id %}">Mostrar paseador</a>
+                    <a class=" btn btn-success" onclick="mostrar_paseador({{paseador.id}})">Mostrar paseador</a>
                     {% endif %}
                     {% endif %}  
                     {% if user.is_superuser %}

@@ -3,6 +3,7 @@ from .models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, R
 from datetime import date
 
 class  Perro_perdido_form(forms.ModelForm):
+    raza = forms.ModelChoiceField(queryset=Raza.objects.all(), empty_label='Ninguno')
     opciones_sexo = [
         ('Macho', 'Macho'),
         ('Hembra', 'Hembra'),
@@ -48,6 +49,7 @@ class  Perro_perdido_form(forms.ModelForm):
         }
 
 class  Perro_encontrado_form(forms.ModelForm):
+    raza = forms.ModelChoiceField(queryset=Raza.objects.all(), empty_label='Ninguno')
     opciones_franja_horaria = [
         ('Mañana', 'Mañana'),
         ('Medio día', 'Medio día'),
@@ -186,6 +188,16 @@ class  Perro_perdido_update_form(forms.ModelForm):
     edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad, label="Etapa de")
     descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     fecha_perdido = forms.DateField(label='Se perdió el')
+
+    def clean_fecha_perdido(self):
+        fecha_ingresada = self.cleaned_data['fecha_perdido']
+        fecha_actual = date.today()
+        
+        if fecha_ingresada >= fecha_actual:
+            raise forms.ValidationError("La fecha debe ser anterior a la fecha actual.")
+        
+        return fecha_ingresada
+
     class Meta:
         model = Perro_perdido
         fields = [
@@ -230,6 +242,14 @@ class  Perro_encontrado_update_form(forms.ModelForm):
     descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     nueva_imagen = forms.ImageField(required=False)
     fecha_encontrado = forms.DateField(label='Se encontró el')
+    def clean_fecha_encontrado(self):
+        fecha_ingresada = self.cleaned_data['fecha_encontrado']
+        fecha_actual = date.today()
+        
+        if fecha_ingresada >= fecha_actual:
+            raise forms.ValidationError("La fecha debe ser anterior a la fecha actual.")
+        
+        return fecha_ingresada
     class Meta:
         model = Perro_encontrado
         fields = [
@@ -249,7 +269,7 @@ class  Perro_encontrado_update_form(forms.ModelForm):
         # }
 
 class Perro_form_update(forms.ModelForm) :
-
+    raza = forms.ModelChoiceField(queryset=Raza.objects.all(), empty_label='Ninguno')
     opciones_size = [
         ('Chico', 'Chico'),
         ('Mediano', 'Mediano'),

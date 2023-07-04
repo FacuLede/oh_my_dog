@@ -2,6 +2,15 @@ from django.db import models
 from user.models import User
 
 # Create your models here.
+class Raza(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    class Meta():
+        verbose_name = "Raza"
+        verbose_name_plural = "Razas"
+
+    def __str__(self) :
+        return self.nombre
 
 class Perro_perdido(models.Model):
     """Estos registros los crea un usuario que perdió 
@@ -15,7 +24,7 @@ class Perro_perdido(models.Model):
     zona = models.CharField(max_length=100)    
     franja_horaria = models.CharField(max_length=50)
     sexo = models.CharField(max_length=30)
-    raza = models.CharField(max_length=30, null=True)
+    raza = models.ForeignKey(Raza, on_delete=models.CASCADE, default=None, null=True)
     encontrado = models.BooleanField(default=False)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
@@ -34,7 +43,7 @@ class Perro_encontrado(models.Model):
     titulo = models.CharField(max_length=30)
     sexo = models.CharField(max_length=30)
     edad = models.CharField(max_length=30)
-    raza = models.CharField(max_length=30)
+    raza = models.ForeignKey(Raza, on_delete=models.CASCADE, default=None, null=True)
     franja_horaria = models.CharField(max_length=30)
     recuperado = models.BooleanField(default=False)
     #nuevos
@@ -53,17 +62,6 @@ class Perro_encontrado(models.Model):
 
     def __str__ (self):
         return self.zona
-    
-
-class Raza(models.Model):
-    nombre = models.CharField(max_length=50)
-
-    class Meta():
-        verbose_name = "Raza"
-        verbose_name_plural = "Razas"
-
-    def __str__(self) :
-        return self.nombre
     
 class Perro(models.Model):
     nombre = models.CharField(verbose_name="Nombre",max_length=30)

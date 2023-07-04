@@ -21,53 +21,65 @@
         </div>
     </div>
     {% if clientes.count != 0 %}
-    {% if search_query %}        
-        <!-- Aquí va el código para mostrar los clientes -->
-        {% for cliente in clientes %}
-        <div class="row justify-content-center mt-3">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
-                        <p class="card-text">Email: {{ cliente.email }}</p>
-                        <!-- Agrega más campos del cliente si es necesario -->
-                        <div class="d-flex justify-content-end">
-                            <a href = "{% url 'cargar_perro' cliente.id %}" class="btn btn-success mx-1">Agregar perro</a>
-                            <a href = "{% url 'ver_perros_cliente' cliente.id %}" class="btn btn-primary mx-1">Ver perros</a>
+    
+        {% if search_query %}        
+            <!-- Aquí va el código para mostrar los clientes -->
+            {% for cliente in clientes %}
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
+                            <p class="card-text">Dni: {{ cliente.dni }}</p>
+                            <p class="card-text">Email: {{ cliente.email }}</p>
+                            <!-- Agrega más campos del cliente si es necesario -->
+                            <div class="d-flex justify-content-end">
+                                <a href = "{% url 'cargar_perro' cliente.id %}" class="btn btn-success mx-1">Agregar perro</a>
+                                <a href = "{% url 'ver_perros_cliente' cliente.id %}" class="btn btn-primary mx-1">Ver perros</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    {% else %}
-        <!-- Mostrar todos los elementos -->
-        {% for cliente in clientes %}
-        <div class="row justify-content-center mt-3">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
-                        <p class="card-text">Email: {{ cliente.email }}</p>
-                        <!-- Agrega más campos del cliente si es necesario -->
-                        <div class="d-flex justify-content-end">
-                            <a href = "{% url 'cargar_perro' cliente.id %}" class="btn btn-success mx-1">Agregar perro</a>
-                            <a href = "{% url 'ver_perros_cliente' cliente.id %}" class="btn btn-primary mx-1">Ver perros</a>
+            {% endfor %}
+        {% else %}
+            <!-- Mostrar todos los elementos -->
+            {% for cliente in clientes %}
+                <div class="row justify-content-center mt-3">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Nombre: {{ cliente.username }}</h5>
+                                <p class="card-text">Dni: {{ cliente.dni }}</p>
+                                <p class="card-text">Email: {{ cliente.email }}</p>
+                                <!-- Agrega más campos del cliente si es necesario -->
+                                <div class="d-flex justify-content-end">
+                                    <a href = "{% url 'cargar_perro' cliente.id %}" class="btn btn-success mx-1">Agregar perro</a>
+                                    <a href = "{% url 'ver_perros_cliente' cliente.id %}" class="btn btn-primary mx-1">Ver perros</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
+        {% endif %}
         </div>
-        {% endfor %}
-    {% endif %}
-</div>
-<div style="background-color:#eee;height: 20%;">
-                
-</div>
+        <div style="background-color:#eee;height: 20%;"></div>
+        {% else %}
+            <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+                <div class="card mb-3 element-home-color" style="width: 60%;">
+                    <div class="row g-0">
+                        <div class="card">
+                            <div class="card-body">
+                                No hay clientes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        {% endif %}
 {% endif %}
-{% else %}
-    <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
-{% endif %}
+
 {% endblock %}
 
 
