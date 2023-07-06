@@ -193,8 +193,8 @@ class  Perro_perdido_update_form(forms.ModelForm):
         fecha_ingresada = self.cleaned_data['fecha_perdido']
         fecha_actual = date.today()
         
-        if fecha_ingresada >= fecha_actual:
-            raise forms.ValidationError("La fecha debe ser anterior a la fecha actual.")
+        if fecha_ingresada > fecha_actual:
+            raise forms.ValidationError("No puede ser una fecha futura.")
         
         return fecha_ingresada
 
@@ -246,8 +246,8 @@ class  Perro_encontrado_update_form(forms.ModelForm):
         fecha_ingresada = self.cleaned_data['fecha_encontrado']
         fecha_actual = date.today()
         
-        if fecha_ingresada >= fecha_actual:
-            raise forms.ValidationError("La fecha debe ser anterior a la fecha actual.")
+        if fecha_ingresada > fecha_actual:
+            raise forms.ValidationError("No puede ser una fecha futura.")
         
         return fecha_ingresada
     class Meta:

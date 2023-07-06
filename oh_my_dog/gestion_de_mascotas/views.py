@@ -83,6 +83,7 @@ def cargar_datos_perro(request, id):
             perro_perdido.created_by = request.user   
             perro_perdido.save()      
             data["mensaje"] = "Se publicó el anuncio correctamente."      
+            return redirect(to="perros_perdidos")   
     
     return render(request,"gestion_de_mascotas/anunciar_perro_perdido.html",data)    
 
@@ -399,7 +400,6 @@ def editar_anuncio_perdido(request, id, type):
             publicacion.nombre = request.POST['nombre']
             publicacion.edad = request.POST['edad']
             publicacion.sexo = request.POST['sexo']
-            publicacion.raza = request.POST['raza']
             publicacion.franja_horaria = request.POST['franja_horaria']
             publicacion.save()
             # return redirect('perros_perdidos')
