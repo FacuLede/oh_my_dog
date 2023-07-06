@@ -1,0 +1,133 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+{% block js %}
+
+<script src= //cdn.jsdelivr.net/npm/sweetalert2@11></script>
+<script >
+    function delete_campania(id) {
+        Swal.fire({
+            "title":"¿Estás seguro?",
+            "text":"Esta acción es irreversible.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, eliminar",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "eliminar_campania/"+id+"/"
+            }
+        }) 
+    }
+    function pausar_campania(id) {
+        Swal.fire({
+            "title":"¿Estás seguro?",
+            "text":"No se podrán hacer donaciones a esta campaña.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, pausar",
+            "reverseButtons":true,
+            "confirmButtonColor":"#dc3545",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "pausar_campania/"+id+"/"
+            }
+        }) 
+    }
+    function reanudar_campania(id) {
+        Swal.fire({
+            "title":"¿Quieres reanudar esta campaña?",
+            "text":"Se podrá donar a la campaña nuevamente.",
+            "icon":"question",
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si, reanudar",
+            "reverseButtons":true,
+            "confirmButtonColor":"#007bff",
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "reanudar_campania/"+id+"/"
+            }
+        }) 
+    }
+</script>
+
+{% endblock %}
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Campañas de donacion</h1>                 
+</div>
+{% if user.is_superuser %}
+    <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">
+        <a class="btn btn-success" href="{% url 'crear_campania' %}" style="color:white;">Añadir campaña</a>
+    </div>
+    <div style="background-color:#eee;height: 5%;text-align: center;">              
+    </div> 
+{% endif %}
+{% if campanias.count == 0 %}
+    <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+        <div class="card mb-3 element-home-color" style="width: 60%;">
+            <div class="row g-0">
+                <div class="card">
+                    <div class="card-body">
+                        Aún no hay campañas creadas.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>            
+{% else %} 
+
+        {% if mensajes %}  
+        <div style="background-color: #eee;">        
+        <div style="width: 60%;background-color: #eee;margin-left: 20%;border-color: #eee;">
+            <p class="alert alert-danger" style="margin-bottom: 0%;" role="alert" > 
+            {{ mensajes }}
+            </p>    
+        </div>   
+
+        <div style="background-color:#eee;height: 3%;">
+                
+        </div>
+
+        </div>
+        {% endif %} 
+        {% for campania in campanias %}        
+
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">Título: {{campania.titulo}}
+                        {% if not campania.activa %}
+                        <span class="badge bg-warning">Pausada</span>
+                        {% endif %}
+                    </h5>
+                    <p class="card-text">Desripcion: {{campania.descripcion}}</p>
+                    <p class="card-text">Monto esperado: {{campania.monto_esperado}}</p>                  
+                    {% if user.is_superuser %}
+                        <a class="btn btn-success" href="{% url 'editar_campania' campania.id %}" style="color:white;">Editar</a>
+                        <a href ="#" class="btn btn-danger" onclick="delete_campania({{campania.id}})" style="color:white;">Eliminar</a>
+                        {% if campania.activa %}
+                            <a href ="#" class="btn btn-warning" onclick="pausar_campania({{campania.id}})" style="color:white;">Pausar</a>  
+                        {% else %}
+                        <a href ="#" class="btn btn-primary" onclick="reanudar_campania({{campania.id}})" style="color:white;">Reanudar</a> 
+                        {% endif %}                        
+                    {% endif %}
+                    </div>                    
+                </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+<div style="background-color:#eee;height: 20%;">
+                
+</div>
+{% endif %}
+{% endblock %}

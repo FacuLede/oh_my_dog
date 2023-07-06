@@ -109,9 +109,13 @@
                     <div class="col-md-8">
                         <div class="card-body">
                         <p class="card-title">Cliente: {{turno.created_by.first_name}} {{turno.created_by.last_name}}</p>
-                        <p class="card-text">Franja horaria: {{turno.franja_horaria}}</p>
+                        {% if turno.perro is not None %}
+                        <p class="card-title">Perro: {{turno.perro.nombre}}</p>
+                        {% else %}
+                        <p class="card-title">Perro: No especificado</p>
+                        {% endif %}
                         <p class="card-text">Motivo: {{turno.motivo}}</p>
-                        <p class="card-text">Fecha: {{turno.fecha}}</p>
+                        <p class="card-text">Fecha: {{turno.fecha}} ({{turno.franja_horaria}})</p>
                         <a href ="#" class="btn btn-danger" onclick="cancelar_turno({{turno.id}})" style="color:white;">Cancelar turno</a>
                         <a href ="{% url 'reprogramar_turno_aprobado' turno.id %}" class="btn btn-success" style="color:white;">Reprogramar turno</a>
                         </div>

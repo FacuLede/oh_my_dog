@@ -1,22 +1,29 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import Turno_form, Reprogramar_turno_form
+from .forms import Turno_form, Reprogramar_turno_form, Turno_form_perroless
 from .models import Turno
 from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from gestion_de_mascotas.models import Perro
 
 # Create your views here.
 
 def sacar_turno(request):
     turno = Turno()
-    form = Turno_form()
+    if Perro.objects.filter(owner = request.user).count() != 0 :
+        form = Turno_form(request.user)
+    else:
+        form = Turno_form_perroless()
     data = {
         "form":form
     }
     if request.method ==  'POST':
-        form = Turno_form(request.POST)
+        if Perro.objects.filter(owner = request.user).count() != 0 :
+            form = Turno_form(request.user,request.POST)
+        else:
+            form = Turno_form_perroless(request.POST)
         if form.is_valid() :    
             turno = form.save(commit=False)
             turno.created_by = request.user
@@ -24,7 +31,8 @@ def sacar_turno(request):
             # form.save()           
             data["mensaje"] = "Se solicitó el turno correctamente."  
         else :
-            data["error"] = "Algo salió mal, inténtalo denuevo."              
+            data["error"] = "Algo salió mal, inténtalo denuevo."  
+            print(form.errors)            
     
     return render(request,"gestion_de_turnos/sacar_turno.html",data)
 

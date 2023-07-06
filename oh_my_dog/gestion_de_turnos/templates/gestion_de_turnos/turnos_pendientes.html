@@ -31,7 +31,7 @@
                     }
                 });
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Rechazado', 'El turno no fue rechazado', 'error');
+                Swal.fire('Cancelado', 'El turno no fue rechazado', 'error');
                 }
             });
         }   
@@ -78,9 +78,13 @@
                     <div class="col-md-8">
                         <div class="card-body">
                         <p class="card-title">Cliente: {{turno.created_by.first_name}} {{turno.created_by.last_name}}</p>
-                        <p class="card-text">Franja horaria: {{turno.franja_horaria}}</p>
+                        {% if turno.perro is not None %}
+                        <p class="card-title">Perro: {{turno.perro.nombre}}</p>
+                        {% else %}
+                        <p class="card-title">Perro: No especificado</p>
+                        {% endif %}
                         <p class="card-text">Motivo: {{turno.motivo}}</p>
-                        <p class="card-text">Fecha: {{turno.fecha}}</p>
+                        <p class="card-text">Fecha: {{turno.fecha}} ({{turno.franja_horaria}})</p>
                         <a class=" btn btn-success" onclick="aprobar_turno({{turno.id}})">Aprobar turno</a>
                         <a href ="#" class="btn btn-danger" onclick="rechazar_turno({{turno.id}})" style="color:white;">Rechazar turno</a>
                         </div>

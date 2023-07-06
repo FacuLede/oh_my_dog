@@ -79,9 +79,13 @@
                 <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                    <p class="card-title">Franja horaria: {{turno.franja_horaria}}</p>
+                    {% if turno.perro is not None %}
+                    <p class="card-title">Perro: {{turno.perro.nombre}}</p>
+                    {% else %}
+                    <p class="card-title">Perro: No especificado</p>
+                    {% endif %}
                     <p class="card-text">Motivo: {{turno.motivo}}</p>
-                    <p class="card-text">Fecha: {{turno.fecha}}</p>
+                    <p class="card-text">Fecha: {{turno.fecha}} ({{turno.franja_horaria}})</p>
                     {% if turno.estado == 'Aprobado' %}  
                     <h5>Estado del turno : <span class="badge bg-success">{{turno.estado}}</span></h5>
                     <!-- <p class="card-text" style="color: rgb(17, 191, 84);">Estado: {{turno.estado}}</p> -->

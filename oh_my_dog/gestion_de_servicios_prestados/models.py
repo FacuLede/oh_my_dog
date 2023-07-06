@@ -27,3 +27,11 @@ class Cuidador(models.Model):
         verbose_name_plural='cuidadores'
     def __str__ (self):
         return self.nombre
+
+class Servicio_veterinario(models.Model):
+    servicio = models.CharField(max_length=30)
+    class Meta:
+        verbose_name='servicio_veterinario'
+        verbose_name_plural='servicios_veterinarios'
+    def __str__ (self):
+        return self.servicio

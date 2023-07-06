@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Paseador, Cuidador
+from .models import Paseador, Cuidador, Servicio_veterinario
 
 # Register your models here.
 
@@ -11,3 +11,4 @@ class Cuidador_admin(admin.ModelAdmin):
 
 admin.site.register(Paseador, Paseador_admin)
 admin.site.register(Cuidador, Cuidador_admin)
+admin.site.register(Servicio_veterinario)

@@ -24,5 +24,6 @@ urlpatterns = [
     path('',include('gestion_de_servicios_prestados.urls')),
     path('',include('gestion_de_turnos.urls')),
     path('',include('gestion_de_clientes.urls')),
+    path('',include('gestion_de_donaciones.urls')),
     path('',include('gestion_de_pagos.urls')),
 ]
