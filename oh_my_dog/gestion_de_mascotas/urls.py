@@ -30,8 +30,8 @@ urlpatterns = [
     path('mis_perros_encontrados',views.mis_perros_encontrados, name= "mis_perros_encontrados"),
     path('owner_encontrado/<id>/',views.owner_encontrado, name= "owner_encontrado"),
     path('ver_perros_cliente/<id>/',views.ver_perros_cliente, name= "ver_perros_cliente"),
-    path('ver_libreta_medica/<id>/',views.ver_libreta_medica, name= "ver_libreta_medica"),
+    path('ver_historial_medico/<id>/',views.ver_historial_medico, name= "ver_historial_medico"),
     path('crear_entrada/<id>/',views.crear_entrada, name= "crear_entrada"),
-    path('ver_libreta_medica/<id2>/eliminar_entrada/<id>/',views.eliminar_entrada, name= "eliminar_entrada"),
+    path('ver_historial_medico/<id2>/eliminar_entrada/<id>/',views.eliminar_entrada, name= "eliminar_entrada"),
     path('editar_entrada/<id>/',views.editar_entrada, name= "editar_entrada"),
 ]

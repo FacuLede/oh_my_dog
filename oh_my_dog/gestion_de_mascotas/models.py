@@ -1,6 +1,6 @@
 from django.db import models
 from user.models import User
-
+from gestion_de_servicios_prestados.models import Servicio_veterinario
 # Create your models here.
 class Raza(models.Model):
     nombre = models.CharField(max_length=50)
@@ -104,7 +104,8 @@ class Perro_en_adopcion(models.Model):
 class Entrada(models.Model):
     fecha = models.DateField(auto_now_add=True)
     peso = models.FloatField()
-    motivo = models.CharField(max_length=100)
+    motivo = models.ForeignKey(Servicio_veterinario, on_delete=models.CASCADE)
+    # motivo = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=500)
     seguimiento = models.CharField(max_length=500)
     perro = models.ForeignKey(Perro, on_delete=models.CASCADE)

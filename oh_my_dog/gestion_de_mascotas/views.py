@@ -471,13 +471,13 @@ def ver_perros_cliente(request, id):
     perros_cliete = Perro.objects.filter(owner = perro_owner)
     return render(request,"gestion_de_mascotas/perros_cliente.html",{'perros':perros_cliete, "cliente":perro_owner})
 
-def ver_libreta_medica(request, id):
+def ver_historial_medico(request, id):
     """
     Se recibe la id de un perro
     """
     perro = Perro.objects.get(id=id)
     entradas = Entrada.objects.filter(perro = perro) #Filtra las entradas del perro
-    return render(request,"gestion_de_mascotas/libreta_medica.html",{'entradas':entradas, 'id_perro':id})
+    return render(request,"gestion_de_mascotas/historial_medico.html",{'entradas':entradas, 'id_perro':id})
 
 def crear_entrada(request, id):
     perro = Perro.objects.get(id=id)
@@ -494,7 +494,7 @@ def crear_entrada(request, id):
             entrada.save()
             data["mensaje"] = "Se creó la entrada correctamente correctamente."  
             params = {'id': id}
-            return redirect(reverse(f'ver_libreta_medica', kwargs=params)) 
+            return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
     
     return render(request,"gestion_de_mascotas/crear_entrada.html",data)
 
@@ -515,6 +515,6 @@ def editar_entrada(request, id) :
             entrada.save()
             data["mensaje"] = "Se creó la entrada correctamente correctamente."  
             params = {'id': entrada.perro.id}
-            return redirect(reverse(f'ver_libreta_medica', kwargs=params)) 
+            return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
         else:
             return render(request,"gestion_de_mascotas/editar_entrada.html",data)
