@@ -19,10 +19,16 @@
                      
                         {% endfor %}
                         {% endif %}
+                        {% if mensaje_error %}  
+                          <div style="margin-top: 3%;">
+                            <p class="alert alert-danger" role="alert" > 
+                              {{ mensaje_error }}
+                            </p>    
+                          </div>        
+                        {% endif %}  
 
                         {% csrf_token %}
                         {{form|crispy}}
-                          
                         
                     
                         <button type="submit" class="btn btn-success" style="margin-top: 5%;">Guardar</button>    
@@ -34,13 +40,7 @@
                             </p>    
                           </div>        
                         {% endif %}  
-                        {% if mensaje_error %}  
-                          <div style="margin-top: 3%;">
-                            <p class="alert alert-danger" role="alert" > 
-                              {{ mensaje_error }}
-                            </p>    
-                          </div>        
-                        {% endif %}  
+                        
                     </form>  
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">  

@@ -34,4 +34,5 @@ urlpatterns = [
     path('crear_entrada/<id>/',views.crear_entrada, name= "crear_entrada"),
     path('ver_historial_medico/<id2>/eliminar_entrada/<id>/',views.eliminar_entrada, name= "eliminar_entrada"),
     path('editar_entrada/<id>/',views.editar_entrada, name= "editar_entrada"),
+    path('ver_libreta_sanitaria/<id>/',views.ver_libreta_sanitaria, name= "ver_libreta_sanitaria"),
 ]

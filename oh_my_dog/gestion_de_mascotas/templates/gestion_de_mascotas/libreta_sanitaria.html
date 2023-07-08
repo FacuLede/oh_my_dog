@@ -1,0 +1,44 @@
+{% extends "gestion_de_usuarios/base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<div style="background-color:#eee;height: 20%;text-align: center;">
+    <h1 class="display-1">Libreta sanitaria</h1>                 
+</div>
+
+        <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">                    
+            <div class="card mb-3 element-home-color" style="width: 60%;">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                        <h5 class="card-title">Nombre: {{perro.nombre}}</h5>
+                        <p class="card-title">Castrado: 
+                            {% if libreta_sanitaria.castrado %}
+                                Si
+                            {% else %}
+                                No
+                            {% endif %}
+                        </p>
+                        {% if libreta_sanitaria.ultima_desparasitacion is not None %}
+                        <p class="card-title">Última desparasitación: {{libreta_sanitaria.ultima_desparasitacion}} </p>
+                        {% else %}
+                        <p class="card-title">Última desparasitación: Nunca </p>
+                        {% endif %}
+                        <h5 class="card-title">Vacunas: </h5>
+                            <div class="card-body">
+                                {% for vacuna in vacunas %}
+                                    <p class="card-title">
+                                        Nombre: {{vacuna.vacuna}} - Número de dosis: {{vacuna.numero_dosis}} - Fecha: {{vacuna.fecha}}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="background-color:#eee;height: 20%;">                
+        </div>
+{% else %}
+    <img src="https://st.depositphotos.com/31068556/51146/v/600/depositphotos_511461970-stock-illustration-concept-design-of-an-empty.jpg" class="img-fluid rounded-start" alt="..." style="border-radius: 4px;">
+{% endif %}
+{% endblock %}

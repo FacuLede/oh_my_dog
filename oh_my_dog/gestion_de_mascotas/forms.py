@@ -1,7 +1,8 @@
 from django import forms 
-from .models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Raza, Entrada
+from .models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Raza, Entrada, Vacuna
 from datetime import date
 from gestion_de_servicios_prestados.models import Servicio_veterinario
+from django.core.validators import MinValueValidator
 
 class  Perro_perdido_form(forms.ModelForm):
     raza = forms.ModelChoiceField(queryset=Raza.objects.all(), empty_label='Ninguno')
@@ -292,15 +293,35 @@ class Perro_form_update(forms.ModelForm) :
         ]
        
 class Entrada_form(forms.ModelForm):
-    # motivo =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
     motivo = forms.ModelChoiceField(queryset=Servicio_veterinario.objects.all(), empty_label='Selecciona un motivo')
     descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
     seguimiento =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    numero_dosis = forms.IntegerField(label="Número de dosis (Solo para Vacunación)", required=False,validators=[MinValueValidator(0)])
+    vacuna = forms.ModelChoiceField(queryset=Vacuna.objects.all(), empty_label='Seleccione una vacuna',label="Vacuna (Solo para Vacunación)")
     class Meta:
         model = Entrada
-        fields = [
-            "peso",
+        fields = [            
             "motivo",
+            "numero_dosis",
+            "vacuna",
+            "peso",
             "descripcion",
             "seguimiento",            
         ]
+    def __init__(self, castrado, *args, **kwargs):
+        super(Entrada_form, self).__init__(*args, **kwargs)
+        if castrado :
+            self.fields['motivo'].queryset = Servicio_veterinario.objects.exclude(servicio = "Castración")
+        self.fields['motivo'].empty_label = 'Seleccione un motivo'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        motivo = cleaned_data.get('motivo')
+        numero_dosis = cleaned_data.get('numero_dosis')
+        vacuna = cleaned_data.get('vacuna')
+
+        if motivo and motivo.servicio == 'Vacunación':
+            if not numero_dosis:
+                self.add_error('numero_dosis', 'Este campo es obligatorio para la vacunación.')
+            if not vacuna:
+                self.add_error('vacuna', 'Este campo es obligatorio para la vacunación.')

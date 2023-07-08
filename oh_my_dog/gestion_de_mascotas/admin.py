@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Perro_perdido, Perro_encontrado, Perro, Perro_en_adopcion, Raza
+from .models import Perro_perdido, Perro_encontrado, Perro, Perro_en_adopcion, Raza, Vacuna
 
 # Register your models here.
 
@@ -18,3 +18,4 @@ admin.site.register(Perro_encontrado, Perro_encontrado_admin)
 admin.site.register(Perro, Perro_admin)
 admin.site.register(Perro_en_adopcion, Perro_en_adopcion_admin)
 admin.site.register(Raza)
+admin.site.register(Vacuna)

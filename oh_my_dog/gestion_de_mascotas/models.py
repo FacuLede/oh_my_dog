@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import User
 from gestion_de_servicios_prestados.models import Servicio_veterinario
+from django.core.validators import MinValueValidator
 # Create your models here.
 class Raza(models.Model):
     nombre = models.CharField(max_length=50)
@@ -100,14 +101,25 @@ class Perro_en_adopcion(models.Model):
 
     def __str__ (self):
         return self.titulo
-    
+
+class Vacuna(models.Model):
+    nombre = models.CharField(max_length=100)
+    class Meta:        
+        verbose_name='vacuna'
+        verbose_name_plural='vacunas'
+
+    def __str__ (self):
+        return self.nombre
+
 class Entrada(models.Model):
     fecha = models.DateField(auto_now_add=True)
-    peso = models.FloatField()
+    peso = models.FloatField(validators=[MinValueValidator(0)])
     motivo = models.ForeignKey(Servicio_veterinario, on_delete=models.CASCADE)
     # motivo = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=500)
     seguimiento = models.CharField(max_length=500)
+    numero_dosis = models.PositiveBigIntegerField(null=True, blank=True)
+    vacuna = models.ForeignKey(Vacuna, on_delete=models.CASCADE, null=True, blank=True) 
     perro = models.ForeignKey(Perro, on_delete=models.CASCADE)
 
     class Meta:        
@@ -116,4 +128,28 @@ class Entrada(models.Model):
 
     def __str__ (self):
         return self.motivo
-    
+
+class Libreta_sanitaria(models.Model):
+    castrado = models.BooleanField(default=False)
+    ultima_desparasitacion = models.DateField(null=True)
+    perro = models.ForeignKey(Perro, on_delete=models.CASCADE)
+
+    class Meta:        
+        verbose_name='libreta_sanitaria'
+        verbose_name_plural='libretas_sanitarias'
+
+    def __str__ (self):
+        return self.perro
+
+class Registro_vacuna(models.Model):
+    perro = models.ForeignKey(Perro, on_delete=models.CASCADE)
+    vacuna = models.ForeignKey(Vacuna, on_delete=models.CASCADE)
+    fecha = models.DateField(auto_now_add=True)
+    numero_dosis = models.PositiveIntegerField()
+
+    class Meta:        
+        verbose_name='registro_vacuna'
+        verbose_name_plural='registros_vacunas'
+
+    def __str__ (self):
+        return self.vacuna

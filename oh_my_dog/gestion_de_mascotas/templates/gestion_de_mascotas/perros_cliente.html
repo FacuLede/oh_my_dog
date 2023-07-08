@@ -60,6 +60,7 @@
                     <p class="card-title">Raza: {{perro.raza}}</p>
                     <a class="btn btn-success" href="{% url 'editar_perro' perro.id %}" style="color:white;">Editar</a>
                     <a href ="#" class="btn btn-danger" onclick="delete_perro({{perro.id}})" style="color:white;">Eliminar</a> 
+                    <a href ="{% url 'ver_libreta_sanitaria' perro.id %}" class="btn btn-primary" style="color:white;">Ver libreta sanitaria</a> 
                     <a href ="{% url 'ver_historial_medico' perro.id %}" class="btn btn-primary" style="color:white;">Ver historial médico</a> 
                     </div>
                 </div>

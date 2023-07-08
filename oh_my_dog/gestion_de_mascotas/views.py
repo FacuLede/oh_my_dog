@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
-from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Entrada
+from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Entrada, Libreta_sanitaria, Registro_vacuna, Servicio_veterinario
 from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form, Perro_form_update, Entrada_form
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from datetime import date
 # Create your views here.
 
 def perros_perdidos (request) :
@@ -230,7 +231,12 @@ def cargar_perro(request, id):
             perro = form.save(commit=False)
             perro.owner = owner        
             perro.save()
+            libreta_sanitaria = Libreta_sanitaria()
+            libreta_sanitaria.perro = perro
+            libreta_sanitaria.save()
             data["mensaje"] = "Se agregó al perro correctamente."  
+            params = {'id': id}
+            return redirect(reverse(f'ver_perros_cliente', kwargs=params)) 
         else :
             data['mensaje_error'] = 'Ya existe ese perro.' 
     
@@ -247,7 +253,8 @@ def editar_perro(request, id) :
             perro.nombre = request.POST['nombre']
             perro.size = request.POST['size']
             perro.save()
-            return redirect(to = "perros") 
+            params = {'id': perro.owner.id}
+            return redirect(reverse(f'ver_perros_cliente', kwargs=params)) 
         else:
             return render(request,"gestion_de_mascotas/editar_perro.html",data) 
         
@@ -477,25 +484,46 @@ def ver_historial_medico(request, id):
     """
     perro = Perro.objects.get(id=id)
     entradas = Entrada.objects.filter(perro = perro) #Filtra las entradas del perro
-    return render(request,"gestion_de_mascotas/historial_medico.html",{'entradas':entradas, 'id_perro':id})
+    return render(request,"gestion_de_mascotas/historial_medico.html",{'entradas':entradas, 'id_perro':id, 'id_user':perro.owner.id})
 
 def crear_entrada(request, id):
     perro = Perro.objects.get(id=id)
-    form = Entrada_form()
+    libreta = Libreta_sanitaria.objects.get(perro = perro)
+    form = Entrada_form(libreta.castrado)
     data = {
         "form":form,
         "id":id,
     }
     if request.method ==  'POST':
-        form = Entrada_form(request.POST, request.FILES)
-        if form.is_valid() :   
+        
+        form = Entrada_form(libreta.castrado,request.POST, request.FILES)
+        if form.is_valid() :               
+            servicio = Servicio_veterinario.objects.get(id = request.POST.get('motivo'))
+            if servicio.servicio == "Castración" :
+                libreta.castrado = True
+                libreta.save()
+            elif servicio.servicio == "Desparasitación" :                
+                libreta.ultima_desparasitacion = date.today()
+                libreta.save()
+            elif servicio.servicio == "Vacunación" :
+                registro_vacuna = Registro_vacuna()
+                registro_vacuna.perro = Perro.objects.get(id = id)
+                from gestion_de_mascotas.models import Vacuna
+                registro_vacuna.vacuna = Vacuna.objects.get(id = int(request.POST.get('vacuna')))
+                registro_vacuna.numero_dosis = int(request.POST.get('numero_dosis'))
+                registro_vacuna.save()                
             entrada = form.save(commit=False)
             entrada.perro = perro       
-            entrada.save()
-            data["mensaje"] = "Se creó la entrada correctamente correctamente."  
+            entrada.save()             
             params = {'id': id}
             return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
-    
+        else:
+            if int(request.POST.get('peso')) < 0 :
+                data['mensaje_error'] = "El peso debe ser un valor positivo."
+            elif int(request.POST.get('numero_dosis')) < 0 :
+                data['mensaje_error'] = "El número de dosis no puede ser negativo."
+            else:                
+                data['mensaje_error'] = "Los campos dosis y vacuna son obligatorios para vacunación."    
     return render(request,"gestion_de_mascotas/crear_entrada.html",data)
 
 def eliminar_entrada(request,id2, id) :
@@ -518,3 +546,14 @@ def editar_entrada(request, id) :
             return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
         else:
             return render(request,"gestion_de_mascotas/editar_entrada.html",data)
+        
+def ver_libreta_sanitaria(request, id) :
+    perro = Perro.objects.get(id = id)
+    libreta_sanitaria = Libreta_sanitaria.objects.get(perro = perro)
+    vacunas_registradas = Registro_vacuna.objects.filter(perro = perro)
+    data = {
+        "perro":perro, 
+        "libreta_sanitaria":libreta_sanitaria,
+        "vacunas":vacunas_registradas,
+    }
+    return render(request,"gestion_de_mascotas/libreta_sanitaria.html",data)
