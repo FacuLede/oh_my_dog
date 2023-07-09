@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
-from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Entrada, Libreta_sanitaria, Registro_vacuna, Servicio_veterinario
-from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form, Perro_form_update, Entrada_form
+from gestion_de_mascotas.models import Perro_perdido, Perro_en_adopcion, Perro, Perro_encontrado, Entrada, Libreta_sanitaria, Registro_vacuna, Servicio_veterinario, Vacuna
+from .forms import Perro_perdido_form, Perro_en_adopcion_form, Send_email_form, Send_email_logged_form, Perro_form, Perro_encontrado_form, Perro_encontrado_update_form, Perro_perdido_update_form, Perro_form_update, Entrada_form, Entrada_form_vacuna
 from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -533,20 +533,26 @@ def eliminar_entrada(request,id2, id) :
         return redirect(to = request.META.get('HTTP_REFERER'))     
 
 def editar_entrada(request, id) :    
-    if request.user.is_superuser:
-        entrada = Entrada.objects.get(id=id)
-        form = Entrada_form(request.POST or None, instance = entrada)
+    from .forms import Entrada_update_form, Entrada_update_form_vacunacion
+    entrada = Entrada.objects.get(id=id)
+    if entrada.motivo.servicio == "Vacunación":
+        form = Entrada_update_form_vacunacion(request.POST or None, instance = entrada)    
+    else:
+        form = Entrada_update_form(request.POST or None, instance = entrada)    
+    if form.is_valid():            
+        # entrada_2 = form.save(commit=False)
+        # from gestion_de_mascotas.models import Vacuna
+        # entrada_2.vacuna = Vacuna.objects.get(request.POST.get('vacuna'))    
+        form.save()
+        params = {'id': entrada.perro.id}
+        return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
+    else:
+        print(form.errors)
         data = {
             'form': form,
         } 
-        if form.is_valid():            
-            entrada.save()
-            data["mensaje"] = "Se creó la entrada correctamente correctamente."  
-            params = {'id': entrada.perro.id}
-            return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
-        else:
-            return render(request,"gestion_de_mascotas/editar_entrada.html",data)
-        
+        return render(request,"gestion_de_mascotas/editar_entrada.html",data)            
+    
 def ver_libreta_sanitaria(request, id) :
     perro = Perro.objects.get(id = id)
     libreta_sanitaria = Libreta_sanitaria.objects.get(perro = perro)
@@ -557,3 +563,112 @@ def ver_libreta_sanitaria(request, id) :
         "vacunas":vacunas_registradas,
     }
     return render(request,"gestion_de_mascotas/libreta_sanitaria.html",data)
+
+
+def elegir_motivo(request, id) :
+    perro = Perro.objects.get(id = id)
+    libreta_sanitaria = Libreta_sanitaria.objects.get(perro = perro)
+
+    if libreta_sanitaria.castrado :
+        motivos = Servicio_veterinario.objects.exclude(servicio = "Castración")
+    else :
+        motivos = Servicio_veterinario.objects.all()
+
+    data = {
+        "motivos":motivos,        
+    }
+
+    if request.method == 'POST' :
+        
+        if request.POST.get('motivo') != "" :
+            #Si el formulario es válido se evalúa que hacer en función del motivo elegido
+            print(request.POST.get('motivo'))
+            motivo = Servicio_veterinario.objects.get(id = request.POST.get('motivo'))
+            if motivo.servicio != "Vacunación" :
+                params = {
+                    'id': id,
+                    'motivo':request.POST.get('motivo')
+                }
+                return redirect(reverse(f'agregar_entrada', kwargs=params)) 
+            else:
+                params = {
+                    'id': id,
+                    'motivo':request.POST.get('motivo')
+                }
+                return redirect(reverse(f'agregar_entrada_vacuna', kwargs=params)) 
+        else:
+            data['mensaje_error'] = "Debes elegir un motivo."
+            
+    return render(request, "gestion_de_mascotas/elegir_motivo.html", data)
+
+def agregar_entrada(request, id, motivo): #Recibe la id de un perro y debería recibir un motivo
+    perro = Perro.objects.get(id=id)
+    libreta_sanitaria = Libreta_sanitaria.objects.get(perro = perro)
+    form = Entrada_form()
+    data = {
+        "form":form,
+        "id":id,
+    }
+    if request.method ==  'POST':
+        
+        form = Entrada_form(request.POST, request.FILES)
+        if form.is_valid() :               
+            servicio = Servicio_veterinario.objects.get(id = int(motivo))
+            entrada = form.save(commit=False)
+            entrada.motivo = servicio
+
+            if servicio.servicio == "Castración" :
+                libreta_sanitaria.castrado = True
+                libreta_sanitaria.save()
+            elif servicio.servicio == "Desparasitación" :                
+                libreta_sanitaria.ultima_desparasitacion = date.today()
+                libreta_sanitaria.save()
+            
+            entrada.perro = perro       
+            entrada.save()       
+            data['mensaje'] = "Salió bien."      
+            params = {'id': id}
+            return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
+        else:
+            pass 
+    return render(request,"gestion_de_mascotas/crear_entrada.html",data)
+
+def agregar_entrada_vacuna(request, id, motivo) :
+    perro = Perro.objects.get(id=id)
+    form = Entrada_form_vacuna()
+    data = {
+        "form":form,
+        "id":id,
+    }
+    if request.method ==  'POST':        
+        form = Entrada_form_vacuna(request.POST, request.FILES)
+        if form.is_valid() :    
+            servicio = Servicio_veterinario.objects.get(id = int(motivo))
+            entrada = form.save(commit=False)
+            entrada.motivo = servicio
+
+            registro_vacuna = Registro_vacuna()
+            registro_vacuna.perro = perro
+            registro_vacuna.vacuna = Vacuna.objects.get(id = int(request.POST.get('vacuna')))
+            registro_vacuna.numero_dosis = int(request.POST.get('numero_dosis'))
+            registro_vacuna.save()  
+
+            entrada.perro = perro       
+            entrada.save()  
+
+            params = {'id': id}
+            return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
+        else:
+            if form.errors:
+                data['messages'] = []
+                error_peso = form.errors.get("peso", None)
+                if error_peso:
+                    error_peso = error_peso.as_data()[0].message
+                    data["messages"].append(error_peso)
+                error_numero_dosis = form.errors.get("numero_dosis", None)
+                if error_numero_dosis:
+                    error_numero_dosis = error_numero_dosis.as_data()[0].message
+                    data["messages"].append(error_numero_dosis)
+
+    return render(request,"gestion_de_mascotas/crear_entrada.html",data)
+    #Entrada_form_vacuna

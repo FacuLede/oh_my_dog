@@ -31,7 +31,7 @@
 </div>
 
 <div style="background-color: #eee;background-position: center;background-size: cover; align-items: center;justify-content: center;display: flex;">
-    <a class="btn btn-success" href="{% url 'crear_entrada' id_perro %}" style="color:white;">Crear entrada</a>
+    <a class="btn btn-success" href="{% url 'elegir_motivo' id_perro %}" style="color:white;">Crear entrada</a>
     <a class="btn btn-primary" href="{% url 'ver_perros_cliente' id_user %}" style="color:white;margin-left: 1%;">Volver</a>
 </div>
 
@@ -67,7 +67,7 @@
                     <p class="card-text">Seguimiento: {{entrada.seguimiento}}</p>
                     <p class="card-text">Fecha: {{entrada.fecha}}</p>
                     <a class="btn btn-success" href="{% url 'editar_entrada' entrada.id %}" style="color:white;">Editar</a>
-                    <a href ="#" class="btn btn-danger" onclick="delete_entrada({{entrada.id}})" style="color:white;">Eliminar</a> 
+                    <!-- <a href ="#" class="btn btn-danger" onclick="delete_entrada({{entrada.id}})" style="color:white;">Eliminar</a>  -->
                     </div>
                 </div>
                 </div>

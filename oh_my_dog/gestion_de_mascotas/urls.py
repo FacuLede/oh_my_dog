@@ -35,4 +35,7 @@ urlpatterns = [
     path('ver_historial_medico/<id2>/eliminar_entrada/<id>/',views.eliminar_entrada, name= "eliminar_entrada"),
     path('editar_entrada/<id>/',views.editar_entrada, name= "editar_entrada"),
     path('ver_libreta_sanitaria/<id>/',views.ver_libreta_sanitaria, name= "ver_libreta_sanitaria"),
+    path('elegir_motivo/<id>/',views.elegir_motivo, name= "elegir_motivo"),
+    path('agregar_entrada/<id>/<motivo>/',views.agregar_entrada, name= "agregar_entrada"),
+    path('agregar_entrada_vacuna/<id>/<motivo>/',views.agregar_entrada_vacuna, name= "agregar_entrada_vacuna"),
 ]

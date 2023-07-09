@@ -292,12 +292,12 @@ class Perro_form_update(forms.ModelForm) :
             "sexo",
         ]
        
-class Entrada_form(forms.ModelForm):
+class Entrada_form_v1(forms.ModelForm):
     motivo = forms.ModelChoiceField(queryset=Servicio_veterinario.objects.all(), empty_label='Selecciona un motivo')
     descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
     seguimiento =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
     numero_dosis = forms.IntegerField(label="Número de dosis (Solo para Vacunación)", required=False,validators=[MinValueValidator(0)])
-    vacuna = forms.ModelChoiceField(queryset=Vacuna.objects.all(), empty_label='Seleccione una vacuna',label="Vacuna (Solo para Vacunación)")
+    vacuna = forms.ModelChoiceField(queryset=Vacuna.objects.all(), empty_label='Seleccione una vacuna',label="Vacuna (Solo para Vacunación)", required=False)
     class Meta:
         model = Entrada
         fields = [            
@@ -325,3 +325,70 @@ class Entrada_form(forms.ModelForm):
                 self.add_error('numero_dosis', 'Este campo es obligatorio para la vacunación.')
             if not vacuna:
                 self.add_error('vacuna', 'Este campo es obligatorio para la vacunación.')
+
+class Entrada_update_form_vacunacion(forms.ModelForm):
+    descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    seguimiento =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    numero_dosis = forms.IntegerField(label="Número de dosis (Solo para Vacunación)",validators=[MinValueValidator(0)])
+    vacuna = forms.ModelChoiceField(queryset=Vacuna.objects.all(), empty_label='Seleccione una vacuna',label="Vacuna (Solo para Vacunación)")
+    
+    class Meta:
+        model = Entrada
+        fields = [     
+            "numero_dosis",
+            "vacuna",
+            "peso",
+            "descripcion",
+            "seguimiento",            
+        ]
+
+class Entrada_update_form(forms.ModelForm):
+    descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    seguimiento =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    class Meta:
+        model = Entrada
+        fields = [   
+            "peso",
+            "descripcion",
+            "seguimiento",            
+        ]
+
+class Entrada_form(forms.ModelForm):
+    descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    seguimiento =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
+    class Meta:
+        model = Entrada
+        fields = [    
+            "peso",
+            "descripcion",
+            "seguimiento",            
+        ]
+
+class Entrada_form_vacuna(forms.ModelForm):
+    descripcion = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows": "5"}))
+    seguimiento = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows": "5"}))
+    numero_dosis = forms.IntegerField(required=True)
+    peso = forms.DecimalField(required=True)
+    vacuna = forms.ModelChoiceField(queryset=Vacuna.objects.all(), empty_label='Seleccione una vacuna', required=True)
+
+    class Meta:
+        model = Entrada
+        fields = [
+            "numero_dosis",
+            "vacuna",
+            "peso",
+            "descripcion",
+            "seguimiento",
+        ]
+
+    def clean_numero_dosis(self):
+        numero_dosis = self.cleaned_data.get("numero_dosis")
+        if numero_dosis is not None and numero_dosis < 0:
+            raise forms.ValidationError("El número de dosis no puede ser negativo.")
+        return numero_dosis
+
+    def clean_peso(self):
+        peso = self.cleaned_data.get("peso")
+        if peso is not None and peso < 0:
+            raise forms.ValidationError("El peso no puede ser negativo.")
+        return peso

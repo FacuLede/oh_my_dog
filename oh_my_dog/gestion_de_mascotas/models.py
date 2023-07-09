@@ -114,7 +114,7 @@ class Vacuna(models.Model):
 class Entrada(models.Model):
     fecha = models.DateField(auto_now_add=True)
     peso = models.FloatField(validators=[MinValueValidator(0)])
-    motivo = models.ForeignKey(Servicio_veterinario, on_delete=models.CASCADE)
+    motivo = models.ForeignKey(Servicio_veterinario, on_delete=models.CASCADE, null=True, blank=True, default=None)
     # motivo = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=500)
     seguimiento = models.CharField(max_length=500)

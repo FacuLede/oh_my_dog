@@ -10,30 +10,29 @@
             <div class="card-body p-md-5">
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                  <p class="display-4" style="margin-bottom: 10%;">Crear entrada</p>
+                  <p class="display-4" style="margin-bottom: 10%;">Elegir motivo</p>
                     <form method="post" action="" class="mx-1 mx-md-4">
-                     
-                        {% if messages %}
-                        {% for message in messages %}
-                        <div class="alert alert-danger" role="alert">
-                          {{ message }}
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-                     
-                        {% if form.peso.errors %}  
-                          <div style="margin-top: 3%;">
-                            <p class="alert alert-danger" role="alert"> 
-                              {{ form.peso.errors|join:", " }}
-                            </p>    
-                          </div>        
-                        {% endif %}  
-                     
+
                         {% csrf_token %}
-                        {{ form|crispy }}
-                     
-                        <button type="submit" class="btn btn-success" style="margin-top: 5%;">Guardar</button>    
-                        <a href="{% url 'ver_historial_medico' id %}" class="btn btn-danger" style="margin-top: 5%;">Volver</a>                 
+                        {{form|crispy}}
+                          
+
+                        <div class="container">
+                            <div class="row">
+                              <div class="col-md-auto">
+                                <select id="motivo" name="motivo" class="form-select">
+                                  <option value="">Elige un motivo</option>
+                                  {% for motivo in motivos %}
+                                    <option value="{{ motivo.id }}">{{ motivo.servicio }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        
+                    
+                        <button type="submit" class="btn btn-success" style="margin-top: 5%;">Continuar</button>    
+                        <!-- <a href="{% url 'clientes' %}" class="btn btn-danger" style="margin-top: 5%;">Volver</a>                  -->
                         {% if mensaje %}  
                           <div style="margin-top: 3%;">
                             <p class="alert alert-success" role="alert" > 
@@ -41,7 +40,13 @@
                             </p>    
                           </div>        
                         {% endif %}  
-                     
+                        {% if mensaje_error %}  
+                          <div style="margin-top: 3%;">
+                            <p class="alert alert-danger" role="alert" > 
+                              {{ mensaje_error }}
+                            </p>    
+                          </div>        
+                        {% endif %}  
                     </form>  
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">  
