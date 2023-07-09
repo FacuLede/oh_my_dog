@@ -671,4 +671,4 @@ def agregar_entrada_vacuna(request, id, motivo) :
                     data["messages"].append(error_numero_dosis)
 
     return render(request,"gestion_de_mascotas/crear_entrada.html",data)
-    #Entrada_form_vacuna
+    

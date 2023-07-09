@@ -11,6 +11,7 @@ class Tarjeta(models.Model) :
     mes_expiracion = models.PositiveIntegerField()
     anio_expiracion = models.PositiveIntegerField()
     cvv = models.CharField(max_length=4)
+    saldo = models.FloatField(default=0, null=True)
     class Meta:
         verbose_name='tarjeta'
         verbose_name_plural='tarjetas'

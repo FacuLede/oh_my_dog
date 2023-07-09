@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from .forms import Campania_form
-from .models import Campania_de_donacion
+from django.shortcuts import render, redirect, reverse
+from .forms import Campania_form, Donar_form
+from .models import Campania_de_donacion, Donacion
 # Create your views here.
 
 def crear_campania(request):
@@ -55,3 +55,37 @@ def reanudar_campania(request, id):
     campania.activa = True
     campania.save()
     return redirect(to = request.META.get('HTTP_REFERER')) 
+
+def donar(request, id) :
+    data = {}
+    if request.user.is_authenticated :
+        form  = Donar_form(initial={'nombre': request.user.first_name,'apellido': request.user.last_name,'email': request.user.email, })
+        data = {
+            "form":form,
+        }
+    else:
+        form  = Donar_form()
+        data = {
+            "form":form,
+        }
+
+    if request.method == 'POST' :
+        form = Donar_form(request.POST) 
+        if form.is_valid() :
+            solicitud = form.save(commit = False)
+            solicitud.save()
+            params = {
+                'id': id,
+                'solicitud':solicitud.id
+                }
+            return redirect(reverse(f'formulario_de_pago', kwargs=params)) 
+
+    return render(request, "gestion_de_donaciones/donar.html", data)
+
+def ver_donaciones(request, id) :
+    campania = Campania_de_donacion.objects.get(id = id)
+    donaciones = Donacion.objects.filter(campania_de_donacion = campania)
+    data = {
+        "donaciones":donaciones,
+    }
+    return render(request, "gestion_de_donaciones/ver_donaciones.html",data)

@@ -109,15 +109,25 @@
                         {% endif %}
                     </h5>
                     <p class="card-text">Desripcion: {{campania.descripcion}}</p>
-                    <p class="card-text">Monto esperado: {{campania.monto_esperado}}</p>                  
+                    <p class="card-text">Monto esperado: {{campania.monto_esperado}}</p>     
+                    <p class="card-text">Progreso: {{campania.monto_actual}}/{{campania.monto_esperado}}</p>  
+                    {% if campania.monto_esperado > campania.monto_actual %}
+                    <a class="btn btn-success" href="{% url 'donar' campania.id %}" style="color:white;">Donar a esta campaña</a>  
+                    {% else %}
+                    <h5 class="card-title" style="color: 00bb2d;">Se alcanzó la meta establecida
+                    </h5>   
+                    {% endif %}           
                     {% if user.is_superuser %}
                         <a class="btn btn-success" href="{% url 'editar_campania' campania.id %}" style="color:white;">Editar</a>
                         <a href ="#" class="btn btn-danger" onclick="delete_campania({{campania.id}})" style="color:white;">Eliminar</a>
-                        {% if campania.activa %}
-                            <a href ="#" class="btn btn-warning" onclick="pausar_campania({{campania.id}})" style="color:white;">Pausar</a>  
-                        {% else %}
-                        <a href ="#" class="btn btn-primary" onclick="reanudar_campania({{campania.id}})" style="color:white;">Reanudar</a> 
-                        {% endif %}                        
+                        {% if campania.monto_esperado > campania.monto_actual %}
+                            {% if campania.activa %}
+                                <a href ="#" class="btn btn-warning" onclick="pausar_campania({{campania.id}})" style="color:white;">Pausar</a>  
+                            {% else %}
+                            <a href ="#" class="btn btn-primary" onclick="reanudar_campania({{campania.id}})" style="color:white;">Reanudar</a> 
+                            {% endif %}      
+                        {% endif %}      
+                        <a class="btn btn-success" href="{% url 'ver_donaciones' campania.id %}" style="color:white;">Ver donaciones recibidas</a>            
                     {% endif %}
                     </div>                    
                 </div>

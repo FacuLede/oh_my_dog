@@ -11,20 +11,8 @@
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
   
                   <!-- <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Inicia sesion</p>   -->
-                  <p class="display-4" style="margin-bottom: 10%;">Donación</p>
-                  <form class="form-label"action="" method="post">
-                    {% csrf_token %}
-                    {% if error %}  
-                    <div >        
-                    <div style="width: 60%;">
-                        <p class="alert alert-danger" style="margin-bottom: 5%;" role="alert" > 
-                        {{ error }}
-                        </p>    
-                    </div>                                        
-                    </div>
-                    {% endif %}  
-                    {{ form | crispy }} 
-                    <button type="submit" class=" btn btn-success" style="margin-top: 10%;">Continuar</button>
+                  <p class="display-1" style="margin-bottom: 10%;color: green;">¡Gracias por tu donación!</p>
+                  <p class="display-5" style="margin-bottom: 10%;color: green;">Pago realizado con éxito</p>
                         
                 </form>
                 </div>

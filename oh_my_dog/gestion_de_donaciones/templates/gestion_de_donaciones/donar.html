@@ -1,6 +1,7 @@
 {% extends "gestion_de_usuarios/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}    
+
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -11,21 +12,29 @@
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
   
                   <!-- <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Inicia sesion</p>   -->
-                  <p class="display-4" style="margin-bottom: 10%;">Donación</p>
+                  <p class="display-4" style="margin-bottom: 10%;">Ingrese sus datos</p>
                   <form class="form-label"action="" method="post">
                     {% csrf_token %}
+                    {{ form | crispy }} 
+                    <button type="submit" class=" btn btn-success" style="margin-top: 10%;">Ir a pagar</button>
+                    {% if mensaje %}  
+                    <div >        
+                    <div style="width: 60%;margin-top: 5%;">
+                        <p class="alert alert-success" style="margin-bottom: 0%;" role="alert" > 
+                        {{ mensaje }}
+                        </p>    
+                    </div>                                        
+                    </div>
+                    {% endif %}   
                     {% if error %}  
                     <div >        
-                    <div style="width: 60%;">
-                        <p class="alert alert-danger" style="margin-bottom: 5%;" role="alert" > 
+                    <div style="width: 60%;margin-top: 5%;">
+                        <p class="alert alert-danger" style="margin-bottom: 0%;" role="alert" > 
                         {{ error }}
                         </p>    
                     </div>                                        
                     </div>
-                    {% endif %}  
-                    {{ form | crispy }} 
-                    <button type="submit" class=" btn btn-success" style="margin-top: 10%;">Continuar</button>
-                        
+                    {% endif %}      
                 </form>
                 </div>
               </div>
@@ -34,5 +43,6 @@
         </div>
       </div>
     </div>
-</section>
+  </section>
+
 {% endblock %}
