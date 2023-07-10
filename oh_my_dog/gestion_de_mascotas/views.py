@@ -609,8 +609,7 @@ def agregar_entrada(request, id, motivo): #Recibe la id de un perro y debería r
         "form":form,
         "id":id,
     }
-    if request.method ==  'POST':
-        
+    if request.method ==  'POST':        
         form = Entrada_form(request.POST, request.FILES)
         if form.is_valid() :               
             servicio = Servicio_veterinario.objects.get(id = int(motivo))
@@ -630,7 +629,7 @@ def agregar_entrada(request, id, motivo): #Recibe la id de un perro y debería r
             params = {'id': id}
             return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
         else:
-            pass 
+            return render(request,"gestion_de_mascotas/crear_entrada.html",{"form":form, "id":id})
     return render(request,"gestion_de_mascotas/crear_entrada.html",data)
 
 def agregar_entrada_vacuna(request, id, motivo) :
@@ -659,16 +658,17 @@ def agregar_entrada_vacuna(request, id, motivo) :
             params = {'id': id}
             return redirect(reverse(f'ver_historial_medico', kwargs=params)) 
         else:
-            if form.errors:
-                data['messages'] = []
-                error_peso = form.errors.get("peso", None)
-                if error_peso:
-                    error_peso = error_peso.as_data()[0].message
-                    data["messages"].append(error_peso)
-                error_numero_dosis = form.errors.get("numero_dosis", None)
-                if error_numero_dosis:
-                    error_numero_dosis = error_numero_dosis.as_data()[0].message
-                    data["messages"].append(error_numero_dosis)
+            # if form.errors:
+            #     data['mensaje_error'] = []
+            #     error_peso = form.errors.get("peso", None)
+            #     if error_peso:
+            #         error_peso = error_peso.as_data()[0].message
+            #         data["mensaje_error"].append(error_peso)
+            #     error_numero_dosis = form.errors.get("numero_dosis", None)
+            #     if error_numero_dosis:
+            #         error_numero_dosis = error_numero_dosis.as_data()[0].message
+            #         data["mensaje_error"].append(error_numero_dosis)
+            return render(request,"gestion_de_mascotas/crear_entrada.html",{"form":form, "id":id})
 
     return render(request,"gestion_de_mascotas/crear_entrada.html",data)
-    
+    #Entrada_form_vacuna

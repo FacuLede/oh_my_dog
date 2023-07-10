@@ -12,35 +12,19 @@
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                   <p class="display-4" style="margin-bottom: 10%;">Crear entrada</p>
                     <form method="post" action="" class="mx-1 mx-md-4">
-                     
-                        {% if messages %}
-                        {% for message in messages %}
-                        <div class="alert alert-danger" role="alert">
-                          {{ message }}
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-                     
-                        {% if form.peso.errors %}  
+                        {% for m in mensaje_error %}                            
                           <div style="margin-top: 3%;">
-                            <p class="alert alert-danger" role="alert"> 
-                              {{ form.peso.errors|join:", " }}
+                            <p class="alert alert-danger" role="alert" > 
+                              {{ m }}
                             </p>    
                           </div>        
-                        {% endif %}  
-                     
+                        {% endfor %}   
                         {% csrf_token %}
                         {{ form|crispy }}
                      
                         <button type="submit" class="btn btn-success" style="margin-top: 5%;">Guardar</button>    
                         <a href="{% url 'ver_historial_medico' id %}" class="btn btn-danger" style="margin-top: 5%;">Volver</a>                 
-                        {% if mensaje %}  
-                          <div style="margin-top: 3%;">
-                            <p class="alert alert-success" role="alert" > 
-                              {{ mensaje }}
-                            </p>    
-                          </div>        
-                        {% endif %}  
+                         
                      
                     </form>  
                 </div>

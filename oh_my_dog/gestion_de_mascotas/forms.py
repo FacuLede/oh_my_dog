@@ -363,6 +363,13 @@ class Entrada_form(forms.ModelForm):
             "descripcion",
             "seguimiento",            
         ]
+    def clean_peso(self):
+        peso = self.cleaned_data.get("peso")
+        if peso is not None and peso < 0:
+            raise forms.ValidationError("El peso no puede ser negativo.")
+        if peso is not None and peso == 0:
+            raise forms.ValidationError("El peso no puede ser cero.")
+        return peso
 
 class Entrada_form_vacuna(forms.ModelForm):
     descripcion = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows": "5"}))

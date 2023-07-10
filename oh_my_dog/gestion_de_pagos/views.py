@@ -58,7 +58,12 @@ def pagar(request, id_campania, id_solicitud, id_tarjeta):
     campania = Campania_de_donacion.objects.get(id = id_campania)
     solicitud_donacion = Solicitud_donacion.objects.get(id = id_solicitud)
     tarjeta = Tarjeta.objects.get(id = int(id_tarjeta))
+
+    
+
     if request.method == 'POST' :
+        if float(tarjeta.numero_tarjeta) == 4444333322221111 :  #Estas lineas 2 simulan un fallo de conexion
+            return render(request, "gestion_de_pagos/pagar.html", {"form":form,"error":"Parece que hubo un fallo de conexión con el sistema, intenta denuevo mas tarde."})
         form = Pagar(request.POST) 
         if form.is_valid()  :
             if tarjeta.saldo >= float(request.POST.get('monto')) :
