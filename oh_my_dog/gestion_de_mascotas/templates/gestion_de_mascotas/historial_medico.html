@@ -62,12 +62,16 @@
                 <div class="col-md-8">
                     <div class="card-body">
                     <h5 class="card-title">Peso: {{entrada.peso}}</h5>
-                    <p class="card-text">Motivo: {{entrada.motivo}}</p>
+                    <p class="card-text">Motivo: {{entrada.motivo}}
+                        {% if entrada.motivo.servicio == 'Vacunación' %}
+                        - {{entrada.vacuna}} - Número de dosis {{entrada.numero_dosis}} 
+                        {% endif %}
+                    </p>
                     <p class="card-text">Descripcipción: {{entrada.descripcion}}</p>
                     <p class="card-text">Seguimiento: {{entrada.seguimiento}}</p>
                     <p class="card-text">Fecha: {{entrada.fecha}}</p>
                     <a class="btn btn-success" href="{% url 'editar_entrada' entrada.id %}" style="color:white;">Editar</a>
-                    <!-- <a href ="#" class="btn btn-danger" onclick="delete_entrada({{entrada.id}})" style="color:white;">Eliminar</a>  -->
+                    <a href ="#" class="btn btn-danger" onclick="delete_entrada({{entrada.id}})" style="color:white;">Eliminar</a> 
                     </div>
                 </div>
                 </div>

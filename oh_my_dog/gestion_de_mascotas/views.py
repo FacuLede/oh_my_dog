@@ -527,9 +527,22 @@ def crear_entrada(request, id):
     return render(request,"gestion_de_mascotas/crear_entrada.html",data)
 
 def eliminar_entrada(request,id2, id) :
-    if request.user.is_superuser :
+    if request.user.is_superuser :        
         entrada = Entrada.objects.get(id=id)
-        entrada.delete()
+        if entrada.motivo.servicio == "Vacunación" :
+            registro_vacuna = Registro_vacuna.objects.get(entrada = entrada)
+            registro_vacuna.delete()
+            entrada.delete()
+        elif entrada.motivo.servicio == "Castración" :
+            libreta_sanitaria = Libreta_sanitaria.objects.get(perro = Perro.objects.get(id = id2))
+            libreta_sanitaria.castrado = False
+            libreta_sanitaria.save()
+            entrada.delete()
+        elif entrada.motivo.servicio == "Desparasitación" :
+            libreta_sanitaria = Libreta_sanitaria.objects.get(perro = Perro.objects.get(id = id2))
+            libreta_sanitaria.ultima_desparasitacion = libreta_sanitaria.anteultima_desparasitacion
+            libreta_sanitaria.save()
+            entrada.delete()
         return redirect(to = request.META.get('HTTP_REFERER'))     
 
 def editar_entrada(request, id) :    
@@ -619,7 +632,8 @@ def agregar_entrada(request, id, motivo): #Recibe la id de un perro y debería r
             if servicio.servicio == "Castración" :
                 libreta_sanitaria.castrado = True
                 libreta_sanitaria.save()
-            elif servicio.servicio == "Desparasitación" :                
+            elif servicio.servicio == "Desparasitación" :              
+                libreta_sanitaria.anteultima_desparasitacion = libreta_sanitaria.ultima_desparasitacion  
                 libreta_sanitaria.ultima_desparasitacion = date.today()
                 libreta_sanitaria.save()
             
@@ -645,15 +659,15 @@ def agregar_entrada_vacuna(request, id, motivo) :
             servicio = Servicio_veterinario.objects.get(id = int(motivo))
             entrada = form.save(commit=False)
             entrada.motivo = servicio
+            entrada.perro = perro       
+            entrada.save() 
 
             registro_vacuna = Registro_vacuna()
             registro_vacuna.perro = perro
             registro_vacuna.vacuna = Vacuna.objects.get(id = int(request.POST.get('vacuna')))
             registro_vacuna.numero_dosis = int(request.POST.get('numero_dosis'))
-            registro_vacuna.save()  
-
-            entrada.perro = perro       
-            entrada.save()  
+            registro_vacuna.entrada = entrada
+            registro_vacuna.save()              
 
             params = {'id': id}
             return redirect(reverse(f'ver_historial_medico', kwargs=params)) 

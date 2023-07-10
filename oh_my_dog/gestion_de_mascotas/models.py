@@ -131,6 +131,7 @@ class Entrada(models.Model):
 
 class Libreta_sanitaria(models.Model):
     castrado = models.BooleanField(default=False)
+    anteultima_desparasitacion = models.DateField(null=True)
     ultima_desparasitacion = models.DateField(null=True)
     perro = models.ForeignKey(Perro, on_delete=models.CASCADE)
 
@@ -146,7 +147,7 @@ class Registro_vacuna(models.Model):
     vacuna = models.ForeignKey(Vacuna, on_delete=models.CASCADE)
     fecha = models.DateField(auto_now_add=True)
     numero_dosis = models.PositiveIntegerField()
-
+    entrada = models.ForeignKey(Entrada, on_delete=models.CASCADE)
     class Meta:        
         verbose_name='registro_vacuna'
         verbose_name_plural='registros_vacunas'
