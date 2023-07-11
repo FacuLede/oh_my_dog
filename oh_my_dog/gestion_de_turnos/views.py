@@ -26,18 +26,21 @@ def sacar_turno(request):
             form = Turno_form_perroless(request.POST)
         if form.is_valid() :    
             turno = form.save(commit=False) 
-            if turno.perro is not None :          
+            if turno.perro is not None :   
                 if turno.motivo.servicio == "Castración" or turno.motivo.servicio == "Desparasitación" :
                     turnos = Turno.objects.filter(Q(perro = turno.perro)&Q(motivo = turno.motivo))
                     if turnos.count() != 0 :
                         return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
             
-            if turno.perro is None :      
-                         
-                turnos_2 = Turno.objects.filter(Q(perro = None)&Q(created_by = request.user)&Q(motivo = turno.motivo))
-                if turnos_2.count() != 0 :
-                    return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
-                
+            else:     
+                if turno.motivo.servicio == "Castración" or turno.motivo.servicio == "Desparasitación" :         
+                    turnos_2 = Turno.objects.filter(Q(perro = None)&Q(created_by = request.user)&Q(motivo = turno.motivo))
+                    if turnos_2.count() != 0 :
+                        return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
+                else:
+                    turnos_2 = Turno.objects.filter(Q(perro = None)&Q(created_by = request.user)&Q(fecha = turno.fecha)&Q(franja_horaria = turno.franja_horaria))
+                    if turnos_2.count() != 0 :
+                        return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
             turno.created_by = request.user
             turno.save()  
             data["mensaje"] = "Se solicitó el turno correctamente."   
