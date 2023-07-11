@@ -14,8 +14,11 @@ def crear_campania(request):
             form.save()
             data['mensaje'] = "Se ha creado la campaña exitosamente."
             return redirect(to="ver_campanias_de_donacion")
-        else :            
-            return render(request, "gestion_de_donaciones/crear_campania.html", {"form":form})
+        else :       
+            if float(request.POST.get('monto_esperado')) > 0 :
+                data['error'] = "Esta campaña ya existe"
+            else:     
+                return render(request, "gestion_de_donaciones/crear_campania.html", {"form":form})
 
     return render(request, "gestion_de_donaciones/crear_campania.html", data)
 
