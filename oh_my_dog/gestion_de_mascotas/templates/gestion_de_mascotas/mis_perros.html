@@ -33,6 +33,8 @@
                     <p class="card-title">Sexo: {{perro.sexo}}</p>
                     <p class="card-title">Nacimiento: {{perro.nacimiento}}</p>
                     <p class="card-title">Raza: {{perro.raza}}</p>
+                    <a href ="{% url 'ver_libreta_sanitaria' perro.id %}" class="btn btn-primary" style="color:white;">Ver libreta sanitaria</a> 
+                    <a href ="{% url 'ver_historial_medico' perro.id %}" class="btn btn-primary" style="color:white;">Ver historial médico</a> 
                     </div>
                 </div>
                 </div>
