@@ -32,15 +32,10 @@ def sacar_turno(request):
                     if turnos.count() != 0 :
                         return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
             
-            else:     
-                if turno.motivo.servicio == "Castración" or turno.motivo.servicio == "Desparasitación" :         
-                    turnos_2 = Turno.objects.filter(Q(perro = None)&Q(created_by = request.user)&Q(motivo = turno.motivo))
-                    if turnos_2.count() != 0 :
-                        return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
-                else:
-                    turnos_2 = Turno.objects.filter(Q(perro = None)&Q(created_by = request.user)&Q(fecha = turno.fecha)&Q(franja_horaria = turno.franja_horaria))
-                    if turnos_2.count() != 0 :
-                        return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
+            else:    
+                turnos_2 = Turno.objects.filter(Q(perro = None)&Q(created_by = request.user)&Q(motivo = turno.motivo)&Q(fecha = turno.fecha)&Q(franja_horaria = turno.franja_horaria))
+                if turnos_2.count() != 0 :
+                    return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
             turno.created_by = request.user
             turno.save()  
             data["mensaje"] = "Se solicitó el turno correctamente."   

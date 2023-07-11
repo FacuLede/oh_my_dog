@@ -81,5 +81,7 @@ def pagar(request, id_campania, id_solicitud, id_tarjeta):
                 return render(request, 'gestion_de_pagos/pago_exitoso.html')
             else :
                 return render(request, 'gestion_de_pagos/pagar.html', {'form': form, "error":"Tu tarjeta no tiene fondos suficientes."})
+        else :
+            return render(request, 'gestion_de_pagos/pagar.html', {'form': form})
 
     return render(request, "gestion_de_pagos/pagar.html", data)

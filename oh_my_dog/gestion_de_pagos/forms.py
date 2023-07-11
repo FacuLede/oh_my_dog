@@ -40,3 +40,11 @@ class CreditCardForm(forms.ModelForm):
        
 class Pagar(forms.Form):
     monto = forms.FloatField(label='Ingrese un monto')
+    fields = [
+        'monto',
+    ]
+    def clean_monto(self):
+        monto = self.cleaned_data['monto']
+        if float(monto) <= 0 :            
+            raise ValidationError('Ingrese un monto válido')
+        return monto
