@@ -398,18 +398,9 @@ def editar_anuncio_perdido(request, id, type):
     
     if request.method == 'POST':
         form = Perro_perdido_update_form(request.POST, request.FILES, instance=publicacion)
-        if form.is_valid():
-            if request.POST['nueva_imagen'] != "":
-                publicacion.imagen = "perros_perdidos/"+request.POST['nueva_imagen']
-            publicacion.size = request.POST['size']
-            publicacion.zona = request.POST['zona']            
-            publicacion.descripcion = request.POST['descripcion']
-            publicacion.nombre = request.POST['nombre']
-            publicacion.edad = request.POST['edad']
-            publicacion.sexo = request.POST['sexo']
-            publicacion.franja_horaria = request.POST['franja_horaria']
+        if form.is_valid():            
+            publicacion = form.save(commit=False)
             publicacion.save()
-            # return redirect('perros_perdidos')
             if type == 'all' :
                 return redirect(to = "perros_perdidos")
             else :
@@ -425,15 +416,7 @@ def editar_anuncio_encontrado(request, id, type):
     if request.method == 'POST':
         form = Perro_encontrado_update_form(request.POST, request.FILES, instance=publicacion)
         if form.is_valid():
-            if request.POST['nueva_imagen'] != "":
-                publicacion.imagen = "perros_encontrados/"+request.POST['nueva_imagen']
-
-            # publicacion.fecha_encontrado = form.cleaned_data['fecha_encontrado']
-
-            publicacion.size = request.POST['size']
-            publicacion.zona = request.POST['zona']            
-            publicacion.descripcion = request.POST['descripcion']
-            publicacion.save()
+            form.save()
             if type == 'all' :
                 return redirect(to = "perros_encontrados")
             else :

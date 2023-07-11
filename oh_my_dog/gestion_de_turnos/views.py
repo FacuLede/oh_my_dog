@@ -26,12 +26,15 @@ def sacar_turno(request):
             form = Turno_form_perroless(request.POST)
         if form.is_valid() :    
             turno = form.save(commit=False)
+            if turno.motivo.servicio == "Castración" or turno.motivo.servicio == "Desparasitación" :
+                turnos = Turno.objects.filter(Q(perro = turno.perro)&Q(motivo = turno.motivo))
+                if turnos.count() != 0 :
+                    return render(request,"gestion_de_turnos/sacar_turno.html",{"form":form, "error":"Ya has solicitado un turno similar."})
             turno.created_by = request.user
-            turno.save()        
-            # form.save()           
-            data["mensaje"] = "Se solicitó el turno correctamente."  
+            turno.save()  
+            data["mensaje"] = "Se solicitó el turno correctamente."   
         else :
-            data["error"] = "Algo salió mal, inténtalo denuevo."  
+            data["error"] = "No se pudo solicitar el turno."  
             print(form.errors)            
     
     return render(request,"gestion_de_turnos/sacar_turno.html",data)

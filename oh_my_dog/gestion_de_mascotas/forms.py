@@ -60,7 +60,7 @@ class  Perro_encontrado_form(forms.ModelForm):
         ('Madrugada', 'Madrugada'),
     ]    
     opciones_sexo = [
-        ('Macho ', 'Macho'),
+        ('Macho', 'Macho'),
         ('Hembra', 'Hembra'),
     ]
     opciones_edad = [
@@ -168,7 +168,6 @@ class  Perro_perdido_update_form(forms.ModelForm):
         ('Grande', 'Grande'),
     ]
     size = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_size, label="Tamaño")
-    nueva_imagen = forms.ImageField(required=False)
     opciones_franja_horaria = [
         ('Mañana', 'Mañana'),
         ('Medio día', 'Medio día'),
@@ -177,7 +176,7 @@ class  Perro_perdido_update_form(forms.ModelForm):
         ('Madrugada', 'Madrugada'),
     ]    
     opciones_sexo = [
-        ('Macho ', 'Macho'),
+        ('Macho', 'Macho'),
         ('Hembra', 'Hembra'),
     ]
     opciones_edad = [
@@ -199,7 +198,7 @@ class  Perro_perdido_update_form(forms.ModelForm):
             raise forms.ValidationError("No puede ser una fecha futura.")
         
         return fecha_ingresada
-
+    
     class Meta:
         model = Perro_perdido
         fields = [
@@ -212,9 +211,9 @@ class  Perro_perdido_update_form(forms.ModelForm):
             "raza",
             "zona",            
             "descripcion",  
-            'nueva_imagen',            
+            'imagen',            
         ]
-
+    
 class  Perro_encontrado_update_form(forms.ModelForm):
     opciones_franja_horaria = [
         ('Mañana', 'Mañana'),
@@ -224,7 +223,7 @@ class  Perro_encontrado_update_form(forms.ModelForm):
         ('Madrugada', 'Madrugada'),
     ]    
     opciones_sexo = [
-        ('Macho ', 'Macho'),
+        ('Macho', 'Macho'),
         ('Hembra', 'Hembra'),
     ]
     opciones_edad = [
@@ -242,7 +241,6 @@ class  Perro_encontrado_update_form(forms.ModelForm):
     edad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_edad, label="Etapa de")  
     size = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones_size, label="Tamaño")
     descripcion =  forms.CharField(max_length=100,widget=forms.Textarea(attrs={"rows":"5"}))
-    nueva_imagen = forms.ImageField(required=False)
     fecha_encontrado = forms.DateField(label='Se encontró el')
     def clean_fecha_encontrado(self):
         fecha_ingresada = self.cleaned_data['fecha_encontrado']
@@ -260,15 +258,12 @@ class  Perro_encontrado_update_form(forms.ModelForm):
             "size",
             "sexo",            
             "raza",
-            'nueva_imagen',
+            'imagen',
             "descripcion",
             "fecha_encontrado",
             "franja_horaria",
             "zona",           
         ]
-        # widgets = {
-        #     'fecha_encontrado': forms.DateInput(attrs={'type': 'date', 'max': date.today().strftime('%Y-%m-%d')})
-        # }
 
 class Perro_form_update(forms.ModelForm) :
     raza = forms.ModelChoiceField(queryset=Raza.objects.all(), empty_label='Ninguno')
@@ -341,6 +336,18 @@ class Entrada_update_form_vacunacion(forms.ModelForm):
             "descripcion",
             "seguimiento",            
         ]
+    
+    def clean_numero_dosis(self):
+        numero_dosis = self.cleaned_data.get("numero_dosis")
+        if numero_dosis is not None and numero_dosis <= 0:
+            raise forms.ValidationError("El número de dosis no puede ser negativo o cero.")
+        return numero_dosis
+
+    def clean_peso(self):
+        peso = self.cleaned_data.get("peso")
+        if peso is not None and peso < 0:
+            raise forms.ValidationError("El peso no puede ser negativo.")
+        return peso
 
 class Entrada_update_form(forms.ModelForm):
     descripcion =  forms.CharField(max_length=500,widget=forms.Textarea(attrs={"rows":"5"}))
@@ -390,8 +397,8 @@ class Entrada_form_vacuna(forms.ModelForm):
 
     def clean_numero_dosis(self):
         numero_dosis = self.cleaned_data.get("numero_dosis")
-        if numero_dosis is not None and numero_dosis < 0:
-            raise forms.ValidationError("El número de dosis no puede ser negativo.")
+        if numero_dosis is not None and numero_dosis <= 0:
+            raise forms.ValidationError("El número de dosis no puede ser negativo o cero.")
         return numero_dosis
 
     def clean_peso(self):

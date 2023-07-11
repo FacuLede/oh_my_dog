@@ -20,7 +20,7 @@ class Perro_perdido(models.Model):
     edad =  models.CharField(max_length=50) 
     size = models.CharField(max_length=50)
     descripcion=models.CharField(max_length=100)
-    imagen=models.ImageField(upload_to='perros_perdidos')      
+    imagen=models.ImageField(upload_to='perros_perdidos')    
     fecha_perdido = models.DateField()    
     zona = models.CharField(max_length=100)    
     franja_horaria = models.CharField(max_length=50)
